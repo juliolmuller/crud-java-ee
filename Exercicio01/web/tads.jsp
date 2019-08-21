@@ -37,7 +37,7 @@
           String[] links = {
             "https://www.facebook.com/andre.antunes.619",
             "https://www.facebook.com/aurelio.matsunaga",
-            "https://www.facebook.com/cassianovidal",
+            "https://www.twitter.com/cassianovidal",
             "https://www.facebook.com/juliolmuller",
             "https://www.facebook.com/D6nero"
           };
@@ -56,7 +56,11 @@
                 <h5 class="card-title"><% out.print(equipe[i]); %></h5>
               </div>
               <div class="card-footer">
+                <% if (i == 2) { %>
+                <a href="<% out.print(links[i]); %>" class="card-link">Twitter</a>
+                <%} else{ %>
                 <a href="<% out.print(links[i]); %>" class="card-link">Facebook</a>
+                <% } %>
               </div>
             </div>
           <%
