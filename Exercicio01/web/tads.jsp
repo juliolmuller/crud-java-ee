@@ -18,7 +18,7 @@
             <h1 class="display-4">Meu TADS</h1>
             <h4>Tecnologia em Analise e Desenvolvimento de Sistemas</h4>
             <hr class="d-block my-4 bg-white" style="height: 1px;" />
-            <p class="lead">Comecando a construir o futuro da humanidade.</p>
+            <p class="lead">Comecando a construir o futuro da humanidade.</p> 
           </div>
         </div>
       </div>

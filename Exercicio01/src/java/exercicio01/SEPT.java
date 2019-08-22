@@ -21,11 +21,19 @@ public class SEPT extends HttpServlet {
             out.println("<head>");
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-            out.println("<title>SEPT</title>");            
+            out.println("<title>SEPT</title>"); 
+            out.println("<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\">");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>SEPT está em " + request.getContextPath() + "</h1>");
+            //out.println("<body style=\"background: url(\'https://wallpaperaccess.com/full/248362.jpg\') center;\">");
+            out.println("<h1 style=\"font-family:verdana; font-size:40px;\"> Setor de Educação Profissional e Tecnológica </h1>");
             out.println("<a href=\"" + request.getContextPath() + "/tads.jsp\">Meu TADS</a>");
+            out.println("<table class=\"table\">"
+                    + "<thead><tr><th>Curso</th><th>Site</th></tr></thead>"
+                    + "<tbody>"
+                    + "<tr><td>Xablau</td><td>xxx</td></tr>"
+                    + "</tbody>"
+                    + "</table>");
             out.println("</body>");
             out.println("</html>");
         }
