@@ -69,7 +69,7 @@
                 %>
             </main>
             <footer class="mt-5 px-3">
-                <a href="<% out.println(request.getContextPath());%>" class="btn btn-outline-dark">&lt;&lt;&lt; Voltar para a pagina inicial</a>
+                <a href="<% out.println(request.getContextPath() + "/SEPT");%>" class="btn btn-outline-dark">&lt;&lt;&lt; Voltar para a pagina inicial</a>
             </footer>
         </div>
     </div>
