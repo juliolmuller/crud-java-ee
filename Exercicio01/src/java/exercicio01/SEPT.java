@@ -51,7 +51,7 @@ public class SEPT extends HttpServlet {
             out.println("<head>");
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-<<<<<<< HEAD
+
             out.println("<title>SEPT | Web 2</title>");
             out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath()+ "/css/bootstrap.min.css\">");
             out.println("</head>");
@@ -135,23 +135,7 @@ public class SEPT extends HttpServlet {
             out.println("</div>");
             out.println("</main>");
             out.println("</div>");
-=======
-            out.println("<title>SEPT</title>"); 
-            out.println("<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\">");
-            out.println("</head>");
-            out.println("<body>");
-            //out.println("<body style=\"background: url(\'https://wallpaperaccess.com/full/248362.jpg\') center;\">");
-            out.println("<h1 style=\"font-family:verdana; font-size:40px;\"> Setor de Educação Profissional e Tecnológica </h1>");
-            out.println("<a href=\"" + request.getContextPath() + "/tads.jsp\">Meu TADS</a>");
-            out.println("<table class=\"table\">"
-                    + "<thead><tr><th>Curso</th><th>Site</th></tr></thead>"
-                    + "<tbody>"
-                    + "<tr><td>Xablau</td><td>xxx</td></tr>"
-                    + "</tbody>"
-                    + "</table>");
->>>>>>> d758a50b70f000a46333e552155fee5e9eed3c33
-            out.println("</body>");
-            out.println("</html>");
+
         }
     }
 
