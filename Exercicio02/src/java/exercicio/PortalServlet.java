@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "PortalServlet", urlPatterns = {"/portal"})
 public class PortalServlet extends HttpServlet {
@@ -17,6 +18,15 @@ public class PortalServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         
+        // Recuperar sessão ativa ou redirecionar para tela de login
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        
+        // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -29,7 +39,14 @@ public class PortalServlet extends HttpServlet {
             out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PortalServlet at " + request.getContextPath() + "</h1>");
+            out.println("<div class=\"container\">");
+            out.println("<h1>Servlet PortalServlet (logado como " 
+                + usuario.getLogin() + ", "
+                + usuario.getNome() + ", " 
+                + usuario.getSenha() + ")"
+                + "</h1>");
+            out.println("<a href=\"" + request.getContextPath() + "/logout\">Logout</a>");
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
         }
