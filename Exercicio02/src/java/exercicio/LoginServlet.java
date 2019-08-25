@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -17,6 +18,7 @@ public class LoginServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         
+        // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -32,7 +34,11 @@ public class LoginServlet extends HttpServlet {
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
-            if (request.getParameter("login") != null && request.getParameter("login").equals(request.getParameter("senha"))) {
+            String login = request.getParameter("login");
+            String senha = request.getParameter("senha");
+            if (login != null && login.equals(senha)) {
+                HttpSession session = request.getSession();
+                session.setAttribute("usuarioLogado", new Usuario("", login, senha));
                 out.println("<img src=\"img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com suncesso!</h3>");
                 out.println("<div id=\"form-footer\">");
