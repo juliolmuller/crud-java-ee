@@ -26,8 +26,8 @@ public class LoginServlet extends HttpServlet {
         if (login != null && login.equals(senha)) { // Se login é válido, armazenar em sessão
             logado = true;
             session = request.getSession();
-            session.setAttribute("usuarioLogado", new Usuario("", login, senha));
-        } else if (session != null) { // Se já há uma sessão, redirecionar para 'Portal'
+            session.setAttribute("usuarioLogado", new Usuario("Visitante \"" + login + "\"", login, senha));
+        } else if (login == null && senha == null && session != null) { // Se nenhuma credencial for passada e já há uma sessão, redirecionar para 'Portal'
             response.sendRedirect(request.getContextPath() + "/portal");
             return;
         }
@@ -49,12 +49,12 @@ public class LoginServlet extends HttpServlet {
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
             if (logado) {
-                out.println("<img src=\"img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
+                out.println("<img src=\"" + request.getContextPath() + "/img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com suncesso!</h3>");
                 out.println("<div id=\"form-footer\">");
                 out.println("<a href=\"" + request.getContextPath() + "/portal\" class=\"underline-hover\">Prosseguir para o Portal &gt;&gt;&gt;</a>");
             } else {
-                out.println("<img src=\"img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
+                out.println("<img src=\"" + request.getContextPath() + "/img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in third text-danger\">Ops! Credenciais inválidas!</h3>");
                 out.println("<div id=\"form-footer\">");
                 out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">&lt;&lt;&lt; Voltar para a tela de login</a>");
