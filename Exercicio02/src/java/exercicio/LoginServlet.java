@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
-            if (request.getParameter("user") != null && request.getParameter("user").equals(request.getParameter("password"))) {
+            if (request.getParameter("login") != null && request.getParameter("login").equals(request.getParameter("senha"))) {
                 out.println("<img src=\"img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com suncesso!</h3>");
                 out.println("<div id=\"form-footer\">");
