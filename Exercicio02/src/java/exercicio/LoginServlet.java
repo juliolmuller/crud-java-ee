@@ -18,6 +18,20 @@ public class LoginServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         
+        // Avaliar se haverá login ou se há sessão iniciada
+        boolean logado = false;
+        String login = request.getParameter("login");
+        String senha = request.getParameter("senha");
+        HttpSession session = request.getSession(false);
+        if (login != null && login.equals(senha)) { // Se login é válido, armazenar em sessão
+            logado = true;
+            session = request.getSession();
+            session.setAttribute("usuarioLogado", new Usuario("", login, senha));
+        } else if (session != null) { // Se já há uma sessão, redirecionar para 'Portal'
+            response.sendRedirect(request.getContextPath() + "/portal");
+            return;
+        }
+        
         // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -27,27 +41,23 @@ public class LoginServlet extends HttpServlet {
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 02</title>");
-            out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">");
-            out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
+            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
+            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/login-styles.css\" />");
             out.println("</head>");
             out.println("<body>");
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
-            String login = request.getParameter("login");
-            String senha = request.getParameter("senha");
-            if (login != null && login.equals(senha)) {
-                HttpSession session = request.getSession();
-                session.setAttribute("usuarioLogado", new Usuario("", login, senha));
+            if (logado) {
                 out.println("<img src=\"img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com suncesso!</h3>");
                 out.println("<div id=\"form-footer\">");
-                out.println("<a href=\"portal\" class=\"underline-hover\">Prosseguir para o Portal &gt;&gt;&gt;</a>");
+                out.println("<a href=\"" + request.getContextPath() + "/portal\" class=\"underline-hover\">Prosseguir para o Portal &gt;&gt;&gt;</a>");
             } else {
                 out.println("<img src=\"img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in third text-danger\">Ops! Credenciais inválidas!</h3>");
                 out.println("<div id=\"form-footer\">");
-                out.println("<a href=\"" + request.getContextPath() + "\" class=\"underline-hover\">&lt;&lt;&lt; Voltar para a tela de login</a>");
+                out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">&lt;&lt;&lt; Voltar para a tela de login</a>");
             }
             out.println("</div></div></div>");
             out.println("</body>");
