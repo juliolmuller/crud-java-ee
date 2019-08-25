@@ -26,17 +26,24 @@ public class LoginServlet extends HttpServlet {
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 02</title>");
             out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">");
+            out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("<div class=\"container\">");
+            out.println("<div class=\"wrapper fade-in-down\">");
+            out.println("<div id=\"form-content\">");
+            out.println("<div class=\"fade-in first\">");
             if (request.getParameter("user") != null && request.getParameter("user").equals(request.getParameter("password"))) {
-                out.println("<h1 class=\"display-4 my-5\">Login realizado com suncesso!</h1>");
-                out.println("<a href=\"portal\">Prosseguir para o Portal &gt;&gt;&gt;</a>");
+                out.println("<img src=\"img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
+                out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com suncesso!</h3>");
+                out.println("<div id=\"form-footer\">");
+                out.println("<a href=\"portal\" class=\"underline-hover\">Prosseguir para o Portal &gt;&gt;&gt;</a>");
             } else {
-                out.println("<h1 class=\"display-4 my-5 text-danger\">Ops! Credenciais inválidas!</h1>");
-                out.println("<a href=\"" + request.getContextPath() + "\">&lt;&lt;&lt; Voltar para a tela de login</a>");
+                out.println("<img src=\"img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
+                out.println("<h3 class=\"mb-5 fade-in third text-danger\">Ops! Credenciais inválidas!</h3>");
+                out.println("<div id=\"form-footer\">");
+                out.println("<a href=\"" + request.getContextPath() + "\" class=\"underline-hover\">&lt;&lt;&lt; Voltar para a tela de login</a>");
             }
-            out.println("</div>");
+            out.println("</div></div></div>");
             out.println("</body>");
             out.println("</html>");
         }
