@@ -13,7 +13,7 @@
     </head>
     <body>
         <header class="container-fluid">
-            <div style="background: url('https://jjsolutions.net/assets/images/tads-cover-page.jpg') center;">
+            <div style="background: url('css/tads-cover-page.jpg') center;">
                 <div style="background: rgb(0, 0, 0, 0.8);">
                     <div class="container jumbotron text-white font-weight-bold" style="background: rgb(0, 0, 0, 0);">
                         <h1 class="display-4">Meu TADS</h1>
