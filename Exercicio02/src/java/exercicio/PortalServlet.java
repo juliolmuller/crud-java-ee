@@ -35,18 +35,30 @@ public class PortalServlet extends HttpServlet {
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 02</title>");
-            out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">");
-            out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
+            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
             out.println("</head>");
             out.println("<body>");
             out.println("<div class=\"container\">");
-            out.println("<h1>Servlet PortalServlet (logado como " 
-                + usuario.getLogin() + ", "
-                + usuario.getNome() + ", " 
-                + usuario.getSenha() + ")"
-                + "</h1>");
             out.println("<a href=\"" + request.getContextPath() + "/logout\">Logout</a>");
+            out.println("<form class=\"my-5\">");
+            out.println("<input type=\"text\" name=\"nome\" placeholder=\"Nome do usuário\" required /><br>");
+            out.println("<input type=\"text\" name=\"login\" placeholder=\"Login de acesso\" required /><br>");
+            out.println("<input type=\"password\" name=\"senha\" placeholder=\"Senha de acesso\" required /><br>");
+            out.println("<button type=\"submit\">Cadastrar</button>");
+            out.println("</form>");
+            out.println("<table class=\"table\">");
+            out.println("<thead class=\"thead-dark\">");
+            out.println("<tr>");
+            out.println("<th scope=\"col\">Nome do usuário</th>");
+            out.println("<th scope=\"col\">Login de acesso</th>");
+            out.println("<th scope=\"col\">Senha</th>");
+            out.println("</tr>");
+            out.println("</thead>");
+            out.println("<tbody></tbody>");
+            out.println("</table>");
             out.println("</div>");
+            out.println("<script src=\"" + request.getContextPath() + "/js/jquery.min.js\"></script>");
+            out.println("<script src=\"" + request.getContextPath() + "/js/portal-scripts.js\"></script>");
             out.println("</body>");
             out.println("</html>");
         }
