@@ -18,6 +18,9 @@ public class LoginServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         
+        // Ajustar configuração charset de entrada
+        request.setCharacterEncoding("UTF-8");
+        
         // Avaliar se haverá login ou se há sessão iniciada
         boolean logado = false;
         String login = request.getParameter("login");
@@ -26,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         if (login != null && login.equals(senha)) { // Se login é válido, armazenar em sessão
             logado = true;
             session = request.getSession();
-            session.setAttribute("usuarioLogado", new Usuario("Visitante \"" + login + "\"", login, senha));
+            session.setAttribute("usuarioLogado", new Usuario("usuário \"" + login + "\"", login, senha));
         } else if (login == null && senha == null && session != null) { // Se nenhuma credencial for passada e já há uma sessão, redirecionar para 'Portal'
             response.sendRedirect(request.getContextPath() + "/portal");
             return;
