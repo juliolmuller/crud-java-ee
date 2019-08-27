@@ -43,7 +43,7 @@ public class PortalServlet extends HttpServlet {
             out.println("<header>");
             out.println("<div id=\"wrapper-out\">");
             out.println("<div class=\"row justify-content-center fixed-top\" id=\"fake-navbar\">");
-            out.println("<div class=col-2></div>");
+            out.println("<div class=\"col-2\"></div>");
             out.println("<div class=\"col-8\">");
             out.println("<h2 class=\"text-center\">Portal :: Exercício 2</h2></div>");
             out.println("<div class=\"col-2\">");
@@ -58,33 +58,20 @@ public class PortalServlet extends HttpServlet {
             
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"container text-center\">");
-            out.println("<h3>Adicionar novo usuário</h3><br/>");
+            out.println("<h3>Adicionar novo usuário</h3>");
             // Formulário::campos
-            out.println("<form action=\"cadastrar-usuario\" method=\"POST\">");
+            out.println("<form>");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"usuario\">Nome do usuário</label>");
-            out.println("<input type=\"text\" class=\"form-control\""
-                    + "name=\"nome\" "
-                    + "id=\"usuario\" "
-                    + "placeholder=\"Insira um nome\" "
-                    + "required "
-                    + "autofocus/>");
+            out.println("<input type=\"text\" class=\"form-control\" name=\"nome\" id=\"usuario\" placeholder=\"Insira um nome\" required autofocus/>");
             out.println("</div>");
             out.println("<div class=\"form-group\">");
-            out.println("<label for=\"login\">Nome de login</label>");
-            out.println("<input type=\"text\" class=\"form-control\""
-                    + "name=\"login\" "
-                    + "id=\"login\" "
-                    + "placeholder=\"Insira um login\" "
-                    + "required/>");
+            out.println("<label for=\"login\">Nome de login</label>"); 
+            out.println("<input type=\"text\" class=\"form-control\" name=\"login\" id=\"login\" placeholder=\"Insira um login\" required/>");
             out.println("</div>");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"senha\">Senha de acesso</label>");
-            out.println("<input type=\"password\" class=\"form-control\""
-                    + "name=\"senha\" "
-                    + "id=\"senha\" "
-                    + "placeholder=\"Insira uma senha\" "
-                    + "required />");
+            out.println("<input type=\"password\" class=\"form-control\" name=\"senha\" id=\"senha\" placeholder=\"Insira uma senha\" required/>");
             out.println("</div>");
             out.println("<button type=\"submit\" id=\"btn-ok\">Cadastrar</button>");
             out.println("</form>");

@@ -22,12 +22,13 @@ function requisitarListaUsuarios() {
 }
 
 function enviarDados(e) {
- // e.preventDefault()
+  e.preventDefault()
   var dados = {
     nome: $('input[name="nome"]').val(),
     login: $('input[name="login"]').val().toUpperCase(),
     senha: $('input[name="senha"]').val()
   }
+
   $.post(apiUrl, dados).then(function(response) {
     adicionarLinha(response.data)
     $('input[name="nome"]').val('')
@@ -35,9 +36,12 @@ function enviarDados(e) {
     $('input[name="senha"]').val('')
     $('input[name="nome"]').focus()
   })
+  
 }
 
 $(document).ready(function() {
   requisitarListaUsuarios()
-  $('button[type="submit"]').click(enviarDados)
+  $('form').submit(enviarDados)
+  //$('button[type="submit"]').click(enviarDados)
 })
+≠
