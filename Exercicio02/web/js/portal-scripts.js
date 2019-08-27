@@ -42,6 +42,4 @@ function enviarDados(e) {
 $(document).ready(function() {
   requisitarListaUsuarios()
   $('form').submit(enviarDados)
-  //$('button[type="submit"]').click(enviarDados)
 })
-≠
