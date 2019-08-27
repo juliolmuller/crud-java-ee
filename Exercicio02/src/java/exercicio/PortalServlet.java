@@ -60,6 +60,7 @@ public class PortalServlet extends HttpServlet {
             out.println("<div class=\"container text-center\">");
             out.println("<h3>Adicionar novo usuário</h3><br/>");
             // Formulário::campos
+            out.println("<form action=\"cadastrar-usuario\" method=\"POST\">");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"usuario\">Nome do usuário</label>");
             out.println("<input type=\"text\" class=\"form-control\""
@@ -92,6 +93,8 @@ public class PortalServlet extends HttpServlet {
             out.println("</div>");
 
             // tabela
+            out.println("<div class=\"row justify-content-center\">");
+            out.println("<div class=\"col-9\">");
             out.println("<table class=\"table table-stripped\">");
             out.println("<thead class=\"table-primary\">");
             out.println("<tr>");
@@ -102,6 +105,8 @@ public class PortalServlet extends HttpServlet {
             out.println("</thead>");
             out.println("<tbody></tbody>");
             out.println("</table>");
+            out.println("</div>");
+            out.println("</div>");
             out.println("</main>");
             out.println("<script src=\"" + request.getContextPath() + "/js/jquery.min.js\"></script>");
             out.println("<script src=\"" + request.getContextPath() + "/js/portal-scripts.js\"></script>");

@@ -22,7 +22,7 @@ function requisitarListaUsuarios() {
 }
 
 function enviarDados(e) {
-  e.preventDefault()
+ // e.preventDefault()
   var dados = {
     nome: $('input[name="nome"]').val(),
     login: $('input[name="login"]').val().toUpperCase(),
