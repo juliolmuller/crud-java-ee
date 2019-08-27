@@ -36,18 +36,64 @@ public class PortalServlet extends HttpServlet {
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 02</title>");
             out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
+            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/portal-styles.css\">");
             out.println("</head>");
             out.println("<body>");
-            out.println("<div class=\"container\">");
-            out.println("<a href=\"" + request.getContextPath() + "/logout\">Logout</a>");
-            out.println("<form class=\"my-5\">");
-            out.println("<input type=\"text\" name=\"nome\" placeholder=\"Nome do usuário\" required /><br>");
-            out.println("<input type=\"text\" name=\"login\" placeholder=\"Login de acesso\" required /><br>");
-            out.println("<input type=\"password\" name=\"senha\" placeholder=\"Senha de acesso\" required /><br>");
-            out.println("<button type=\"submit\">Cadastrar</button>");
+            // navbar que na realidade é apenas o título e um botão de logout
+            out.println("<header>");
+            out.println("<div id=\"wrapper-out\">");
+            out.println("<div class=\"row justify-content-center fixed-top\" id=\"fake-navbar\">");
+            out.println("<div class=col-2></div>");
+            out.println("<div class=\"col-8\">");
+            out.println("<h2 class=\"text-center\">Portal :: Exercício 2</h2></div>");
+            out.println("<div class=\"col-2\">");
+            out.println("<a href=\"" + request.getContextPath() + "/logout\">"
+                    + "<button class=\"btn-danger rounded\">Logout</button></a></div>");
+            out.println("</div>");
+            out.println("</header>");
+            // Inicio da main
+            out.println("<main>");
+            out.println("<div class=\"wrapper\">");
+            // Formulário::início
+            
+            out.println("<div id=\"form-content\">");
+            out.println("<div class=\"container text-center\">");
+            out.println("<h3>Adicionar novo usuário</h3><br/>");
+            // Formulário::campos
+            out.println("<div class=\"form-group\">");
+            out.println("<label for=\"usuario\">Nome do usuário</label>");
+            out.println("<input type=\"text\" class=\"form-control\""
+                    + "name=\"nome\" "
+                    + "id=\"usuario\" "
+                    + "placeholder=\"Insira um nome\" "
+                    + "required "
+                    + "autofocus/>");
+            out.println("</div>");
+            out.println("<div class=\"form-group\">");
+            out.println("<label for=\"login\">Nome de login</label>");
+            out.println("<input type=\"text\" class=\"form-control\""
+                    + "name=\"login\" "
+                    + "id=\"login\" "
+                    + "placeholder=\"Insira um login\" "
+                    + "required/>");
+            out.println("</div>");
+            out.println("<div class=\"form-group\">");
+            out.println("<label for=\"senha\">Senha de acesso</label>");
+            out.println("<input type=\"password\" class=\"form-control\""
+                    + "name=\"senha\" "
+                    + "id=\"senha\" "
+                    + "placeholder=\"Insira uma senha\" "
+                    + "required />");
+            out.println("</div>");
+            out.println("<button type=\"submit\" id=\"btn-ok\">Cadastrar</button>");
             out.println("</form>");
-            out.println("<table class=\"table\">");
-            out.println("<thead class=\"thead-dark\">");
+            out.println("</div>");
+            out.println("</div>");
+            out.println("</div>");
+
+            // tabela
+            out.println("<table class=\"table table-stripped\">");
+            out.println("<thead class=\"table-primary\">");
             out.println("<tr>");
             out.println("<th scope=\"col\">Nome do usuário</th>");
             out.println("<th scope=\"col\">Login de acesso</th>");
@@ -56,7 +102,7 @@ public class PortalServlet extends HttpServlet {
             out.println("</thead>");
             out.println("<tbody></tbody>");
             out.println("</table>");
-            out.println("</div>");
+            out.println("</main>");
             out.println("<script src=\"" + request.getContextPath() + "/js/jquery.min.js\"></script>");
             out.println("<script src=\"" + request.getContextPath() + "/js/portal-scripts.js\"></script>");
             out.println("</body>");
