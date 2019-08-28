@@ -28,23 +28,20 @@ function enviarDados(e) {
     login: $('input[name="login"]').val().toUpperCase(),
     senha: $('input[name="senha"]').val()
   }
-  console.log(dados);
-
-  $.post(apiUrl, dados).then(function(response){
-    $('.alert-success').show()
-    adicionarLinha(response.data)
-    $('input[name="nome"]').val('')
-    $('input[name="login"]').val('')
-    $('input[name="senha"]').val('')
-    $('input[name="nome"]').focus()
-  }).catch(function(response) {
-     var erros = response.responseJSON.messages
-     var alert = $('.alert-danger')
-     alert.show()
-     alert.html("")
-     for (var er of erros) {
-         alert.html(alert.html() + er + "<br/>")
-     }
+  $.post(apiUrl, dados)
+    .then(function(response){
+      adicionarLinha(response.data)
+      $('.alert-success').show()
+      $('input').val('')
+      $('input[name="nome"]').focus()
+    })
+    .catch(function(response) {
+      var alerta = $('.alert-danger')
+      alerta.show()
+      alerta.html('')
+      for (var e of response.responseJSON.messages) {
+        alerta.html(alerta.html() + e + '<br/>')
+      }
   })
 
 }
