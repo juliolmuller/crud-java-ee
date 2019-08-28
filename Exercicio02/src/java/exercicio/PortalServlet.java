@@ -54,6 +54,8 @@ public class PortalServlet extends HttpServlet {
             // Inicio da main
             out.println("<main>");
             out.println("<div class=\"wrapper\">");
+            out.println("<div class=\"alert alert-success w-100 text-center\" role=\"alert\" style=\"display:none\">Usuário Inserido</div>");
+            out.println("<div class=\"alert alert-danger w-100 text-center\" role=\"alert\" style=\"display:none\"></div>");
             // Formulário::início
             
             out.println("<div id=\"form-content\">");
@@ -63,15 +65,15 @@ public class PortalServlet extends HttpServlet {
             out.println("<form>");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"usuario\">Nome do usuário</label>");
-            out.println("<input type=\"text\" class=\"form-control\" name=\"nome\" id=\"usuario\" placeholder=\"Insira um nome\" required autofocus/>");
+            out.println("<input type=\"text\" class=\"form-control\" name=\"nome\" id=\"usuario\" placeholder=\"Insira um nome\" autofocus/>");
             out.println("</div>");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"login\">Nome de login</label>"); 
-            out.println("<input type=\"text\" class=\"form-control\" name=\"login\" id=\"login\" placeholder=\"Insira um login\" required/>");
+            out.println("<input type=\"text\" class=\"form-control\" name=\"login\" id=\"login\" placeholder=\"Insira um login\"/>");
             out.println("</div>");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"senha\">Senha de acesso</label>");
-            out.println("<input type=\"password\" class=\"form-control\" name=\"senha\" id=\"senha\" placeholder=\"Insira uma senha\" required/>");
+            out.println("<input type=\"password\" class=\"form-control\" name=\"senha\" id=\"senha\" placeholder=\"Insira uma senha\"/>");
             out.println("</div>");
             out.println("<button type=\"submit\" id=\"btn-ok\">Cadastrar</button>");
             out.println("</form>");

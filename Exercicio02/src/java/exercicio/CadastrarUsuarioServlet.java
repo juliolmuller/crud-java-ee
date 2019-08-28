@@ -94,13 +94,13 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         // Validar se todos os parâmetros foram enviados
         List<String> erros = new ArrayList<>();
         System.out.print(nome + " => Júlio");
-        if (nome == null) {
+        if (nome.equals("")) {
             erros.add("O campo NOME é obrigatório.");
         }
-        if (login == null) {
+        if (login.equals("")) {
             erros.add("O campo LOGIN é obrigatório.");
         }
-        if (senha == null) {
+        if (senha.equals("")) {
             erros.add("O campo SENHA é obrigatório.");
         }
         
