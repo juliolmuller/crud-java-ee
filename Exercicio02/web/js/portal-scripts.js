@@ -31,7 +31,7 @@ function enviarDados(e) {
   console.log(dados);
 
   $.post(apiUrl, dados).then(function(response){
-    $('.alert-success').show()  
+    $('.alert-success').show()
     adicionarLinha(response.data)
     $('input[name="nome"]').val('')
     $('input[name="login"]').val('')
@@ -46,10 +46,13 @@ function enviarDados(e) {
          alert.html(alert.html() + er + "<br/>")
      }
   })
-  
+
 }
 
 $(document).ready(function() {
   requisitarListaUsuarios()
   $('form').submit(enviarDados)
+  $('input').keypress(function() {
+    $('.alert').hide()
+  })
 })
