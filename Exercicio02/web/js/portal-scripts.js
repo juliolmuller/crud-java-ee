@@ -23,6 +23,8 @@ function requisitarListaUsuarios() {
 
 function enviarDados(e) {
   e.preventDefault()
+  $('.alert-success').hide();
+  $('.alert-danger').hide();
   var dados = {
     nome: $('input[name="nome"]').val(),
     login: $('input[name="login"]').val().toUpperCase(),
@@ -30,8 +32,10 @@ function enviarDados(e) {
   }
   console.log(dados);
 
-  $.post(apiUrl, dados).then(function(response){
-    $('.alert-success').show()  
+  $.post(apiUrl, dados).then(function(response){ 
+    $('.alert-success').fadeTo(2000, 500).slideUp(500, function() {
+        $('.alert-success').slideUp(500)
+    });
     adicionarLinha(response.data)
     $('input[name="nome"]').val('')
     $('input[name="login"]').val('')
@@ -40,11 +44,13 @@ function enviarDados(e) {
   }).catch(function(response) {
      var erros = response.responseJSON.messages
      var alert = $('.alert-danger')
-     alert.show()
      alert.html("")
      for (var er of erros) {
          alert.html(alert.html() + er + "<br/>")
      }
+     alert.fadeTo(2000, 500).slideUp(500, function() {
+        alert.slideUp(500)
+    });
   })
   
 }
