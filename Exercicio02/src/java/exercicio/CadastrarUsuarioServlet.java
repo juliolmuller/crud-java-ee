@@ -19,12 +19,12 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException  {
-        
+
         // Configurar input e output
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        
+
         // Validar se usuário está logado
         if (request.getSession(false) == null) {
             response.sendRedirect(request.getContextPath());
@@ -32,22 +32,22 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         }
         return true;
     }
-    
+
     @Override
     protected void doGet(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar session e configurar entrada e saída de dados
         if (!validateRequest(request, response)) {
             return;
         }
-        
+
         // Recuperar dados de sessão
         HttpSession session = request.getSession(false);
         List<Usuario> listaUsuarios = (ArrayList<Usuario>) session.getAttribute("listaUsuarios");
-        
+
         // Se é a primeira vez que se está acessando a servlet, intanciar lista de usuários padrão
         if (listaUsuarios == null) {
             listaUsuarios = new ArrayList<>();
@@ -66,13 +66,13 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 out.print("\"login\":\"" + listaUsuarios.get(i).getLogin() + "\",");
                 out.print("\"senha\":\"" + listaUsuarios.get(i).getSenha() + "\"");
                 out.print("}");
-                if (i < listaUsuarios.size() - 1) {        
+                if (i < listaUsuarios.size() - 1) {
                     out.print(",");
                 }
             }
             out.print("]");
         }
-        
+
     }
 
     @Override
@@ -80,30 +80,30 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar session e configurar entrada e saída de dados
         if (!validateRequest(request, response)) {
             return;
         }
-        
+
         // Salvar os parâmetros enviados na requisição
         String nome = request.getParameter("nome");
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
-        
+
         // Validar se todos os parâmetros foram enviados
         List<String> erros = new ArrayList<>();
         System.out.print(nome + " => Júlio");
-        if (nome.equals("")) {
+        if (nome == null || nome.equals("")) {
             erros.add("O campo NOME é obrigatório.");
         }
-        if (login.equals("")) {
+        if (login == null || login.equals("")) {
             erros.add("O campo LOGIN é obrigatório.");
         }
-        if (senha.equals("")) {
+        if (senha == null || senha.equals("")) {
             erros.add("O campo SENHA é obrigatório.");
         }
-        
+
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
             if (erros.size() > 0) {
@@ -113,7 +113,7 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 out.print("\"messages\":[");
                 for (int i = 0; i < erros.size(); i++) {
                     out.print("\"" + erros.get(i) + "\"");
-                    if (i < erros.size() - 1) {        
+                    if (i < erros.size() - 1) {
                         out.print(",");
                     }
                 }

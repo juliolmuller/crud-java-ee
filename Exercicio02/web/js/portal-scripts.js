@@ -30,7 +30,6 @@ function enviarDados(e) {
     login: $('input[name="login"]').val().toUpperCase(),
     senha: $('input[name="senha"]').val()
   }
-  console.log(dados);
 
   $.post(apiUrl, dados).then(function(response){ 
     adicionarLinha(response.data)
@@ -52,7 +51,6 @@ function enviarDados(e) {
         alert.slideUp(500)
     });
   })
-  
 }
 
 $(document).ready(function() {
