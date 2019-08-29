@@ -30,7 +30,6 @@ function enviarDados(e) {
     login: $('input[name="login"]').val().toUpperCase(),
     senha: $('input[name="senha"]').val()
   }
-
   $.post(apiUrl, dados).then(function(response){ 
     adicionarLinha(response.data)
     $('input[name="nome"]').val('')
