@@ -1,10 +1,12 @@
-
 package exercicio;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,9 +18,9 @@ import javax.servlet.http.HttpSession;
 public class CadastrarUsuarioServlet extends HttpServlet {
 
     protected boolean validateRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws IOException  {
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
 
         // Configurar input e output
         request.setCharacterEncoding("UTF-8");
@@ -35,8 +37,8 @@ public class CadastrarUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doGet(
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
@@ -46,17 +48,40 @@ public class CadastrarUsuarioServlet extends HttpServlet {
 
         // Recuperar dados de sessão
         HttpSession session = request.getSession(false);
-        List<Usuario> listaUsuarios = (ArrayList<Usuario>) session.getAttribute("listaUsuarios");
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String dbUser = "cassianovidal";
+        String dbSenha = "";
+        String url = "jdbc:postgresql://localhost:5432/web2ex3";
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection(url, dbUser, dbSenha);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-        // Se é a primeira vez que se está acessando a servlet, intanciar lista de usuários padrão
-        if (listaUsuarios == null) {
-            listaUsuarios = new ArrayList<>();
-            listaUsuarios.add(new Usuario("André Antunes", "AANTUNES", "IS2adm"));
-            listaUsuarios.add(new Usuario("Aurélio Matsunaga", "AMATSUNA", "GOisC00l"));
-            listaUsuarios.add(new Usuario("Cassiano Vidal", "CVIDAL", "humble-boy"));
-            listaUsuarios.add(new Usuario("Júlio Müller", "JMULLER", "qwerty123"));
-            listaUsuarios.add(new Usuario("Wesley Caetano", "WCAETANO", "senha1234"));
-            session.setAttribute("listaUsuarios", listaUsuarios);
+        try {
+            st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
+            rs = st.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        List<Usuario> listaUsuarios = new ArrayList<>();
+
+        try {
+            while (rs.next()) {
+                String loginDb = rs.getString("login_usuario");
+                String senhaDb = rs.getString("senha_usuario");
+                String nomeDb = rs.getString("nome_usuario");
+                listaUsuarios.add(new Usuario(nomeDb, loginDb, senhaDb));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         try (PrintWriter out = response.getWriter()) {
             out.print("[");
@@ -77,8 +102,8 @@ public class CadastrarUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doPost(
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
@@ -120,7 +145,49 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 out.print("]}");
             } else {
                 HttpSession session = request.getSession(false);
-                List<Usuario> listaUsuarios = (ArrayList<Usuario>) session.getAttribute("listaUsuarios");
+                Connection con = null;
+                PreparedStatement st = null;
+                ResultSet rs = null;
+                String dbUser = "cassianovidal";
+                String dbSenha = "";
+                String url = "jdbc:postgresql://localhost:5432/web2ex3";
+                try {
+                    Class.forName("org.postgresql.Driver");
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    con = DriverManager.getConnection(url, dbUser, dbSenha);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                try {
+                    st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
+                    rs = st.executeQuery();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                List<Usuario> listaUsuarios = new ArrayList<>();
+                while (rs.next()) {
+                    try {
+                        String loginDb = rs.getString("login_usuario");
+                        String senhaDb = rs.getString("senha_usuario");
+                        String nomeDb = rs.getString("nome_usuario");
+                        listaUsuarios.add(new Usuario(nomeDb, loginDb, senhaDb));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                try {
+                    st = con.prepareStatement("insert into tb_usuario(login_usuario, senha_usuario, nome_usuario) values (?, ?, ?)");
+                    st.setString(1, login);
+                    st.setString(2, senha);
+                    st.setString(3, nome);
+                    st.executeUpdate();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 Usuario usuario = new Usuario(nome, login, senha);
                 listaUsuarios.add(usuario);
                 session.setAttribute("listaUsuarios", listaUsuarios);
@@ -132,6 +199,8 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 out.print("\"senha\":\"" + usuario.getSenha() + "\"");
                 out.print("}}");
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

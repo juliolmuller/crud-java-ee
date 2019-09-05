@@ -3,6 +3,12 @@ package exercicio;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.servlet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,18 +23,28 @@ public class PortalServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+        boolean logado = true;
         // Recuperar sessão ativa ou redirecionar para tela de login
         HttpSession session = request.getSession(false);
         if (session == null) {
-            response.sendRedirect(request.getContextPath());
-            return;
-        }
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        
+           logado = false;
+        } 
+   
         // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            // Se o usuário não estiver logado, redireciona para o servlet Erro
+            if (!logado) {
+                String errMsg = "Ops! Você não está logado";
+                String page = request.getContextPath()+ "/";
+                request.setAttribute("errMsg", errMsg);
+                request.setAttribute("page", page);
+                RequestDispatcher rd = request.getRequestDispatcher("/Erro");
+                rd.forward(request, response);
+                //return;
+            }
+            Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -44,7 +60,7 @@ public class PortalServlet extends HttpServlet {
             out.println("<header>");
             out.println("<div id=\"wrapper-out\">");
             out.println("<div class=\"row justify-content-center fixed-top\" id=\"fake-navbar\">");
-            out.println("<div class=\"col-2\"></div>");
+            out.println("<div class=\"col-2\"><p class=\"text-white text-center\">oi " + usuario.getLogin() + "</p></div>");
             out.println("<div class=\"col-8\">");
             out.println("<h2 class=\"text-center\">Portal - Exercício 2</h2></div>");
             out.println("<div class=\"col-2\">");

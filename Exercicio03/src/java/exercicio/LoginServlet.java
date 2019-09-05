@@ -1,8 +1,11 @@
-
 package exercicio;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,25 +19,62 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(
         HttpServletRequest request,
         HttpServletResponse response
-    ) throws ServletException, IOException {
+    ) throws ServletException, IOException, SQLException {
         
         // Ajustar configuração charset de entrada
         request.setCharacterEncoding("UTF-8");
         
         // Avaliar se haverá login ou se há sessão iniciada
-        boolean logado = false;
+        boolean logado = false, valid = false;
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
         HttpSession session = request.getSession(false);
-        if (login != null && login.equals(senha)) { // Se login é válido, armazenar em sessão
-            logado = true;
-            session = request.getSession();
-            session.setAttribute("usuarioLogado", new Usuario("usuário \"" + login + "\"", login, senha));
-        } else if (login == null && senha == null && session != null) { // Se nenhuma credencial for passada e já há uma sessão, redirecionar para 'Portal'
-            response.sendRedirect(request.getContextPath() + "/portal");
-            return;
+        
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String dbUser = "cassianovidal";
+        String dbSenha = "";
+        String url = "jdbc:postgresql://localhost:5432/web2ex3";
+
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection(url, dbUser, dbSenha);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
+        try {
+            st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
+            rs = st.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        while(rs.next()) {
+            String loginDb = rs.getString("login_usuario");
+            String senhaDb = rs.getString("senha_usuario");
+            String nomeDb = rs.getString("nome_usuario");
+            if (login.equals(loginDb) && senha.equals(senhaDb)) {
+                logado = true;
+                session = request.getSession();
+                session.setAttribute("usuarioLogado", new Usuario(nomeDb, loginDb, senhaDb));
+                valid = true;
+                break;
+            } 
+        }
+        if (!valid){
+            if (login == null && senha == null && session != null) {
+                RequestDispatcher rd = request.getRequestDispatcher("/portal");
+                rd.forward(request, response);
+                return;
+            }
+        }
         // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -56,11 +96,15 @@ public class LoginServlet extends HttpServlet {
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com sucesso!</h3>");
                 out.println("<div id=\"form-footer\">");
                 out.println("<a href=\"" + request.getContextPath() + "/portal\" class=\"underline-hover\">Prosseguir para o Portal</a>");
-            } else {
-                out.println("<img src=\"" + request.getContextPath() + "/img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
-                out.println("<h3 class=\"mb-5 fade-in third text-danger\">Ops! Credenciais inválidas!</h3>");
-                out.println("<div id=\"form-footer\">");
-                out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">Voltar para a tela de login</a>");
+            } else { 
+                String errMsg = "Ops! Credenciais inválidas";
+                String page = request.getContextPath()+ "/";
+                request.setAttribute("errMsg", errMsg);
+                request.setAttribute("page", page);
+                RequestDispatcher rd = request.getRequestDispatcher("/Erro");
+                rd.forward(request, response);
+
+  
             }
             out.println("</div></div></div>");
             out.println("</body>");
@@ -80,7 +124,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -94,7 +142,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
