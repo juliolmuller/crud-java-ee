@@ -1,5 +1,6 @@
-package exercicio;
+package servlets;
 
+import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -13,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "Login", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     protected void processRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws ServletException, IOException, SQLException {
 
         // Ajustar configuração charset de entrada
@@ -35,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         ResultSet rs = null;
         String dbUser = "cassianovidal";
         String dbSenha = "";
-        String url = "jdbc:postgresql://localhost:5432/web2ex3";
+        String url = "jdbc:postgresql://localhost:5432/web2db_web2";
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -56,7 +57,7 @@ public class LoginServlet extends HttpServlet {
             ex.printStackTrace();
         }
 
-        while(rs.next()) {
+        while (rs.next()) {
             String loginDb = rs.getString("login_usuario");
             String senhaDb = rs.getString("senha_usuario");
             String nomeDb = rs.getString("nome_usuario");
@@ -68,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 break;
             }
         }
-        if (!valid){
+        if (!valid) {
             if (login == null && senha == null && session != null) {
                 RequestDispatcher rd = request.getRequestDispatcher("/portal");
                 rd.forward(request, response);
@@ -98,12 +99,11 @@ public class LoginServlet extends HttpServlet {
                 out.println("<a href=\"" + request.getContextPath() + "/portal\" class=\"underline-hover\">Prosseguir para o Portal</a>");
             } else {
                 String errMsg = "Ops! Credenciais inválidas";
-                String page = request.getContextPath()+ "/";
+                String page = request.getContextPath() + "/";
                 request.setAttribute("errMsg", errMsg);
                 request.setAttribute("page", page);
                 RequestDispatcher rd = request.getRequestDispatcher("/Erro");
                 rd.forward(request, response);
-
 
             }
             out.println("</div></div></div>");

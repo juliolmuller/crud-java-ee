@@ -1,13 +1,8 @@
+package servlets;
 
-package exercicio;
-
+import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,18 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "PortalServlet", urlPatterns = {"/portal"})
+@WebServlet(name = "Portal", urlPatterns = {"/portal"})
 public class PortalServlet extends HttpServlet {
 
     protected void processRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws ServletException, IOException {
-        boolean logado = true;
+        
         // Recuperar sessão ativa ou redirecionar para tela de login
+        boolean logado = true;
         HttpSession session = request.getSession(false);
         if (session == null) {
-           logado = false;
+            logado = false;
         }
 
         // Montar resposta ao usuário
@@ -36,7 +32,7 @@ public class PortalServlet extends HttpServlet {
             // Se o usuário não estiver logado, redireciona para o servlet Erro
             if (!logado) {
                 String errMsg = "Ops! Você não está logado";
-                String page = request.getContextPath()+ "/";
+                String page = request.getContextPath() + "/";
                 request.setAttribute("errMsg", errMsg);
                 request.setAttribute("page", page);
                 RequestDispatcher rd = request.getRequestDispatcher("/Erro");

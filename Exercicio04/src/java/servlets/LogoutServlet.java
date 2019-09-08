@@ -1,5 +1,6 @@
-package exercicio;
+package servlets;
 
+import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -7,16 +8,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "Erro", urlPatterns = {"/Erro"})
-public class Erro extends HttpServlet {
+@WebServlet(name = "Logout", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
 
-        String errMsg = (String)request.getAttribute("errMsg");
-        String page = (String)request.getAttribute("page");
+        // Avaliar se há sessões ativas
+        HttpSession session = request.getSession(false);
+        if (session == null) { // Se não houver sessão, redirecionar para a tela de login
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
 
+        // Montar resposta ao usuário
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -32,14 +42,19 @@ public class Erro extends HttpServlet {
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
-            out.println("<img src=\"" + request.getContextPath() + "/img/uncheck-icon.png\" id=\"icon\" alt=\"Ícone de erro\" /></div>");
-            out.println("<h3 class=\"mb-5 fade-in third text-danger\">" + errMsg + "</h3>");
+            out.println("<img src=\"" + request.getContextPath() + "/img/bye-bye.png\""
+                    + " id=\"icon\" class=\"m-5\" alt=\"Ícone de sucesso\" />");
+            out.println("</div>");
+            out.println("<h3 class=\"mb-5 fade-in second\">"
+                    + "Até a próxima, " + usuario.getNome() + "!"
+                    + "</h3>");
             out.println("<div id=\"form-footer\">");
-            out.println("<a href=\"" + page + "/\" class=\"underline-hover\">Voltar para a tela de login</a>");
+            out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">Novo acesso</a>");
             out.println("</div></div></div>");
             out.println("</body>");
             out.println("</html>");
         }
+        session.invalidate();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

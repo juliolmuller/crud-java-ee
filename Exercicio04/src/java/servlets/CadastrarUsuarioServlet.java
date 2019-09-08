@@ -1,5 +1,6 @@
-package exercicio;
+package servlets;
 
+import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "CadastrarUsuarioServlet", urlPatterns = {"/cadastrar-usuario"})
+@WebServlet(name = "CadastrarUsuario", urlPatterns = {"/cadastrar-usuario"})
 public class CadastrarUsuarioServlet extends HttpServlet {
 
     protected boolean validateRequest(
@@ -53,26 +54,16 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         ResultSet rs = null;
         String dbUser = "cassianovidal";
         String dbSenha = "";
-        String url = "jdbc:postgresql://localhost:5432/web2ex3";
+        String url = "jdbc:postgresql://localhost:5432/web2db_web2";
         try {
             Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        try {
             con = DriverManager.getConnection(url, dbUser, dbSenha);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        try {
             st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
             rs = st.executeQuery();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
         List<Usuario> listaUsuarios = new ArrayList<>();
-
         try {
             while (rs.next()) {
                 String loginDb = rs.getString("login_usuario");
@@ -80,8 +71,8 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 String nomeDb = rs.getString("nome_usuario");
                 listaUsuarios.add(new Usuario(nomeDb, loginDb, senhaDb));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, e);
         }
         try (PrintWriter out = response.getWriter()) {
             out.print("[");
@@ -150,7 +141,7 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 ResultSet rs = null;
                 String dbUser = "cassianovidal";
                 String dbSenha = "";
-                String url = "jdbc:postgresql://localhost:5432/web2ex3";
+                String url = "jdbc:postgresql://localhost:5432/web2db_web2";
                 try {
                     Class.forName("org.postgresql.Driver");
                 } catch (ClassNotFoundException ex) {

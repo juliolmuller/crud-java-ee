@@ -1,21 +1,20 @@
-
-package exercicio;
+package model;
 
 public class Usuario {
-    
+
     private String nome;
     private String login;
     private String senha;
-    
+
     public Usuario() {
         this.nome = "";
-        this.login= "";
+        this.login = "";
         this.senha = "";
     }
-    
+
     public Usuario(String nome, String login, String senha) {
         this.nome = nome;
-        this.login= login;
+        this.login = login;
         this.senha = senha;
     }
 
@@ -26,7 +25,7 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     public String getLogin() {
         return this.login;
     }
