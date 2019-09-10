@@ -40,21 +40,11 @@ public class LoginServlet extends HttpServlet {
 
         try {
             Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        try {
             con = DriverManager.getConnection(url, dbUser, dbSenha);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        try {
             st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
             rs = st.executeQuery();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
 
         while (rs.next()) {
