@@ -6,12 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionFactory {
+public abstract class ConnectionFactory {
 
     private static final String PROPS_FILE = "/database/db.properties";
-
-    private ConnectionFactory() {
-    }
 
     public static Connection getConnection() {
         try {
@@ -24,10 +21,10 @@ public class ConnectionFactory {
             String dbUser = props.getProperty("db.user");
             String dbPassword = props.getProperty("db.password");
             return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        } catch (IOException ex) {
-            throw new RuntimeException("Failed to read database properties!");
-        } catch (SQLException ex) {
-            throw new RuntimeException("Connection to database failed!");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read database properties: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection to database failed: " + e.getMessage());
         }
     }
 }
