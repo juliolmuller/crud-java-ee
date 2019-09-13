@@ -12,60 +12,41 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import model.dao.UsuarioDAO;
 
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     protected void processRequest(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws ServletException, IOException, SQLException {
 
         // Ajustar configuração charset de entrada
         request.setCharacterEncoding("UTF-8");
-
-        // Avaliar se haverá login ou se há sessão iniciada
-        boolean logado = false, valid = false;
+        
+        // Salvar credenciais de acesso
+        boolean logado = false;
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
-        HttpSession session = request.getSession(false);
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        String dbUser = "cassianovidal";
-        String dbSenha = "";
-        String url = "jdbc:postgresql://localhost:5432/web2db_web2";
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, dbUser, dbSenha);
-            st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
-            rs = st.executeQuery();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        // Validar se usuário está logado
+        if (login == null && senha == null && request.getSession(false) != null) {
+            RequestDispatcher rd = request.getRequestDispatcher("/portal");
+            rd.forward(request, response);
+            return;
         }
-
-        while (rs.next()) {
-            String loginDb = rs.getString("login_usuario");
-            String senhaDb = rs.getString("senha_usuario");
-            String nomeDb = rs.getString("nome_usuario");
-            if (login.equals(loginDb) && senha.equals(senhaDb)) {
+        
+        // Validar credenciais e efetuar login
+        Usuario usuario;
+        if (login != null && senha != null) {
+            usuario = UsuarioDAO.validar(login, senha);
+            if (usuario == null) {
                 logado = true;
-                session = request.getSession();
-                session.setAttribute("usuarioLogado", new Usuario(nomeDb, loginDb, senhaDb));
-                valid = true;
-                break;
+                request.getSession(false).setAttribute("usuarioLogado", usuario);
             }
         }
-        if (!valid) {
-            if (login == null && senha == null && session != null) {
-                RequestDispatcher rd = request.getRequestDispatcher("/portal");
-                rd.forward(request, response);
-                return;
-            }
-        }
+        
         // Montar resposta ao usuário
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -148,5 +129,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
