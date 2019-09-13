@@ -19,7 +19,8 @@ public abstract class UsuarioDAO {
             List<Usuario> usuarios = new ArrayList<>();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(
-                    "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA + ";");
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA + ";"
+            );
             while (rs.next()) {
                 usuarios.add(new Usuario(
                     rs.getInt("id_usuario"),
@@ -29,6 +30,42 @@ public abstract class UsuarioDAO {
                 ));
             }
             return usuarios;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+    
+    public static boolean existe(String login) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT id_usuario FROM " + TABELA + " WHERE login_usuario = ?;"
+            );
+            stmt.setString(1, login);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+    
+    public static Usuario validar(String login, String senha) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA 
+                + " WHERE login_usuario = ? AND senha_usuario = ?;"
+            );
+            stmt.setString(1, login);
+            stmt.setString(2, senha);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Usuario(
+                    rs.getInt("id_usuario"),
+                    rs.getString("nome_usuario"),
+                    rs.getString("login_usuario"),
+                    rs.getString("senha_usuario")
+                );
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -44,7 +81,9 @@ public abstract class UsuarioDAO {
             stmt.setString(3, usuario.getSenha());
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            return rs.getInt("id_usuario");
+            int id = rs.getInt("id_usuario");
+            usuario.setId(id);
+            return id;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
