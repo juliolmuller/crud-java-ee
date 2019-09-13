@@ -3,43 +3,40 @@ package servlets;
 import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import model.dao.UsuarioDAO;
 
 @WebServlet(name = "CadastrarUsuario", urlPatterns = {"/cadastrar-usuario"})
 public class CadastrarUsuarioServlet extends HttpServlet {
 
     protected boolean validateRequest(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws IOException {
-
-        // Configurar input e output
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
 
         // Validar se usuário está logado
         if (request.getSession(false) == null) {
             response.sendRedirect(request.getContextPath());
             return false;
         }
+        
+        // Configurar input e output
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
         return true;
     }
 
     @Override
     protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
@@ -47,42 +44,18 @@ public class CadastrarUsuarioServlet extends HttpServlet {
             return;
         }
 
-        // Recuperar dados de sessão
-        HttpSession session = request.getSession(false);
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        String dbUser = "cassianovidal";
-        String dbSenha = "";
-        String url = "jdbc:postgresql://localhost:5432/web2db_web2";
-        try {
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, dbUser, dbSenha);
-            st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
-            rs = st.executeQuery();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        List<Usuario> listaUsuarios = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                String loginDb = rs.getString("login_usuario");
-                String senhaDb = rs.getString("senha_usuario");
-                String nomeDb = rs.getString("nome_usuario");
-                listaUsuarios.add(new Usuario(nomeDb, loginDb, senhaDb));
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, e);
-        }
+        // Recuperar dados do banco
+        List<Usuario> usuarios = UsuarioDAO.listar();
         try (PrintWriter out = response.getWriter()) {
             out.print("[");
-            for (int i = 0; i < listaUsuarios.size(); i++) {
+            for (int i = 0; i < usuarios.size(); i++) {
                 out.print("{");
-                out.print("\"nome\":\"" + listaUsuarios.get(i).getNome() + "\",");
-                out.print("\"login\":\"" + listaUsuarios.get(i).getLogin() + "\",");
-                out.print("\"senha\":\"" + listaUsuarios.get(i).getSenha() + "\"");
+                out.print("\"id\":" + usuarios.get(i).getId() + ",");
+                out.print("\"nome\":\"" + usuarios.get(i).getNome() + "\",");
+                out.print("\"login\":\"" + usuarios.get(i).getLogin() + "\",");
+                out.print("\"senha\":\"" + usuarios.get(i).getSenha() + "\"");
                 out.print("}");
-                if (i < listaUsuarios.size() - 1) {
+                if (i < usuarios.size() - 1) {
                     out.print(",");
                 }
             }
@@ -93,8 +66,8 @@ public class CadastrarUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doPost(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
@@ -109,12 +82,13 @@ public class CadastrarUsuarioServlet extends HttpServlet {
 
         // Validar se todos os parâmetros foram enviados
         List<String> erros = new ArrayList<>();
-        System.out.print(nome + " => Júlio");
         if (nome == null || nome.equals("")) {
             erros.add("O campo NOME é obrigatório.");
         }
         if (login == null || login.equals("")) {
             erros.add("O campo LOGIN é obrigatório.");
+        } else if (UsuarioDAO.existe(login)) {
+            erros.add("Já existe um usuário com o login " + login.toUpperCase() + ".");
         }
         if (senha == null || senha.equals("")) {
             erros.add("O campo SENHA é obrigatório.");
@@ -135,63 +109,24 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 }
                 out.print("]}");
             } else {
-                HttpSession session = request.getSession(false);
-                Connection con = null;
-                PreparedStatement st = null;
-                ResultSet rs = null;
-                String dbUser = "cassianovidal";
-                String dbSenha = "";
-                String url = "jdbc:postgresql://localhost:5432/web2db_web2";
-                try {
-                    Class.forName("org.postgresql.Driver");
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                }
-                try {
-                    con = DriverManager.getConnection(url, dbUser, dbSenha);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                try {
-                    st = con.prepareStatement("select login_usuario, senha_usuario, nome_usuario from tb_usuario");
-                    rs = st.executeQuery();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                List<Usuario> listaUsuarios = new ArrayList<>();
-                while (rs.next()) {
-                    try {
-                        String loginDb = rs.getString("login_usuario");
-                        String senhaDb = rs.getString("senha_usuario");
-                        String nomeDb = rs.getString("nome_usuario");
-                        listaUsuarios.add(new Usuario(nomeDb, loginDb, senhaDb));
-                    } catch (SQLException ex) {
-                        Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                try {
-                    st = con.prepareStatement("insert into tb_usuario(login_usuario, senha_usuario, nome_usuario) values (?, ?, ?)");
-                    st.setString(1, login);
-                    st.setString(2, senha);
-                    st.setString(3, nome);
-                    st.executeUpdate();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                Usuario usuario = new Usuario(nome, login, senha);
-                listaUsuarios.add(usuario);
-                session.setAttribute("listaUsuarios", listaUsuarios);
+                
+                // Instanciar usuário e inserir no banco de dados
+                Usuario usuario = new Usuario();
+                usuario.setNome(nome);
+                usuario.setLogin(login);
+                usuario.setSenha(senha);
+                UsuarioDAO.inserir(usuario);
+                
+                // Retornar dados de usuário inserido como JSON
                 out.print("{");
                 out.print("\"status\":\"success\",");
                 out.print("\"data\":{");
+                out.print("\"id\":" + usuario.getId() + ",");
                 out.print("\"nome\":\"" + usuario.getNome() + "\",");
                 out.print("\"login\":\"" + usuario.getLogin() + "\",");
                 out.print("\"senha\":\"" + usuario.getSenha() + "\"");
                 out.print("}}");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastrarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
