@@ -40,7 +40,7 @@ public abstract class UsuarioDAO {
             PreparedStatement stmt = conn.prepareStatement(
                 "SELECT id_usuario FROM " + TABELA + " WHERE login_usuario = ?;"
             );
-            stmt.setString(1, login);
+            stmt.setString(1, login.toUpperCase());
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -54,7 +54,7 @@ public abstract class UsuarioDAO {
                 "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA 
                 + " WHERE login_usuario = ? AND senha_usuario = ?;"
             );
-            stmt.setString(1, login);
+            stmt.setString(1, login.toUpperCase());
             stmt.setString(2, senha);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -77,7 +77,7 @@ public abstract class UsuarioDAO {
                 "INSERT INTO " + TABELA + "(nome, login, senha) VALUES(?, ?, ?) RETURNING id_usuario;"
             );
             stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getLogin());
+            stmt.setString(2, usuario.getLogin().toUpperCase());
             stmt.setString(3, usuario.getSenha());
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -95,7 +95,7 @@ public abstract class UsuarioDAO {
                 "UPDATE " + TABELA + " SET nome_usuario = ?, login_usuario = ?, senha_usuario = ? WHERE id_usuario = ?;"
             );
             stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getLogin());
+            stmt.setString(2, usuario.getLogin().toUpperCase());
             stmt.setString(3, usuario.getSenha());
             stmt.setInt(4, usuario.getId());
             return stmt.executeUpdate() == 1;
