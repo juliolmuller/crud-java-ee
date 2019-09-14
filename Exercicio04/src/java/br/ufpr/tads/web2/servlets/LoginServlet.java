@@ -41,9 +41,9 @@ public class LoginServlet extends HttpServlet {
         Usuario usuario;
         if (login != null && senha != null) {
             usuario = UsuarioDAO.validar(login, senha);
-            if (usuario == null) {
+            if (usuario != null) {
                 logado = true;
-                request.getSession(false).setAttribute("usuarioLogado", usuario);
+                request.getSession().setAttribute("usuarioLogado", usuario);
             }
         }
         
@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
                 String page = request.getContextPath() + "/";
                 request.setAttribute("errMsg", errMsg);
                 request.setAttribute("page", page);
-                RequestDispatcher rd = request.getRequestDispatcher("/Erro");
+                RequestDispatcher rd = request.getRequestDispatcher("/erro");
                 rd.forward(request, response);
 
             }
