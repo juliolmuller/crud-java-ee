@@ -74,7 +74,8 @@ public abstract class UsuarioDAO {
     public static int inserir(Usuario usuario) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO " + TABELA + "(nome, login, senha) VALUES(?, ?, ?) RETURNING id_usuario;"
+                "INSERT INTO " + TABELA + "(nome_usuario, login_usuario, senha_usuario) "
+                + "VALUES(?, ?, ?) RETURNING id_usuario;"
             );
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
