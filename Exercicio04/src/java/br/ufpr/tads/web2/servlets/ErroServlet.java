@@ -1,4 +1,4 @@
-package servlets;
+package br.ufpr.tads.web2.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;

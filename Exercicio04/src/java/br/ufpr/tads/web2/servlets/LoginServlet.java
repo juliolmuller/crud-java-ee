@@ -1,6 +1,6 @@
-package servlets;
+package br.ufpr.tads.web2.servlets;
 
-import model.Usuario;
+import br.ufpr.tads.web2.model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.dao.UsuarioDAO;
+import br.ufpr.tads.web2.model.dao.UsuarioDAO;
 
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {

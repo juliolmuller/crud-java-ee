@@ -1,6 +1,6 @@
-package servlets;
+package br.ufpr.tads.web2.servlets;
 
-import model.Usuario;
+import br.ufpr.tads.web2.model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.*;

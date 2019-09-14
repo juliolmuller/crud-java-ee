@@ -1,4 +1,4 @@
-package model;
+package br.ufpr.tads.web2.model;
 
 public class Usuario {
 
