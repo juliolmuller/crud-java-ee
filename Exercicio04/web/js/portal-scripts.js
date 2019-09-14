@@ -1,4 +1,3 @@
-
 // URL de requisições AJAX
 var apiUrl = 'cadastrar-usuario';
 
@@ -14,9 +13,13 @@ function adicionarLinha(dados) {
 
 // Requisita para "http://localhost/Exercicio04/cadastrar-usuario" a lista de usuários
 function requisitarListaUsuarios() {
-  $.getJSON(apiUrl).then(function(response) {
-    for (var usuario of response) {
-      adicionarLinha(usuario);
+  $.ajax({
+    method: 'GET',
+    url: apiUrl,
+    success: function(response) {
+      for (var usuario of response) {
+        adicionarLinha(usuario);
+      }
     }
   });
 }
@@ -30,8 +33,11 @@ function enviarDados(e) {
     login: $('input[name="login"]').val(),
     senha: $('input[name="senha"]').val()
   };
-  $.post(apiUrl, dados)
-    .then(function(response) {
+  $.ajax({
+    method: 'POST',
+    url: apiUrl,
+    data: dados,
+    success: function(response) {
       adicionarLinha(response.data);
       $('input[name="nome"]').val('');
       $('input[name="login"]').val('');
@@ -42,8 +48,8 @@ function enviarDados(e) {
         .slideUp(500, function() {
           $('.alert-success').slideUp(500);
         });
-    })
-    .catch(function(response) {
+    },
+    error: function(response) {
       var erros = response.responseJSON.messages;
       var alert = $('.alert-danger');
       alert.html('');
@@ -53,7 +59,8 @@ function enviarDados(e) {
       alert.fadeTo(2000, 500).slideUp(500, function() {
         alert.slideUp(500);
       });
-    });
+    }
+  });
 }
 
 $(document).ready(function() {
