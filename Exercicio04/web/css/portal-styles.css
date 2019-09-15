@@ -41,6 +41,7 @@ button {
 
 button:hover {
   background-color: #c4423e;
+  cursor: pointer;
 }
 
 button:active {
@@ -72,8 +73,7 @@ input:focus {
   padding: 20px;
 }
 
-#btn-ok {
-  background-color: #56baed;
+#btn-ok, #btn-cancel {
   border: none;
   color: white;
   text-align: center;
@@ -90,8 +90,20 @@ input:focus {
   transition: all 0.3s ease-in-out;
 }
 
+#btn-ok {
+  background-color: #56baed;
+}
+
 #btn-ok:hover {
-  background-color: #39ace7;
+  background-color: #3999e7;
+}
+
+#btn-cancel {
+  background-color: #a4a9ac;
+}
+
+#btn-cancel:hover {
+  background-color: #606c72;
 }
 
 #btn-ok:active {
