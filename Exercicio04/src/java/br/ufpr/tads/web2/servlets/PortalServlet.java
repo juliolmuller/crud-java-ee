@@ -94,6 +94,7 @@ public class PortalServlet extends HttpServlet {
             out.println("<input type=\"password\" class=\"form-control\" name=\"senha\" id=\"senha\" placeholder=\"Insira uma senha\"/>");
             out.println("</div>");
             out.println("<button type=\"submit\" id=\"btn-ok\">Cadastrar</button>");
+            out.println("<button type=\"reset\" id=\"btn-cancel\">Cancelar</button>");
             out.println("</form>");
             out.println("</div>");
             out.println("</div>");

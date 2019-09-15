@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.model.dao.UsuarioDAO;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/cadastro-usuario"})
 public class CadastroUsuarioServlet extends HttpServlet {
@@ -115,19 +117,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
-            if (erros.size() > 0) {
-                response.setStatus(422);
-                out.print("{");
-                out.print("\"status\":\"error\",");
-                out.print("\"messages\":[");
-                for (int i = 0; i < erros.size(); i++) {
-                    out.print("\"" + erros.get(i) + "\"");
-                    if (i < erros.size() - 1) {
-                        out.print(",");
-                    }
-                }
-                out.print("]}");
-            } else {
+            if (erros.isEmpty()) {
                 
                 // Salvar instância de usuário em banco de dados
                 UsuarioDAO.inserir(usuario);
@@ -138,7 +128,21 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 out.print("\"data\":");
                 out.print(usuarioComoJSON(usuario));
                 out.print("}");
+                return;
             }
+            
+            // Em caso de erro, retornar status 422
+            response.setStatus(422);
+            out.print("{");
+            out.print("\"status\":\"error\",");
+            out.print("\"messages\":[");
+            for (int i = 0; i < erros.size(); i++) {
+                out.print("\"" + erros.get(i) + "\"");
+                if (i < erros.size() - 1) {
+                    out.print(",");
+                }
+            }
+            out.print("]}");
         }
     }
 
@@ -191,7 +195,57 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletRequest request, 
         HttpServletResponse response
     ) throws ServletException, IOException {
-        // TODO
+
+        // Validar session e configurar entrada e saída de dados
+        if (!validarRequest(request, response)) {
+            return;
+        }
+        
+        // Instanciar usuário e atribuir parâmetros de formulpario
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.getParameter("nome"));
+        usuario.setLogin(request.getParameter("login"));
+        usuario.setSenha(request.getParameter("senha"));
+        try {
+            usuario.setId(Integer.parseInt(request.getParameter("id")));
+        } catch (NumberFormatException e) {
+            usuario.setId(0);
+        }
+        
+        // Validar dados enviados
+        List<String> erros = validarDados(usuario, false);
+
+        // Montar resposta ao usuário
+        try (PrintWriter out = response.getWriter()) {
+            if (erros.isEmpty()) {
+                
+                // Atualizar usuário em banco de dados
+                if (UsuarioDAO.atualizar(usuario)) {
+                
+                    // Retornar dados de usuário inserido como JSON
+                    out.print("{");
+                    out.print("\"status\":\"success\",");
+                    out.print("\"data\":");
+                    out.print(usuarioComoJSON(usuario));
+                    out.print("}");
+                    return;
+                }
+                erros.add("ID #" + usuario.getId() + " não eancontrado para atualização.");
+            }
+            
+            // Em caso de erro, retornar status 422
+            response.setStatus(422);
+            out.print("{");
+            out.print("\"status\":\"error\",");
+            out.print("\"messages\":[");
+            for (int i = 0; i < erros.size(); i++) {
+                out.print("\"" + erros.get(i) + "\"");
+                if (i < erros.size() - 1) {
+                    out.print(",");
+                }
+            }
+            out.print("]}");
+        }
     }
 
     @Override
