@@ -18,7 +18,7 @@ public class PortalServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Recuperar sessão ativa ou redirecionar para tela de login
         boolean logado = true;
         HttpSession session = request.getSession(false);
@@ -106,9 +106,11 @@ public class PortalServlet extends HttpServlet {
             out.println("<table class=\"table table-stripped\">");
             out.println("<thead class=\"table-primary\">");
             out.println("<tr>");
+            out.println("<th scope=\"col\">#</th>");
             out.println("<th scope=\"col\">Nome do usuário</th>");
             out.println("<th scope=\"col\">Login de acesso</th>");
             out.println("<th scope=\"col\">Senha</th>");
+            out.println("<th scope=\"col\"></th>");
             out.println("</tr>");
             out.println("</thead>");
             out.println("<tbody></tbody>");

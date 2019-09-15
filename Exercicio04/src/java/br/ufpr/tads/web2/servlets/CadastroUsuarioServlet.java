@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.model.dao.UsuarioDAO;
 
-@WebServlet(name = "CadastrarUsuario", urlPatterns = {"/cadastrar-usuario"})
-public class CadastrarUsuarioServlet extends HttpServlet {
+@WebServlet(name = "CadastroUsuario", urlPatterns = {"/cadastro-usuario"})
+public class CadastroUsuarioServlet extends HttpServlet {
 
-    protected boolean validateRequest(
+    private boolean validateRequest(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
@@ -31,6 +31,40 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         return true;
+    }
+    
+    private String recordToJSON(Usuario usuario) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"id\":").append(usuario.getId()).append(",");
+        sb.append("\"nome\":\"").append(usuario.getNome()).append("\",");
+        sb.append("\"login\":\"").append(usuario.getLogin()).append("\",");
+        sb.append("\"senha\":\"").append(usuario.getSenha()).append("\"");
+        sb.append("}");
+        return sb.toString();
+    }
+    
+    private List<String> validateData(Usuario usuario, boolean novo) {
+        
+        // Instanciar lista para armazenar mensagens de erro
+        List<String> erros = new ArrayList<>();
+
+        // Validar se todos os parâmetros foram enviados
+        if (!novo && usuario.getId() == 0) {
+            erros.add("Nenhum ID informado.");
+        }
+        if (usuario.getNome() == null || usuario.getNome().equals("")) {
+            erros.add("O campo NOME é obrigatório.");
+        }
+        if (usuario.getLogin() == null || usuario.getLogin().equals("")) {
+            erros.add("O campo LOGIN é obrigatório.");
+        } else if (novo && UsuarioDAO.existe(usuario.getLogin())) {
+            erros.add("Já existe um usuário com o login " + usuario.getLogin().toUpperCase() + ".");
+        }
+        if (usuario.getSenha() == null || usuario.getSenha().equals("")) {
+            erros.add("O campo SENHA é obrigatório.");
+        }
+        return erros;
     }
 
     @Override
@@ -49,12 +83,7 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print("[");
             for (int i = 0; i < usuarios.size(); i++) {
-                out.print("{");
-                out.print("\"id\":" + usuarios.get(i).getId() + ",");
-                out.print("\"nome\":\"" + usuarios.get(i).getNome() + "\",");
-                out.print("\"login\":\"" + usuarios.get(i).getLogin() + "\",");
-                out.print("\"senha\":\"" + usuarios.get(i).getSenha() + "\"");
-                out.print("}");
+                out.print(recordToJSON(usuarios.get(i)));
                 if (i < usuarios.size() - 1) {
                     out.print(",");
                 }
@@ -74,25 +103,15 @@ public class CadastrarUsuarioServlet extends HttpServlet {
         if (!validateRequest(request, response)) {
             return;
         }
-
-        // Salvar os parâmetros enviados na requisição
-        String nome = request.getParameter("nome");
-        String login = request.getParameter("login");
-        String senha = request.getParameter("senha");
-
-        // Validar se todos os parâmetros foram enviados
-        List<String> erros = new ArrayList<>();
-        if (nome == null || nome.equals("")) {
-            erros.add("O campo NOME é obrigatório.");
-        }
-        if (login == null || login.equals("")) {
-            erros.add("O campo LOGIN é obrigatório.");
-        } else if (UsuarioDAO.existe(login)) {
-            erros.add("Já existe um usuário com o login " + login.toUpperCase() + ".");
-        }
-        if (senha == null || senha.equals("")) {
-            erros.add("O campo SENHA é obrigatório.");
-        }
+        
+        // Instanciar usuário e atribuir parâmetros de formulpario
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.getParameter("nome"));
+        usuario.setLogin(request.getParameter("login"));
+        usuario.setSenha(request.getParameter("senha"));
+        
+        // Validar dados enviados
+        List<String> erros = validateData(usuario, true);
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
@@ -110,24 +129,33 @@ public class CadastrarUsuarioServlet extends HttpServlet {
                 out.print("]}");
             } else {
                 
-                // Instanciar usuário e inserir no banco de dados
-                Usuario usuario = new Usuario();
-                usuario.setNome(nome);
-                usuario.setLogin(login);
-                usuario.setSenha(senha);
+                // Salvar instância de usuário em banco de dados
                 UsuarioDAO.inserir(usuario);
                 
                 // Retornar dados de usuário inserido como JSON
                 out.print("{");
                 out.print("\"status\":\"success\",");
-                out.print("\"data\":{");
-                out.print("\"id\":" + usuario.getId() + ",");
-                out.print("\"nome\":\"" + usuario.getNome() + "\",");
-                out.print("\"login\":\"" + usuario.getLogin() + "\",");
-                out.print("\"senha\":\"" + usuario.getSenha() + "\"");
-                out.print("}}");
+                out.print("\"data\":");
+                out.print(recordToJSON(usuario));
+                out.print("}");
             }
         }
+    }
+
+    @Override
+    protected void doDelete(
+        HttpServletRequest request, 
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        // TODO
+    }
+
+    @Override
+    protected void doPut(
+        HttpServletRequest request, 
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        // TODO
     }
 
     @Override

@@ -110,3 +110,12 @@ input:focus {
   padding: 0px;
   text-align: center;
 }
+
+.icon {
+  fill: currentColor;
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
+}

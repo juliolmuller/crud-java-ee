@@ -63,6 +63,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
+            System.out.println("Status de login: " + logado);
             if (logado) {
                 out.println("<img src=\"" + request.getContextPath() + "/img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
                 out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com sucesso!</h3>");
