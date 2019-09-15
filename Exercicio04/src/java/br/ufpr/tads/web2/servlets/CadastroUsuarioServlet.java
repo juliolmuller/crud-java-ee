@@ -15,7 +15,7 @@ import br.ufpr.tads.web2.model.dao.UsuarioDAO;
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/cadastro-usuario"})
 public class CadastroUsuarioServlet extends HttpServlet {
 
-    private boolean validateRequest(
+    private boolean validarRequest(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
@@ -33,18 +33,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         return true;
     }
     
-    private String recordToJSON(Usuario usuario) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append("\"id\":").append(usuario.getId()).append(",");
-        sb.append("\"nome\":\"").append(usuario.getNome()).append("\",");
-        sb.append("\"login\":\"").append(usuario.getLogin()).append("\",");
-        sb.append("\"senha\":\"").append(usuario.getSenha()).append("\"");
-        sb.append("}");
-        return sb.toString();
-    }
-    
-    private List<String> validateData(Usuario usuario, boolean novo) {
+    private List<String> validarDados(Usuario usuario, boolean novo) {
         
         // Instanciar lista para armazenar mensagens de erro
         List<String> erros = new ArrayList<>();
@@ -67,6 +56,17 @@ public class CadastroUsuarioServlet extends HttpServlet {
         return erros;
     }
 
+    private String usuarioComoJSON(Usuario usuario) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"id\":").append(usuario.getId()).append(",");
+        sb.append("\"nome\":\"").append(usuario.getNome()).append("\",");
+        sb.append("\"login\":\"").append(usuario.getLogin()).append("\",");
+        sb.append("\"senha\":\"").append(usuario.getSenha()).append("\"");
+        sb.append("}");
+        return sb.toString();
+    }
+    
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -74,7 +74,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
-        if (!validateRequest(request, response)) {
+        if (!validarRequest(request, response)) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print("[");
             for (int i = 0; i < usuarios.size(); i++) {
-                out.print(recordToJSON(usuarios.get(i)));
+                out.print(usuarioComoJSON(usuarios.get(i)));
                 if (i < usuarios.size() - 1) {
                     out.print(",");
                 }
@@ -100,7 +100,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
-        if (!validateRequest(request, response)) {
+        if (!validarRequest(request, response)) {
             return;
         }
         
@@ -111,7 +111,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         usuario.setSenha(request.getParameter("senha"));
         
         // Validar dados enviados
-        List<String> erros = validateData(usuario, true);
+        List<String> erros = validarDados(usuario, true);
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
@@ -136,7 +136,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 out.print("{");
                 out.print("\"status\":\"success\",");
                 out.print("\"data\":");
-                out.print(recordToJSON(usuario));
+                out.print(usuarioComoJSON(usuario));
                 out.print("}");
             }
         }
@@ -147,7 +147,43 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletRequest request, 
         HttpServletResponse response
     ) throws ServletException, IOException {
-        // TODO
+        
+        // Validar session e configurar entrada e saída de dados
+        if (!validarRequest(request, response)) {
+            return;
+        }
+        
+        // Instanciar usuário e atribuir parâmetros de formulpario
+        Usuario usuario = new Usuario();
+        try {
+            usuario.setId(Integer.parseInt(request.getParameter("id")));
+        } catch (NumberFormatException e) {
+            usuario.setId(0);
+        }
+
+        // Montar resposta ao usuário
+        try (PrintWriter out = response.getWriter()) {
+                
+            // Excluir usuário do banco de dados
+            if (UsuarioDAO.excluir(usuario)) {
+
+                // Retornar dados de usuário inserido como JSON
+                out.print("{");
+                out.print("\"status\":\"success\",");
+                out.print("\"data\":");
+                out.print(usuarioComoJSON(usuario));
+                out.print("}");
+                return;
+            }
+                
+            // Em caso de erro, retornar status 422
+            response.setStatus(422);
+            out.print("{");
+            out.print("\"status\":\"error\",");
+            out.print("\"messages\":[");
+            out.print("\"ID #" + usuario.getId() + " não eancontrado para exclusão.\"");
+            out.print("]}");
+        }
     }
 
     @Override

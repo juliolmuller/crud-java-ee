@@ -69,9 +69,7 @@ public class PortalServlet extends HttpServlet {
             out.println("<main>");
             out.println("<div class=\"wrapper\">");
             out.println("<div class=\"container\">");
-            out.println("<div class=\"alert alert-success w-100 text-center\" style=\"display:none\">");
-            out.println("Usuário cadastrado com sucesso");
-            out.println("</div>");
+            out.println("<div class=\"alert alert-success w-100 text-center\" style=\"display:none\"></div>");
             out.println("<div class=\"alert alert-danger w-100 text-center\" style=\"display:none\"></div>");
             out.println("</div>");
 
@@ -82,6 +80,7 @@ public class PortalServlet extends HttpServlet {
 
             // Formulário::campos
             out.println("<form>");
+            out.println("<input type=\"hidden\" name=\"id\" id=\"id\" />");
             out.println("<div class=\"form-group\">");
             out.println("<label for=\"nome\">Nome do usuário</label>");
             out.println("<input type=\"text\" class=\"form-control\" name=\"nome\" id=\"nome\" placeholder=\"Insira um nome\" autofocus/>");
