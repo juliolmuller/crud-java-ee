@@ -1,6 +1,8 @@
-package br.ufpr.tads.web2.model;
+package br.ufpr.tads.web2.beans;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     private int id;
     private String nome;

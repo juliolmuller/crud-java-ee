@@ -1,14 +1,14 @@
-package br.ufpr.tads.web2.model.dao;
+package br.ufpr.tads.web2.dao;
 
 import java.sql.Connection;
-import br.ufpr.tads.web2.database.ConnectionFactory;
+import br.ufpr.tads.web2.dao.ConnectionFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import br.ufpr.tads.web2.model.Usuario;
+import br.ufpr.tads.web2.beans.Usuario;
 
 public abstract class UsuarioDAO {
 

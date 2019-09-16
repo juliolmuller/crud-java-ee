@@ -1,6 +1,6 @@
 package br.ufpr.tads.web2.servlets;
 
-import br.ufpr.tads.web2.model.Usuario;
+import br.ufpr.tads.web2.beans.LoginBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.*;
@@ -19,36 +19,32 @@ public class PortalServlet extends HttpServlet {
             HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Recuperar sessão ativa ou redirecionar para tela de login
-        boolean logado = true;
+        // Validar se usuário está logado
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            logado = false;
+        if (session == null || ((LoginBean) session.getAttribute("login")) == null) {
+            request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
+            request.setAttribute("page", request.getContextPath() + "/");
+            try {
+                RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
+                rd.forward(request, response);
+                return;
+            } catch (ServletException e) {
+                e.getStackTrace();
+            }
         }
 
         // Montar resposta ao usuário
-        response.setContentType("text/html;charset=UTF-8");
+        LoginBean usuario = (LoginBean) session.getAttribute("login");
         try (PrintWriter out = response.getWriter()) {
-            // Se o usuário não estiver logado, redireciona para o servlet Erro
-            if (!logado) {
-                String errMsg = "Ops! Você não está logado";
-                String page = request.getContextPath() + "/";
-                request.setAttribute("errMsg", errMsg);
-                request.setAttribute("page", page);
-                RequestDispatcher rd = request.getRequestDispatcher("/Erro");
-                rd.forward(request, response);
-                //return;
-            }
-            Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-
+            response.setContentType("text/html;charset=UTF-8");
             out.println("<!DOCTYPE html>");
-            out.println("<html>");
+            out.println("<html lang=\"pt-BR\">");
             out.println("<head>");
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 04</title>");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/portal-styles.css\">");
+            out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\" />");
+            out.println("<link rel=\"stylesheet\" href=\"css/portal-styles.css\" />");
             out.println("</head>");
             out.println("<body>");
 
@@ -56,9 +52,11 @@ public class PortalServlet extends HttpServlet {
             out.println("<header>");
             out.println("<div id=\"wrapper-out\">");
             out.println("<div class=\"row justify-content-center fixed-top\" id=\"fake-navbar\">");
-            out.println("<div class=\"col-2\"><p class=\"text-white text-center\">oi " + usuario.getLogin() + "</p></div>");
+            out.println("<div class=\"col-2\">");
+            out.println("<p class=\"text-white text-center\">oi " + usuario.getLoginUsuario() + "</p>");
+            out.println("</div>");
             out.println("<div class=\"col-8\">");
-            out.println("<h2 class=\"text-center\">Portal - Exercício 2</h2></div>");
+            out.println("<h2 class=\"text-center\">Portal - Exercício 04</h2></div>");
             out.println("<div class=\"col-2\">");
             out.println("<a href=\"" + request.getContextPath() + "/logout\">"
                     + "<button class=\"btn-danger rounded\">Logout</button></a></div>");
@@ -118,8 +116,8 @@ public class PortalServlet extends HttpServlet {
             out.println("</div>");
             out.println("</div>");
             out.println("</main>");
-            out.println("<script src=\"" + request.getContextPath() + "/js/jquery.min.js\"></script>");
-            out.println("<script src=\"" + request.getContextPath() + "/js/portal-scripts.js\"></script>");
+            out.println("<script src=\"js/jquery.min.js\"></script>");
+            out.println("<script src=\"js/portal-scripts.js\"></script>");
             out.println("</body>");
             out.println("</html>");
         }

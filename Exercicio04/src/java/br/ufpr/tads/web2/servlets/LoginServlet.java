@@ -1,8 +1,8 @@
 package br.ufpr.tads.web2.servlets;
 
-import br.ufpr.tads.web2.model.Usuario;
+import br.ufpr.tads.web2.beans.LoginBean;
+import br.ufpr.tads.web2.beans.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import br.ufpr.tads.web2.model.dao.UsuarioDAO;
+import br.ufpr.tads.web2.dao.UsuarioDAO;
 
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -25,15 +25,13 @@ public class LoginServlet extends HttpServlet {
         // Ajustar configuração charset de entrada
         request.setCharacterEncoding("UTF-8");
         
-        // Salvar credenciais de acesso
-        boolean logado = false;
+        // Capturar credenciais de acesso
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
 
         // Validar se usuário está logado
         if (login == null && senha == null && request.getSession(false) != null) {
-            RequestDispatcher rd = request.getRequestDispatcher("/portal");
-            rd.forward(request, response);
+            response.sendRedirect("portal");
             return;
         }
         
@@ -42,46 +40,21 @@ public class LoginServlet extends HttpServlet {
         if (login != null && senha != null) {
             usuario = UsuarioDAO.validar(login, senha);
             if (usuario != null) {
-                logado = true;
-                request.getSession().setAttribute("usuarioLogado", usuario);
+                LoginBean bean = new LoginBean();
+                bean.setIdUsuario(usuario.getId());
+                bean.setLoginUsuario(usuario.getLogin());
+                bean.setNomeUsuario(usuario.getNome());
+                request.getSession().setAttribute("login", bean);
+                response.sendRedirect("portal");
+                return;
             }
         }
         
-        // Montar resposta ao usuário
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\" />");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-            out.println("<title>Web 2 :: Exercício 04</title>");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/login-styles.css\" />");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<div class=\"wrapper fade-in-down\">");
-            out.println("<div id=\"form-content\">");
-            out.println("<div class=\"fade-in first\">");
-            System.out.println("Status de login: " + logado);
-            if (logado) {
-                out.println("<img src=\"" + request.getContextPath() + "/img/check-icon.png\" id=\"icon\" alt=\"Ícone de sucesso\" /></div>");
-                out.println("<h3 class=\"mb-5 fade-in second text-success\">Login realizado com sucesso!</h3>");
-                out.println("<div id=\"form-footer\">");
-                out.println("<a href=\"" + request.getContextPath() + "/portal\" class=\"underline-hover\">Prosseguir para o Portal</a>");
-            } else {
-                String errMsg = "Ops! Credenciais inválidas";
-                String page = request.getContextPath() + "/";
-                request.setAttribute("errMsg", errMsg);
-                request.setAttribute("page", page);
-                RequestDispatcher rd = request.getRequestDispatcher("/erro");
-                rd.forward(request, response);
-
-            }
-            out.println("</div></div></div>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        // Em caso de erro, exibir view de erro
+        request.setAttribute("msg", "Ops! Credenciais inválidas");
+        request.setAttribute("page", request.getContextPath() + "/");
+        RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

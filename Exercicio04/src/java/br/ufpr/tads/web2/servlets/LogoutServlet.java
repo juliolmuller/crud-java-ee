@@ -1,6 +1,7 @@
 package br.ufpr.tads.web2.servlets;
 
-import br.ufpr.tads.web2.model.Usuario;
+import br.ufpr.tads.web2.beans.LoginBean;
+import br.ufpr.tads.web2.beans.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,33 +21,33 @@ public class LogoutServlet extends HttpServlet {
 
         // Avaliar se há sessões ativas
         HttpSession session = request.getSession(false);
-        if (session == null) { // Se não houver sessão, redirecionar para a tela de login
+        if (session == null || ((LoginBean) session.getAttribute("login")) == null) {
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }
 
         // Montar resposta ao usuário
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        response.setContentType("text/html;charset=UTF-8");
+        LoginBean usuario = (LoginBean) session.getAttribute("login");
         try (PrintWriter out = response.getWriter()) {
+            response.setContentType("text/html;charset=UTF-8");
             out.println("<!DOCTYPE html>");
-            out.println("<html>");
+            out.println("<html lang=\"pt-BR\">");
             out.println("<head>");
             out.println("<meta charset=\"UTF-8\" />");
             out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             out.println("<title>Web 2 :: Exercício 04</title>");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/bootstrap.min.css\">");
-            out.println("<link rel=\"stylesheet\" href=\"" + request.getContextPath() + "/css/login-styles.css\" />");
+            out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\" />");
+            out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
             out.println("</head>");
             out.println("<body>");
             out.println("<div class=\"wrapper fade-in-down\">");
             out.println("<div id=\"form-content\">");
             out.println("<div class=\"fade-in first\">");
-            out.println("<img src=\"" + request.getContextPath() + "/img/bye-bye.png\""
+            out.println("<img src=\"img/bye-bye.png\""
                     + " id=\"icon\" class=\"m-5\" alt=\"Ícone de sucesso\" />");
             out.println("</div>");
             out.println("<h3 class=\"mb-5 fade-in second\">"
-                    + "Até a próxima, " + usuario.getNome() + "!"
+                    + "Até a próxima, " + usuario.getNomeUsuario() + "!"
                     + "</h3>");
             out.println("<div id=\"form-footer\">");
             out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">Novo acesso</a>");

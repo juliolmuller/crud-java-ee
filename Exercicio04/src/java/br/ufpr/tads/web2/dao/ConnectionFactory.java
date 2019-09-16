@@ -1,4 +1,4 @@
-package br.ufpr.tads.web2.database;
+package br.ufpr.tads.web2.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public abstract class ConnectionFactory {
 
-    private static final String PROPS_FILE = "/br/ufpr/tads/web2/database/db.properties";
+    private static final String PROPS_FILE = "/br/ufpr/tads/web2/dao/db.properties";
 
     public static Connection getConnection() {
         try {
