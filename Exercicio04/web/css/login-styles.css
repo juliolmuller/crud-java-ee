@@ -29,6 +29,19 @@ h2 {
   color: #cccccc;
 }
 
+#fake-navbar {
+  background: #56baed;
+  margin-bottom: 10px;
+  padding: 10px;
+  height: 8%;
+}
+
+#wrapper-out {
+  width: 100%;
+  margin-bottom: 10px;
+  min-height: 60px;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
@@ -60,15 +73,6 @@ h2 {
   text-align: center;
   -webkit-border-radius: 0 0 10px 10px;
   border-radius: 0 0 10px 10px;
-}
-
-h2.inactive {
-  color: #cccccc;
-}
-
-h2.active {
-  color: #0d0d0d;
-  border-bottom: 2px solid #5fbae9;
 }
 
 button {
