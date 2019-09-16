@@ -24,17 +24,17 @@ public class LoginServlet extends HttpServlet {
 
         // Ajustar configuração charset de entrada
         request.setCharacterEncoding("UTF-8");
-        
+
         // Capturar credenciais de acesso
         String login = request.getParameter("login");
         String senha = request.getParameter("senha");
 
         // Validar se usuário está logado
         if (login == null && senha == null && request.getSession(false) != null) {
-            response.sendRedirect("portal");
+            response.sendRedirect("portal.jsp");
             return;
         }
-        
+
         // Validar credenciais e efetuar login
         Usuario usuario;
         if (login != null && senha != null) {
@@ -45,11 +45,11 @@ public class LoginServlet extends HttpServlet {
                 bean.setLoginUsuario(usuario.getLogin());
                 bean.setNomeUsuario(usuario.getNome());
                 request.getSession().setAttribute("login", bean);
-                response.sendRedirect("portal");
+                response.sendRedirect("portal.jsp");
                 return;
             }
         }
-        
+
         // Em caso de erro, exibir view de erro
         request.setAttribute("msg", "Ops! Credenciais inválidas");
         request.setAttribute("page", request.getContextPath() + "/");
