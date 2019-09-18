@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
-import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/cadastro-usuario"})
 public class CadastroUsuarioServlet extends HttpServlet {
@@ -22,7 +22,8 @@ public class CadastroUsuarioServlet extends HttpServlet {
     ) throws IOException {
 
         // Validar se usuário está logado
-        if (request.getSession(false) != null) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("login") != null) {
             // Configurar input e output
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
