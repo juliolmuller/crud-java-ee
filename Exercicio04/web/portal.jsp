@@ -2,12 +2,11 @@
 
 <%
   // Validar se usuário está logado
-  if (session == null || ((LoginBean) session.getAttribute("login")) == null) {
+  if (session == null || session.getAttribute("login") == null) {
       request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
       request.setAttribute("page", request.getContextPath() + "/");
       try {
-          RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
-          rd.forward(request, response);
+          request.getRequestDispatcher("erro.jsp").forward(request, response);
           return;
       } catch (ServletException e) {
           e.getStackTrace();

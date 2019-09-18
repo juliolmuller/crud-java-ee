@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,8 +52,7 @@ public class LoginServlet extends HttpServlet {
         // Em caso de erro, exibir view de erro
         request.setAttribute("msg", "Ops! Credenciais inválidas");
         request.setAttribute("page", request.getContextPath() + "/");
-        RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
-        rd.forward(request, response);
+        request.getRequestDispatcher("erro.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,7 +1,6 @@
 package br.ufpr.tads.web2.servlets;
 
 import br.ufpr.tads.web2.beans.LoginBean;
-import br.ufpr.tads.web2.beans.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ public class LogoutServlet extends HttpServlet {
 
         // Avaliar se há sessões ativas
         HttpSession session = request.getSession(false);
-        if (session == null || ((LoginBean) session.getAttribute("login")) == null) {
+        if (session == null || session.getAttribute("login") == null) {
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }

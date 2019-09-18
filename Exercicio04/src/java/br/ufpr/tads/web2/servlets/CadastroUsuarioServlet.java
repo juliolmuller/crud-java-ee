@@ -30,21 +30,20 @@ public class CadastroUsuarioServlet extends HttpServlet {
             response.setContentType("application/json");
             return true;
         }
-        
+
         // Redirecionar para mensagem de erro
         request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
         request.setAttribute("page", request.getContextPath() + "/");
         try {
-            RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
-            rd.forward(request, response);
+            request.getRequestDispatcher("erro.jsp").forward(request, response);
         } catch (ServletException e) {
             e.getStackTrace();
         }
         return false;
     }
-    
+
     private List<String> validarDados(Usuario usuario, boolean novo) {
-        
+
         // Instanciar lista para armazenar mensagens de erro
         List<String> erros = new ArrayList<>();
 
@@ -76,7 +75,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         sb.append("}");
         return sb.toString();
     }
-    
+
     @Override
     protected void doGet(
         HttpServletRequest request,
@@ -109,23 +108,23 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         // Validar session e configurar entrada e saída de dados
         if (!validarRequest(request, response)) return;
-        
+
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
         usuario.setNome(request.getParameter("nome"));
         usuario.setLogin(request.getParameter("login"));
         usuario.setSenha(request.getParameter("senha"));
-        
+
         // Validar dados enviados
         List<String> erros = validarDados(usuario, true);
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
-                
+
                 // Salvar instância de usuário em banco de dados
                 UsuarioDAO.inserir(usuario);
-                
+
                 // Retornar dados de usuário inserido como JSON
                 out.print("{");
                 out.print("\"status\":\"success\",");
@@ -134,7 +133,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 out.print("}");
                 return;
             }
-            
+
             // Em caso de erro, retornar status 422
             response.setStatus(422);
             out.print("{");
@@ -152,13 +151,13 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doDelete(
-        HttpServletRequest request, 
+        HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar session e configurar entrada e saída de dados
         if (!validarRequest(request, response)) return;
-        
+
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
         try {
@@ -169,7 +168,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
-                
+
             // Excluir usuário do banco de dados
             if (UsuarioDAO.excluir(usuario)) {
 
@@ -181,7 +180,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 out.print("}");
                 return;
             }
-                
+
             // Em caso de erro, retornar status 422
             response.setStatus(422);
             out.print("{");
@@ -194,13 +193,13 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
     @Override
     protected void doPut(
-        HttpServletRequest request, 
+        HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
 
         // Validar session e configurar entrada e saída de dados
         if (!validarRequest(request, response)) return;
-        
+
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
         usuario.setNome(request.getParameter("nome"));
@@ -211,17 +210,17 @@ public class CadastroUsuarioServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             usuario.setId(0);
         }
-        
+
         // Validar dados enviados
         List<String> erros = validarDados(usuario, false);
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
-                
+
                 // Atualizar usuário em banco de dados
                 if (UsuarioDAO.atualizar(usuario)) {
-                
+
                     // Retornar dados de usuário inserido como JSON
                     out.print("{");
                     out.print("\"status\":\"success\",");
@@ -232,7 +231,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 }
                 erros.add("ID #" + usuario.getId() + " não eancontrado para atualização.");
             }
-            
+
             // Em caso de erro, retornar status 422
             response.setStatus(422);
             out.print("{");

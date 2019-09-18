@@ -13,7 +13,7 @@ import br.ufpr.tads.web2.beans.Usuario;
 public abstract class UsuarioDAO {
 
     private static final String TABELA = "tb_usuario";
-    
+
     public static List<Usuario> listar() {
         try (Connection conn = ConnectionFactory.getConnection()) {
             List<Usuario> usuarios = new ArrayList<>();
@@ -34,7 +34,7 @@ public abstract class UsuarioDAO {
             throw new RuntimeException(e.getMessage());
         }
     }
-    
+
     public static boolean existe(String login) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
@@ -47,11 +47,11 @@ public abstract class UsuarioDAO {
             throw new RuntimeException(e.getMessage());
         }
     }
-    
+
     public static Usuario validar(String login, String senha) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA 
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA
                 + " WHERE login_usuario = ? AND senha_usuario = ?;"
             );
             stmt.setString(1, login.toUpperCase());
