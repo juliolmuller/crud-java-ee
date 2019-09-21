@@ -19,8 +19,8 @@ public class LogoutServlet extends HttpServlet {
     ) throws ServletException, IOException {
 
         // Avaliar se há sessões ativas
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("login") == null) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("login") == null) {
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }

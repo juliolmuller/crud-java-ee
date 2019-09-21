@@ -2,7 +2,7 @@
 
 <%
   // Validar se usuário está logado
-  if (session == null || session.getAttribute("login") == null) {
+  if (session.getAttribute("login") == null) {
       request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
       request.setAttribute("page", request.getContextPath() + "/");
       try {
