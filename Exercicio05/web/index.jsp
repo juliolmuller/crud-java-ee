@@ -1,5 +1,5 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -15,7 +15,7 @@
 
     <div class="wrapper fade-in-down">
       <div id="form-content">
-        <div class="my-3 fade-in first">
+        <div class="my-3 fade-in then">
           <img src="img/03ads.png" id="icon" alt="Ícone do sistema" />
         </div>
         <% if (request.getAttribute("msg") != null) { %>
@@ -27,7 +27,7 @@
           <input
             type="text"
             id="user"
-            class="fade-in second"
+            class="fade-in then"
             placeholder="Nome do Usuário"
             name="login"
             required autofocus
@@ -35,18 +35,18 @@
           <input
             type="password"
             id="password"
-            class="fade-in third"
+            class="fade-in then"
             placeholder="Senha de Acesso"
             name="senha"
             required
           />
           <button
             type="submit"
-            class="fade-in fourth"
+            class="fade-in then"
           >Entrar</button>
         </form>
-        <div id="form-footer">
-          Em caso de problemas, contate-nos:
+        <div id="form-footer fade-in then">
+          Em caso de problemas, contate-nos:<br>
           <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
             ${configuracao.emailAdmin}
           </a>

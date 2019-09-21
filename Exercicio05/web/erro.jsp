@@ -21,16 +21,16 @@
           <%= request.getAttribute("msg") %>
         </h3>
         <div id="form-footer">
-            <a href="<%= request.getAttribute("page") %>" class="underline-hover">
-              Acessar o formulário de login
-            </a>
+          <a href="<%= request.getAttribute("page") %>" class="underline-hover">
+            Acessar o formulário de login
+          </a>
         </div>
         <div id="form-footer">
-            Em caso de problemas, contate-nos:
-            <jsp:useBean id="configuracao" class="br.ufpr.tads.web2.beans.ConfigBean" scope="application" />
-            <a href="mailto:<jsp:getProperty name="configuracao" property="emailAdmin" />" class="underline-hover">
-              <jsp:getProperty name="configuracao" property="emailAdmin" />
-            </a>
+          Em caso de problemas, contate-nos:
+          <jsp:useBean id="configuracao" class="br.ufpr.tads.web2.beans.ConfigBean" scope="application" />
+          <a href="mailto:<jsp:getProperty name="configuracao" property="emailAdmin" />" class="underline-hover">
+            <jsp:getProperty name="configuracao" property="emailAdmin" />
+          </a>
         </div>
       </div>
     </div>
