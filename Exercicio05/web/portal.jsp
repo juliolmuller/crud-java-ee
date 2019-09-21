@@ -1,20 +1,12 @@
-<%@page import="br.ufpr.tads.web2.beans.LoginBean" %>
-
 <%
-  // Validar se usuário está logado
-  if (session.getAttribute("login") == null) {
-      request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
-      request.setAttribute("page", request.getContextPath() + "/");
-      try {
-          request.getRequestDispatcher("erro.jsp").forward(request, response);
-          return;
-      } catch (ServletException e) {
-          e.getStackTrace();
-      }
-  }
-
-  // Recuperar dados de sessão
-  LoginBean usuario = (LoginBean) session.getAttribute("login");
+    // Validar se usuário está logado
+    if (session.getAttribute("login") == null) {
+        try {
+            request.setAttribute("msg", "Faça-me o favor de logar antes!");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
+        } catch (ServletException e) {}
+    }
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
@@ -28,50 +20,42 @@
       Web 2 :: Exercício 05
     </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/login-styles.css" />
+    <link rel="stylesheet" href="css/window-down.css" />
   </head>
   <body>
 
     <%-- Cabeçalho da página --%>
-    <header>
-      <div id="wrapper-out fade-in-down">
-        <div class="fixed-top" id="fake-navbar">
-          <div class="container">
-            <div class="d-flex justify-content-between">
-              <div >
-                <h2 class="text-white mt-3">
-                  Portal - Exercício 05
-                </h2>
-              </div>
-              <div>
-                <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger rounded">
-                  Logout
-                </a>
-              </div>
-            </div>
-          </div>
+    <header class="container-fluid fade-in">
+      <div id="fake-navbar" class="fixed-top fade-in.fourth" >
+        <a href="<%= request.getContextPath() %>/logout" class="float-right btn btn-danger rounded">
+          Sair
+        </a>
+        <div class="container text-center">
+          <h1 class="text-white h3 align-bottom my-2">
+            Portal - Exercício 05
+          </h1>
         </div>
       </div>
     </header>
 
     <%-- Janela de notificação --%>
-    <div class="wrapper fade-in-down">
+    <div class="wrapper fade-in-down ml-auto">
       <div id="form-content">
-        <div class="fade-in first">
-          <img src="img/check-icon.png" id="icon" alt="Ícone de erro" />
+        <div class="my-5 fade-in then">
+          <img src="img/avatar.svg" id="icon" alt="Avatar do usuário" />
         </div>
-        <h3 class="mb-5 fade-in third text-success">
-          Bem-vindo, <%= usuario.getNomeUsuario() %>
+        <h3 class="mb-5 fade-in then text-primary">
+          Bem-vindo, ${login.nomeUsuario}!
         </h3>
-        <a href="inserir.jsp" class="underline-hover mb-5">
-          Gerenciador de Usuários &gt;&gt;&gt;
-        </a>
-        <div id="form-footer">
-            Em caso de problemas, contate-nos:
-            <jsp:useBean id="configuracao" class="br.ufpr.tads.web2.beans.ConfigBean" scope="application" />
-            <a href="mailto:<jsp:getProperty name="configuracao" property="emailAdmin" />" class="underline-hover">
-              <jsp:getProperty name="configuracao" property="emailAdmin" />
-            </a>
+        <div class="list-group list-group-flush fade-in then ">
+          <a href="usuarios.jsp" class="list-group-item underline-hover">Gerenciar Usuários</a>
+          <a href="clientes" class="list-group-item underline-hover">Gerenciar Clientes</a>
+        </div>
+        <div id="form-footer fade-in then">
+          Em caso de problemas, contate-nos:<br>
+          <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
+            ${configuracao.emailAdmin}
+          </a>
         </div>
       </div>
     </div>

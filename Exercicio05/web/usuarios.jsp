@@ -1,5 +1,3 @@
-<%@page import="br.ufpr.tads.web2.beans.LoginBean" %>
-
 <%
   // Validar se usuário está logado
   if (session.getAttribute("login") == null) {
@@ -12,9 +10,6 @@
           e.getStackTrace();
       }
   }
-
-  // Recuperar dados de sessão
-  LoginBean usuario = (LoginBean) session.getAttribute("login");
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>

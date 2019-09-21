@@ -4,7 +4,7 @@
 }
 
 html {
-  background-color: #56baed;
+  background-color: #4792d4;
 }
 
 body {
@@ -19,27 +19,10 @@ a {
   font-weight: 400;
 }
 
-h2 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display: inline-block;
-  margin: 40px 8px 10px 8px;
-  color: #cccccc;
-}
-
 #fake-navbar {
   background: #56baed;
-  margin-bottom: 10px;
+  margin-bottom: 2rem;
   padding: 10px;
-  height: 8%;
-}
-
-#wrapper-out {
-  width: 100%;
-  margin-bottom: 10px;
-  min-height: 60px;
 }
 
 .wrapper {
@@ -222,25 +205,7 @@ input:placeholder {
   animation-duration: 1s;
 }
 
-.fade-in.first {
-  -webkit-animation-delay: 0s;
-  -moz-animation-delay: 0s;
-  animation-delay: 0s;
-}
-
-.fade-in.second {
-  -webkit-animation-delay: 0s;
-  -moz-animation-delay: 0s;
-  animation-delay: 0s;
-}
-
-.fade-in.third {
-  -webkit-animation-delay: 0s;
-  -moz-animation-delay: 0s;
-  animation-delay: 0s;
-}
-
-.fade-in.fourth {
+.fade-in.then {
   -webkit-animation-delay: 0s;
   -moz-animation-delay: 0s;
   animation-delay: 0s;
