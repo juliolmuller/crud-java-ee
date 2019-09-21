@@ -1,0 +1,133 @@
+
+html {
+  background-color: #fff;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+}
+
+#fake-navbar {
+  background: #56baed;
+  margin-bottom: 10px;
+  padding: 10px;
+  height: 8%;
+}
+
+a {
+  color: #92badd;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 24px;
+  color: #fcfcfc;
+}
+
+button {
+  text-align: center;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(255, 99, 71, 0.4);
+  box-shadow: 0 10px 30px 0 rgba(255, 99, 71, 0.4);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #c4423e;
+  cursor: pointer;
+}
+
+button:active {
+  -moz-transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
+#wrapper-out {
+  width: 100%;
+  margin-bottom: 10px;
+  min-height: 60px;
+}
+
+input:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #5fbae9;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+#btn-ok, #btn-cancel {
+  border: none;
+  color: white;
+  text-align: center;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 10px;
+  padding: 10px 20px 10px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+#btn-ok {
+  background-color: #56baed;
+}
+
+#btn-ok:hover {
+  background-color: #3999e7;
+}
+
+#btn-cancel {
+  background-color: #a4a9ac;
+}
+
+#btn-cancel:hover {
+  background-color: #606c72;
+}
+
+#btn-ok:active {
+  -moz-transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
+#form-content {
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  text-align: center;
+}
+
+.icon {
+  fill: currentColor;
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
+}
