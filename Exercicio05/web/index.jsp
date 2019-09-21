@@ -1,5 +1,6 @@
-<!DOCTYPE html>
 
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -8,15 +9,20 @@
       Web 2 :: Exercício 05
     </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/login-styles.css" />
+    <link rel="stylesheet" href="css/window-down.css" />
   </head>
   <body>
 
     <div class="wrapper fade-in-down">
       <div id="form-content">
-        <div class="fade-in first">
+        <div class="my-3 fade-in first">
           <img src="img/03ads.png" id="icon" alt="Ícone do sistema" />
         </div>
+        <% if (request.getAttribute("msg") != null) { %>
+          <div class="alert alert-danger border-danger">
+            ${msg}
+          </div>
+        <% } %>
         <form action="login" method="POST">
           <input
             type="text"
@@ -40,15 +46,12 @@
           >Entrar</button>
         </form>
         <div id="form-footer">
-          <a href="#" class="underline-hover" onclick="forgotPassword(event)">
-            Esqueceu a senha?
+          Em caso de problemas, contate-nos:
+          <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
+            ${configuracao.emailAdmin}
           </a>
         </div>
       </div>
     </div>
-
-    <!-- <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
-    <script src="js/login-scripts.js"></script>
   </body>
 </html>

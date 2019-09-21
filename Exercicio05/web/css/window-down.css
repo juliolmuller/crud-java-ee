@@ -109,17 +109,23 @@ button:active {
   transform: scale(0.95);
 }
 
+.alert {
+  display: inline-block;
+  width: 85%;
+  text-align: center;
+}
+
 input {
+  display: inline-block;
+  width: 85%;
   background-color: #f6f6f6;
   border: none;
+  margin: 5px;
   color: #0d0d0d;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 16px;
-  margin: 5px;
-  width: 85%;
   border: 2px solid #f6f6f6;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
