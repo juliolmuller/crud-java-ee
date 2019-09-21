@@ -50,9 +50,8 @@ public class LoginServlet extends HttpServlet {
         }
 
         // Em caso de erro, exibir view de erro
-        request.setAttribute("msg", "Ops! Credenciais inválidas");
-        request.setAttribute("page", request.getContextPath() + "/");
-        request.getRequestDispatcher("erro.jsp").forward(request, response);
+        request.setAttribute("msg", "Ops! Você errou alguma coisa!");
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
