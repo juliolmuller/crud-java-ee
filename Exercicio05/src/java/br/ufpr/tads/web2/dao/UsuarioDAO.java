@@ -22,12 +22,12 @@ public abstract class UsuarioDAO {
                 "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA + ";"
             );
             while (rs.next()) {
-                usuarios.add(new Usuario(
-                    rs.getInt("id_usuario"),
-                    rs.getString("nome_usuario"),
-                    rs.getString("login_usuario"),
-                    rs.getString("senha_usuario")
-                ));
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome_usuario"));
+                usuario.setLogin(rs.getString("login_usuario"));
+                usuario.setSenha(rs.getString("senha_usuario"));
+                usuarios.add(usuario);
             }
             return usuarios;
         } catch (SQLException e) {
@@ -58,12 +58,12 @@ public abstract class UsuarioDAO {
             stmt.setString(2, senha);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Usuario(
-                    rs.getInt("id_usuario"),
-                    rs.getString("nome_usuario"),
-                    rs.getString("login_usuario"),
-                    rs.getString("senha_usuario")
-                );
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome_usuario"));
+                usuario.setLogin(rs.getString("login_usuario"));
+                usuario.setSenha(rs.getString("senha_usuario"));
+                return usuario;
             }
             return null;
         } catch (SQLException e) {
