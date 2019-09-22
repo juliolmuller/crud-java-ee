@@ -51,7 +51,7 @@
           <a href="usuarios.jsp" class="list-group-item underline-hover">Gerenciar Usuários</a>
           <a href="clientes" class="list-group-item underline-hover">Gerenciar Clientes</a>
         </div>
-        <div id="form-footer fade-in then">
+        <div id="form-footer fade-in then" style="margin-top:3rem;">
           Em caso de problemas, contate-nos:<br>
           <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
             ${configuracao.emailAdmin}
