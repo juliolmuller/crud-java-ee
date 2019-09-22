@@ -234,3 +234,7 @@ input:placeholder {
 #icon {
   width: 60%;
 }
+
+.system-icon {
+  height: 3rem;
+}
