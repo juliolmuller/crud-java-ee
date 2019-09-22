@@ -29,14 +29,8 @@ public class CadastroUsuarioServlet extends HttpServlet {
             return true;
         }
 
-        // Redirecionar para mensagem de erro
-        request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
-        request.setAttribute("page", request.getContextPath() + "/");
-        try {
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
-        } catch (ServletException e) {
-            e.getStackTrace();
-        }
+        // Setar status 403 e retornar requisição como inválida
+        response.setStatus(403);
         return false;
     }
 
