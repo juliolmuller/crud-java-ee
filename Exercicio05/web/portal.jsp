@@ -26,7 +26,7 @@
   <body>
 
     <%-- Cabeçalho da página --%>
-    <header class="container-fluid fade-in">
+    <header class="container-fluid fade-in" style="z-index:99;">
       <div id="fake-navbar" class="fixed-top fade-in.fourth" >
         <a href="<%= request.getContextPath() %>/logout" class="float-right btn btn-danger rounded">
           Sair
@@ -40,7 +40,7 @@
     </header>
 
     <%-- Janela de notificação --%>
-    <div class="wrapper fade-in-down ml-auto">
+    <div class="wrapper with-menu fade-in-down">
       <div id="form-content">
         <div class="my-5 fade-in then">
           <img src="img/avatar.svg" id="icon" alt="Avatar do usuário" />

@@ -20,32 +20,33 @@ a {
 }
 
 #fake-navbar {
-  background: #56baed;
-  margin-bottom: 2rem;
   padding: 10px;
 }
 
 .wrapper {
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 100%;
   padding: 20px;
 }
 
+.wrapper.with-menu {
+  margin-top: 4rem;
+}
+
 #form-content {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
+  position: relative;
   background: #fff;
-  padding: 30px;
   width: 90%;
   max-width: 450px;
-  position: relative;
-  padding: 0px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
   -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  padding: 0px;
   text-align: center;
 }
 
