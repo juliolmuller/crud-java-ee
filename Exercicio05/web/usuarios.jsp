@@ -1,14 +1,12 @@
 <%
   // Validar se usuário está logado
   if (session.getAttribute("login") == null) {
-      request.setAttribute("msg", "Autentique-se antes, Zé Orelha!");
-      request.setAttribute("page", request.getContextPath() + "/");
-      try {
-          request.getRequestDispatcher("erro.jsp").forward(request, response);
-          return;
-      } catch (ServletException e) {
-          e.getStackTrace();
-      }
+    try {
+      request.setAttribute("msg", "Faça-me o favor de logar antes!");
+      request.setAttribute("cor", "danger");
+      request.getRequestDispatcher("index.jsp").forward(request, response);
+      return;
+    } catch (ServletException e) {}
   }
 %>
 
@@ -33,7 +31,7 @@
         <div class="row justify-content-center fixed-top" id="fake-navbar">
           <div class="col-2">
             <p class="text-white text-center">
-              Olá, <%= usuario.getNomeUsuario() %>
+              Olá, ${login.nomeUsuario}
             </p>
           </div>
           <div class="col-8">

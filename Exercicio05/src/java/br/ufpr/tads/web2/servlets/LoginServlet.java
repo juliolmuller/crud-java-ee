@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
 
         // Em caso de erro, exibir view de erro
         request.setAttribute("msg", "Ops! Você errou alguma coisa!");
+        request.setAttribute("cor", "danger");
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 

@@ -1,12 +1,13 @@
 <%
-    // Validar se usuário está logado
-    if (session.getAttribute("login") == null) {
-        try {
-            request.setAttribute("msg", "Faça-me o favor de logar antes!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return;
-        } catch (ServletException e) {}
-    }
+  // Validar se usuário está logado
+  if (session.getAttribute("login") == null) {
+    try {
+      request.setAttribute("msg", "Faça-me o favor de logar antes!");
+      request.setAttribute("cor", "danger");
+      request.getRequestDispatcher("index.jsp").forward(request, response);
+      return;
+    } catch (ServletException e) {}
+  }
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
