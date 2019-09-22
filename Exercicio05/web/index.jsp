@@ -19,7 +19,7 @@
           <img src="img/03ads.png" id="icon" alt="Ícone do sistema" />
         </div>
         <% if (request.getAttribute("msg") != null) { %>
-          <div class="alert alert-${cor} border-danger">
+          <div class="alert alert-${cor} border-${cor}">
             ${msg}
           </div>
         <% } %>

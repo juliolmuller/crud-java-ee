@@ -21,40 +21,19 @@ public class LogoutServlet extends HttpServlet {
         // Avaliar se há sessões ativas
         HttpSession session = request.getSession();
         if (session.getAttribute("login") == null) {
-            response.sendRedirect(request.getContextPath() + "/");
+            request.setAttribute("msg", "Não há nenhum usuario logado!");
+            request.setAttribute("cor", "warning");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
         }
 
-        // Montar resposta ao usuário
-        LoginBean usuario = (LoginBean) session.getAttribute("login");
-        try (PrintWriter out = response.getWriter()) {
-            response.setContentType("text/html;charset=UTF-8");
-            out.println("<!DOCTYPE html>");
-            out.println("<html lang=\"pt-BR\">");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\" />");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-            out.println("<title>Web 2 :: Exercício 05</title>");
-            out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\" />");
-            out.println("<link rel=\"stylesheet\" href=\"css/login-styles.css\" />");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<div class=\"wrapper fade-in-down\">");
-            out.println("<div id=\"form-content\">");
-            out.println("<div class=\"fade-in first\">");
-            out.println("<img src=\"img/bye-bye.png\""
-                    + " id=\"icon\" class=\"m-5\" alt=\"Ícone de sucesso\" />");
-            out.println("</div>");
-            out.println("<h3 class=\"mb-5 fade-in second\">"
-                    + "Até a próxima, " + usuario.getNomeUsuario() + "!"
-                    + "</h3>");
-            out.println("<div id=\"form-footer\">");
-            out.println("<a href=\"" + request.getContextPath() + "/\" class=\"underline-hover\">Novo acesso</a>");
-            out.println("</div></div></div>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        // Validar se usuário está logado
         session.invalidate();
+        try {
+          request.setAttribute("msg", "Usuário desconectado com sucesso!");
+          request.setAttribute("cor", "success");
+          request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (ServletException e) {}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
