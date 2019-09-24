@@ -1,9 +1,7 @@
 
 package br.ufpr.tads.web2.beans;
 
-import java.io.Serializable;
-
-public class LoginBean implements Serializable {
+public class LoginBean {
 
     private int idUsuario;
     private String loginUsuario;

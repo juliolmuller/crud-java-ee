@@ -1,8 +1,6 @@
 package br.ufpr.tads.web2.beans;
 
-import java.io.Serializable;
-
-public class Endereco implements Serializable {
+public class Endereco {
 
     private String rua;
     private int numero;

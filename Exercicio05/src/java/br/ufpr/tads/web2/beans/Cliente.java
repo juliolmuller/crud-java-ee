@@ -1,9 +1,8 @@
 package br.ufpr.tads.web2.beans;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Cliente implements Serializable {
+public class Cliente {
 
     private int id;
     private String cpf;
