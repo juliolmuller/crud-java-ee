@@ -64,7 +64,7 @@ a {
   border-radius: 0 0 10px 10px;
 }
 
-button {
+button, a.button {
   max-width: 95%;
   background-color: #4792d4;
   border: none;
@@ -91,7 +91,7 @@ button[type="reset"] {
   background-color: #bbb;
 }
 
-button:hover {
+button:hover, a.button:hover {
   background-color: #1370c2;
 }
 
@@ -99,7 +99,7 @@ button[type="reset"]:hover {
   background-color: #999;
 }
 
-button:active {
+button:active, a.button:active {
   -moz-transform: scale(0.95);
   -webkit-transform: scale(0.95);
   -o-transform: scale(0.95);
