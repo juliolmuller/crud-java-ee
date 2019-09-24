@@ -14,7 +14,7 @@
   <body>
 
     <div class="wrapper fade-in-down">
-      <div id="form-content">
+      <div class="form-content">
         <div class="my-3 fade-in then">
           <img src="img/tads-blue.png" id="icon" alt="Ícone do sistema" />
         </div>

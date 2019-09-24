@@ -44,7 +44,7 @@
 
     <%-- Janela de notificação --%>
     <div class="wrapper with-menu fade-in-down">
-      <div id="form-content">
+      <div class="form-content">
         <div class="my-5 fade-in then">
           <img src="img/avatar.svg" id="icon" alt="Avatar do usuário" />
         </div>

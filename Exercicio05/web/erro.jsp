@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="wrapper fade-in-down">
-      <div id="form-content">
+      <div class="form-content">
         <div class="fade-in first">
           <img src="img/uncheck-icon.png" id="icon" alt="Ícone de erro" />
         </div>
