@@ -35,9 +35,11 @@
           Sair
         </a>
         <div class="container text-center">
-          <h1 class="text-white h3 align-bottom my-2">
-            Portal - Exercício 05
-          </h1>
+          <a href="<%= request.getContextPath() %>/portal.jsp">
+            <h1 class="text-white h3 align-bottom my-2">
+              Exercício 05
+            </h1>
+          </a>
         </div>
       </div>
     </header>
