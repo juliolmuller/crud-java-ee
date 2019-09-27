@@ -16,28 +16,30 @@ public class NovoClienteServlet extends HttpServlet {
 
     // Validar se usuário está logado
     private boolean validarRequest(
-        HttpServletRequest request
-    ) throws IOException {
-        if (request.getSession().getAttribute("login") != null) {
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        if (request.getSession().getAttribute("login") == null) {
             request.setAttribute("msg", "Faça-me o favor de logar antes!");
             request.setAttribute("cor", "danger");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
             return false;
         }
         return true;
     }
-    
+
     // Retornar o formulário de cadastro de cliente
     @Override
     protected void doGet(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar se usuário está logado
-        if (!validarRequest(request)) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (!validarRequest(request, response)) {
+            return;
         }
-        
+
         // Redirecionar para formulário de cadastro
         request.getRequestDispatcher("clientesForm.jsp").forward(request, response);
     }
@@ -48,12 +50,12 @@ public class NovoClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar se usuário está logado
-        if (!validarRequest(request)) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (!validarRequest(request, response)) {
+            return;
         }
-    
+
         // Salvar parâmetros da requisição em bean
         Cliente cliente = new Cliente();
         Endereco endereco = new Endereco();
@@ -70,7 +72,7 @@ public class NovoClienteServlet extends HttpServlet {
 
         // Salvar cliente em banco de dados e redirecionar para lista
         ClienteDAO.inserir(cliente);
-        response.sendRedirect(request.getContextPath() + "/clientes");
+        response.sendRedirect("clientes");
     }
 
     @Override

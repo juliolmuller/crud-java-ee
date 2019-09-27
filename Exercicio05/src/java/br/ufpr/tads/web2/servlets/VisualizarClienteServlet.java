@@ -16,17 +16,15 @@ public class VisualizarClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar se usuário está logado
         if (request.getSession().getAttribute("login") == null) {
-            try {
-                request.setAttribute("msg", "Faça-me o favor de logar antes!");
-                request.setAttribute("cor", "danger");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                return;
-            } catch (ServletException e) {}
+            request.setAttribute("msg", "Faça-me o favor de logar antes!");
+            request.setAttribute("cor", "danger");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
         }
-        
+
         // Verifica se há um parâmetro 'id' e se o registro existe
         Cliente cliente = null;
         try {
@@ -38,7 +36,7 @@ public class VisualizarClienteServlet extends HttpServlet {
         } catch (NullPointerException | NumberFormatException e) {
             response.sendRedirect(request.getContextPath() + "/clientes");
         }
-        
+
         // Setar bean em atributo da requisição e redirecionar
         request.setAttribute("cliente", cliente);
         request.getRequestDispatcher("clientesVisualizar.jsp").forward(request, response);

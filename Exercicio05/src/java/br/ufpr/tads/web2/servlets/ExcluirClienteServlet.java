@@ -16,26 +16,24 @@ public class ExcluirClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        
+
         // Validar se usuário está logado
         if (request.getSession().getAttribute("login") == null) {
-            try {
-                request.setAttribute("msg", "Faça-me o favor de logar antes!");
-                request.setAttribute("cor", "danger");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                return;
-            } catch (ServletException e) {}
+            request.setAttribute("msg", "Faça-me o favor de logar antes!");
+            request.setAttribute("cor", "danger");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
         }
-        
+
         // Verifica se há um parâmetro 'id' e se o registro existe
         try {
             Integer id = Integer.parseInt(request.getParameter("id"));
             Cliente cliente = ClienteDAO.comId(id);
-            
+
             // Efetuar exclusão do registro
             ClienteDAO.excluir(cliente);
         } catch (RuntimeException e) {}
-        
+
         // Redirecionar para lista de clientes
         response.sendRedirect(request.getContextPath() + "/clientes");
     }
