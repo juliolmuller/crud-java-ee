@@ -30,11 +30,11 @@
         <div class="float-left">
           <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>
-        <a href="<%= request.getContextPath() %>/logout" class="float-right btn btn-danger rounded">
+        <a href="${pageContext.request.contextPath}/logout" class="float-right btn btn-danger rounded">
           Sair
         </a>
         <div class="container text-center">
-          <a href="<%= request.getContextPath() %>/portal.jsp">
+          <a href="${pageContext.request.contextPath}/portal.jsp">
             <h1 class="text-white h3 align-bottom my-2">
               Exercício 05
             </h1>
@@ -52,7 +52,7 @@
             <h3 class="mt-4">Listar Clientes</h3>
           </div>
           <div class="col-4">
-            <a href="<%= request.getContextPath() %>/clientes/novo" class="button" style="margin:1rem;">
+            <a href="${pageContext.request.contextPath}/clientes-novo" class="button" style="margin:1rem;">
               <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path d="M352 240v32c0 6.6-5.4 12-12 12h-88v88c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-88h-88c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h88v-88c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v88h88c6.6 0 12 5.4 12 12zm96-160v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path>
               </svg>
@@ -79,17 +79,17 @@
                   <td><%= c.getNome() %></td>
                   <td><%= c.getEmail() %></td>
                   <td>
-                    <a href="<%= request.getContextPath() %>/clientes/visualizar?id=<%= c.getId() %>" class="btn btn-sm btn-primary mx-1" title="Visualizar">
+                    <a href="${pageContext.request.contextPath}/clientes/visualizar?id=<%= c.getId() %>" class="btn btn-sm btn-primary mx-1" title="Visualizar">
                       <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                         <path d="M288 144a110.94 110.94 0 0 0-31.24 5 55.4 55.4 0 0 1 7.24 27 56 56 0 0 1-56 56 55.4 55.4 0 0 1-27-7.24A111.71 111.71 0 1 0 288 144zm284.52 97.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400c-98.65 0-189.09-55-237.93-144C98.91 167 189.34 112 288 112s189.09 55 237.93 144C477.1 345 386.66 400 288 400z"></path>
                       </svg>
                     </a>
-                    <a href="<%= request.getContextPath() %>/clientes/alterar?id=<%= c.getId() %>" class="btn btn-sm btn-info mx-1" title="Editar">
+                    <a href="${pageContext.request.contextPath}/clientes/alterar?id=<%= c.getId() %>" class="btn btn-sm btn-info mx-1" title="Editar">
                       <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                         <path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/>
                       </svg>
                     </a>
-                    <a href="<%= request.getContextPath() %>/clientes/excluir?id=<%= c.getId() %>" class="btn btn-sm btn-danger mx-1" title="Excluir">
+                    <a href="${pageContext.request.contextPath}/clientes/excluir?id=<%= c.getId() %>" class="btn btn-sm btn-danger mx-1" title="Excluir">
                       <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z"/>
                       </svg>

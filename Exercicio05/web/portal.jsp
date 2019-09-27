@@ -31,11 +31,11 @@
         <div class="float-left">
           <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>
-        <a href="<%= request.getContextPath() %>/logout" class="float-right btn btn-danger rounded">
+        <a href="${pageContext.request.contextPath}/logout" class="float-right btn btn-danger rounded">
           Sair
         </a>
         <div class="container text-center">
-          <a href="<%= request.getContextPath() %>/portal.jsp">
+          <a href="${pageContext.request.contextPath}/portal.jsp">
             <h1 class="text-white h3 align-bottom my-2">
               Exercício 05
             </h1>
