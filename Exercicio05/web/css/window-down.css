@@ -65,6 +65,7 @@ a {
 }
 
 button, a.button {
+  cursor: pointer;
   max-width: 95%;
   background-color: #4792d4;
   border: none;
@@ -87,7 +88,7 @@ button, a.button {
   transition: all 0.3s ease-in-out;
 }
 
-button[type="reset"] {
+#btn-cancel {
   background-color: #bbb;
 }
 
@@ -95,7 +96,7 @@ button:hover, a.button:hover {
   background-color: #1370c2;
 }
 
-button[type="reset"]:hover {
+#btn-cancel:hover {
   background-color: #999;
 }
 
@@ -140,7 +141,22 @@ input:focus {
 }
 
 input:placeholder {
-  color: #cccccc;
+  color: #fff;
+}
+
+input[readonly] {
+  background-color: #d6d6d6;
+  color: #292929;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .fade-in-down {
