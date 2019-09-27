@@ -39,7 +39,8 @@ public class VisualizarClienteServlet extends HttpServlet {
 
         // Setar bean em atributo da requisição e redirecionar
         request.setAttribute("cliente", cliente);
-        request.getRequestDispatcher("clientesVisualizar.jsp").forward(request, response);
+        request.setAttribute("readOnly", true);
+        request.getRequestDispatcher("clientesForm.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,5 +81,4 @@ public class VisualizarClienteServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
