@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "VisualizarCliente", urlPatterns = {"/clientes/visualizar"})
+@WebServlet(name = "VisualizarCliente", urlPatterns = {"/clientes-visualizar"})
 public class VisualizarClienteServlet extends HttpServlet {
 
     protected void processRequest(

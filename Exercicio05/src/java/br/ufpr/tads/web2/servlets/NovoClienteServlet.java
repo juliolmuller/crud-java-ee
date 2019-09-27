@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "NovoCliente", urlPatterns = {"/clientes/novo"})
+@WebServlet(name = "NovoCliente", urlPatterns = {"/clientes-novo"})
 public class NovoClienteServlet extends HttpServlet {
 
     // Validar se usuário está logado

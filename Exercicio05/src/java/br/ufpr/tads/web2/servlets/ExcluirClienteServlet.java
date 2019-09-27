@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ExcluirCliente", urlPatterns = {"/clientes/excluir"})
+@WebServlet(name = "ExcluirCliente", urlPatterns = {"/clientes-excluir"})
 public class ExcluirClienteServlet extends HttpServlet {
 
     protected void processRequest(
