@@ -73,6 +73,8 @@
             name="cpf"
             value="${cliente.cpf}"
             step="1"
+            min="1"
+            max="99999999999"
             required
             ${readOnly ? "readonly" : "autofocus"}
           />
@@ -113,6 +115,9 @@
             placeholder="CEP"
             name="cep"
             value="${cliente.endereco.cep}"
+            step="1"
+            min="1000"
+            max="99999999"
             required
             ${readOnly ? "readonly" : ""}
             onkeyup="buscarCEP(event)"
@@ -134,6 +139,8 @@
             placeholder="Logradouro"
             name="numero"
             value="${cliente.endereco.numero}"
+            step="1"
+            min="0"
             required
             ${readOnly ? "readonly" : ""}
           />
