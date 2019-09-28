@@ -47,15 +47,14 @@ public abstract class ClienteDAO {
         }
     }
 
-    public static Cliente comId(int id) {
+    private static Cliente com(Object dado, String sql) {
         try (Connection conn = ConnectionFactory.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(
-                "SELECT " +
-                "id_cliente, cpf_cliente, nome_cliente, email_cliente, data_cliente, " +
-                "cep_cliente, rua_cliente, nr_cliente, cidade_cliente, uf_cliente " +
-                "FROM " + TABELA + " WHERE id_cliente = ?;"
-            );
-            stmt.setInt(1, id);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            if (dado instanceof Integer) {
+                stmt.setInt(1, (Integer) dado);
+            } else {
+                stmt.setString(1, (String) dado);
+            }
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) return null;
             Endereco endereco = new Endereco();
@@ -75,6 +74,22 @@ public abstract class ClienteDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    public static Cliente comId(int id) {
+        String sql = "SELECT " +
+            "id_cliente, cpf_cliente, nome_cliente, email_cliente, data_cliente, " +
+            "cep_cliente, rua_cliente, nr_cliente, cidade_cliente, uf_cliente " +
+            "FROM " + TABELA + " WHERE id_cliente = ?;";
+        return com(id, sql);
+    }
+    
+    public static Cliente comCpf(String cpf) {
+        String sql = "SELECT " +
+            "id_cliente, cpf_cliente, nome_cliente, email_cliente, data_cliente, " +
+            "cep_cliente, rua_cliente, nr_cliente, cidade_cliente, uf_cliente " +
+            "FROM " + TABELA + " WHERE cpf_cliente = ?;";
+        return com(cpf, sql);
     }
 
     public static Cliente inserir(Cliente cliente) {

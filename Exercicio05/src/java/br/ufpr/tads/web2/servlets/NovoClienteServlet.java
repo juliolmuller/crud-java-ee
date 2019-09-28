@@ -61,9 +61,10 @@ public class NovoClienteServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         // Salvar parâmetros da requisição em bean
+        String cpf = request.getParameter("cpf");
         Cliente cliente = new Cliente();
         Endereco endereco = new Endereco();
-        cliente.setCpf(request.getParameter("cpf"));
+        cliente.setCpf(cpf);
         cliente.setNome(request.getParameter("nome"));
         cliente.setEmail(request.getParameter("email"));
         try {
@@ -76,6 +77,14 @@ public class NovoClienteServlet extends HttpServlet {
         endereco.setCidade(request.getParameter("cidade"));
         endereco.setUf(request.getParameter("estado"));
         cliente.setEndereco(endereco);
+
+        // Validar se CPF já está cadastrado
+        if (ClienteDAO.comCpf(cpf) != null) {
+            request.setAttribute("cliente", cliente);
+            request.setAttribute("erro", "CPF já cadastrado!");
+            this.doGet(request, response);
+            return;
+        }
 
         // Salvar cliente em banco de dados e redirecionar para lista
         ClienteDAO.inserir(cliente);

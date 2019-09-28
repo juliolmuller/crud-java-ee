@@ -46,19 +46,24 @@
 
     <%-- Formulário de cadastro de clientes--%>
     <main  class="wrapper with-menu fade-in-down">
+      <% if (request.getAttribute("erro") != null) { %>
+        <div class="container">
+          <div class="alert alert-danger w-100 text-center">${erro}</div>
+        </div>
+      <% } %>
       <div class="form-content">
         <h3 class="mt-3">
-          <% if (request.getAttribute("cliente") == null) { %>
-            Novo Cliente
-          <% } else {
+          <% if (request.getAttribute("cliente") != null && request.getAttribute("erro") == null) {
             if (request.getAttribute("readOnly") == null) { %>
               Alteração do Cliente #${cliente.id}
             <% } else { %>
               Cliente #${cliente.id}
             <% }
-          } %>
+          } else { %>
+              Novo Cliente
+          <% } %>
         </h3>
-        <form action="${pageContext.request.contextPath}/clientes-${cliente == null ? "novo" : "alterar"}" method="POST">
+        <form action="${pageContext.request.contextPath}/clientes-${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
           <input type="hidden" id="id" name="id" value="${cliente.id}" />
           <input
             type="number"
