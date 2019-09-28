@@ -25,6 +25,12 @@ Adicione conexão a banco de dados ao projeto e redirecionamentos a fim de preve
 
 ## [Exercício 04](./Exercicio04/Exercício%2004%20-%20Servlets%20+%20Login%20+%20Redirecionamentos%20+%20Java%20Beans.pdf)
 
-Incremente a aplicação do exercício utilizando-se de Java Beans e DAO.
+Incremente a aplicação do exercício 03 utilizando-se de Java Beans e DAO.
 
 **NOTA:** para executar a aplicação, é necessário configurar o banco de dados previamente. O SGBD PostgreSQL 11 foi escolhido como servidor de banco de dados para o desenvolvimento, portanto, crie um banco de dados e configure o esquema a partir do arquivo `db-setup.sql` (em [`src/java/br/ufpr/tads/web2/dao/`](./Exercicio04/src/java/br/ufpr/tads/web2/dao/db-setup.sql)). Se utilizar outro SGBD, talvez seja necessário adaptar o SQL que seja compatível (como, por exemplo, o uso de `SERIAL` para incrementação automática de ID dos registros) **IMPORTANTE:** para configurar o acesso ao banco de dados no seu ambiente de desenvolvimento, crie uma cópia do arquivo `db.properties.example` (em [`src/java/br/ufpr/tads/web2/dao/`](./Exercicio04/src/java/br/ufpr/tads/web2/dao/db.properties.example)), renomeando-o para `db.properties`.
+
+## [Exercício 05](./Exercicio05/Exercício%2005%20-%20CRUD.pdf)
+
+Incremente a aplicação do exercício 04 elaborando um CRUD completo com a **tabela de clientes**.
+
+**NOTA:** as orientações para se configurar o banco de dados são as mesmas do **Exercício 04**. Contudo, além da `tb_usuario`, será necessária a criação da tabela `tb_cliente`. [Acesse o script SQL aqui](./Exercicio05/src/java/br/ufpr/tads/web2/dao/db-setup.sql).
