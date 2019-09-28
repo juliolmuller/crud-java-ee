@@ -57,6 +57,9 @@ public class NovoClienteServlet extends HttpServlet {
             return;
         }
 
+        // Definir encoding dos dados da requisição
+        request.setCharacterEncoding("UTF-8");
+
         // Salvar parâmetros da requisição em bean
         Cliente cliente = new Cliente();
         Endereco endereco = new Endereco();
