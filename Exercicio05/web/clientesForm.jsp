@@ -58,7 +58,7 @@
             <% }
           } %>
         </h3>
-        <form action="${pageContext.request.contextPath}/clientes/alterar" method="POST">
+        <form action="${pageContext.request.contextPath}/clientes-${cliente == null ? "novo" : "alterar"}" method="POST">
           <input type="hidden" id="id" name="id" value="${cliente.id}" />
           <input
             type="number"
