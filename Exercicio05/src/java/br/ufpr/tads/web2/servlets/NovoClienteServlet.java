@@ -4,7 +4,8 @@ import br.ufpr.tads.web2.beans.Cliente;
 import br.ufpr.tads.web2.beans.Endereco;
 import br.ufpr.tads.web2.dao.ClienteDAO;
 import java.io.IOException;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -62,7 +63,10 @@ public class NovoClienteServlet extends HttpServlet {
         cliente.setCpf(request.getParameter("cpf"));
         cliente.setNome(request.getParameter("nome"));
         cliente.setEmail(request.getParameter("email"));
-        cliente.setDataNasc(new Date(request.getParameter("nasc")));
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            cliente.setDataNasc(formatter.parse(request.getParameter("nasc")));
+        } catch (ParseException e) {}
         endereco.setCep(request.getParameter("cep"));
         endereco.setRua(request.getParameter("rua"));
         endereco.setNumero(Integer.parseInt(request.getParameter("numero")));

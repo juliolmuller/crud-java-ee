@@ -80,7 +80,7 @@ public abstract class ClienteDAO {
     public static Cliente inserir(Cliente cliente) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO " + TABELA + "(" + 
+                "INSERT INTO " + TABELA + "(" +
                 "cpf_cliente, nome_cliente, email_cliente, data_cliente, " +
                 "cep_cliente, rua_cliente, nr_cliente, cidade_cliente, uf_cliente " +
                 ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_cliente;"
@@ -110,7 +110,7 @@ public abstract class ClienteDAO {
                 "UPDATE " + TABELA + " SET " +
                 "cpf_cliente = ?, nome_cliente = ?, email_cliente = ?, " +
                 "data_cliente = ?, cep_cliente = ?, rua_cliente = ?, " +
-                "nr_cliente = ?, cidade_cliente = ?, uf_cliente = ?, " +
+                "nr_cliente = ?, cidade_cliente = ?, uf_cliente = ? " +
                 "WHERE id_cliente = ?;"
             );
             stmt.setString(1, cliente.getCpf());
