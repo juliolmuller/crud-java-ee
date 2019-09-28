@@ -8,39 +8,156 @@
       Trabalho de Web 2 :: PARTE 1
     </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/fontawesome.min.css" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
 
+    <!-- Cabeçalho de aviso de prototipagem -->
     <div class="conteiner-fluid bg-dark">
       <div class="d-flex justify-content-between text-white">
         <div><small><b>Protótipo Funcional do Sistema</b></small></div>
         <div>
           <small>
             <b>Visões:</b>
-            <a href="cliente/">Cliente</a> |
-            <a href="funcionario/">Funcionário</a> |
-            <a href="gerente/">Gerente</a>
+            <a href="cliente/index.html">Cliente</a> |
+            <a href="funcionario/index.html">Funcionário</a> |
+            <a href="gerente/index.html">Gerente</a>
           </small>
         </div>
       </div>
     </div>
 
+    <!-- Corpo da página -->
     <main class="container">
+      <h1 class="text-center display-4 c-title">Reclame, ali!</h1>
       <div class="row my-5">
-        <div class="col-6 p-3">
-          <div class="card">
-            <h1 class="card-header">Login</h1>
-          </div>
+        <div class="col-6 p-3 d-flex align-items-stretch">
+
+          <!-- Formulário de login -->
+          <form id="form-login" action="#" method="POST" class="card">
+            <h2 class="card-header">Entrar</h2>
+            <img class="card-img-top" src="assets/cover.jpg" alt="Capa">
+            <div class="card-body">
+              <p class="card-text">Para acessar o sistema, é necessário fornecer suas credenciais de acesso:</p>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">
+                      @
+                    </span>
+                  </div>
+                  <input type="email" class="form-control" name="email" placeholder="Email" />
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">
+                      <i class="fas fa-unlock-alt"></i>
+                    </span>
+                  </div>
+                  <input type="password" class="form-control" name="senha" placeholder="Senha" />
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <div>Esqueceu a senha? <a href="mailto:example@email.com">Contate nosso suporte</a>.</div>
+              <button type="submit" class="btn btn-primary">
+                Entrar
+              </button>
+            </div>
+            <!-- <img class="card-img-bottom" src="assets/cover.jpg" alt="Capa"> -->
+          </form>
         </div>
-        <div class="col-6 p-3">
-          <div class="card">
-            <h1 class="card-header">Cadastro</h1>
-          </div>
+
+        <!-- Formulário de cadastro -->
+        <div class="col-6 p-3 d-flex align-items-stretch">
+          <form id="form-signup" action="#" method="POST" class="card">
+            <h2 class="card-header">Cadastro</h2>
+            <div class="card-body">
+              <p class="card-text">Crie uma conta como cliente para acessar o sistema:</p>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    #
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="cpf" placeholder="CPF" step="1" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="nome" placeholder="Nome completo" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="far fa-calendar-alt"></i>
+                  </span>
+                </div>
+                <input type="date" class="form-control" name="nome" placeholder="Data de nascimento" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    @
+                  </span>
+                </div>
+                <input type="email" class="form-control" name="email" placeholder="Email de acesso" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-unlock-alt"></i>
+                  </span>
+                </div>
+                <input type="password" class="form-control" name="senha1" placeholder="Senha de acesso" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-unlock-alt"></i>
+                  </span>
+                </div>
+                <input type="password" class="form-control" name="senha2" placeholder="Repetir senha" />
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <button type="submit" class="btn btn-primary" disabled>
+                Cadastrar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </main>
 
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Acessar protótipo como...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group text-center w-100">
+              <a href="cliente/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Cliente</a>
+              <a href="funcionario/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Funcionário</a>
+              <a href="gerente/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Gerente</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
   </body>
 </html>
