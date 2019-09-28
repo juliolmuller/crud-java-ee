@@ -9,25 +9,38 @@
     </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-route.min.js"></script>
   </head>
-  <body ng-app="mainApp">
+  <body>
+
     <div class="conteiner-fluid bg-dark">
       <div class="d-flex justify-content-between text-white">
         <div><small><b>Protótipo Funcional do Sistema</b></small></div>
         <div>
           <small>
             <b>Visões:</b>
-            <a href="#/cliente">Cliente</a> |
-            <a href="#/funcionario">Funcionário</a> |
-            <a href="#/gerente">Gerente</a>
+            <a href="cliente/">Cliente</a> |
+            <a href="funcionario/">Funcionário</a> |
+            <a href="gerente/">Gerente</a>
           </small>
         </div>
       </div>
     </div>
-    <div ng-view></div>
 
-    <script src="app/index.js"></script>
+    <main class="container">
+      <div class="row my-5">
+        <div class="col-6 p-3">
+          <div class="card">
+            <h1 class="card-header">Login</h1>
+          </div>
+        </div>
+        <div class="col-6 p-3">
+          <div class="card">
+            <h1 class="card-header">Cadastro</h1>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
   </body>
 </html>
