@@ -21,3 +21,17 @@ input::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.c-thead {
+  background-color: #222;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.c-status {
+  text-transform: uppercase;
+}
+
+.c-clickable:hover {
+  cursor: pointer;
+}

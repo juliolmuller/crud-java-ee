@@ -36,3 +36,8 @@ $('#buscar-cep').click(() => {
     });
   }
 });
+
+// Adicionar para linhas de tabelas
+$('.c-clickable').click(function() {
+  window.location = $(this).data('href');
+});
