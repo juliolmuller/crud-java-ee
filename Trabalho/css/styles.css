@@ -8,8 +8,12 @@
 
 .c-title {
   margin-top: 2rem;
-  margin-bottom: 1rem;
   font-family: 'Slabo 27px', serif;
+}
+
+.c-subtitle {
+  margin-bottom: 1rem;
+  font-size: medium;
 }
 
 input::-webkit-inner-spin-button,
