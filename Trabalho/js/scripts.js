@@ -36,6 +36,10 @@ $('#buscar-cep').click(() => {
     });
   }
 });
+$('#buscar-produto').click(() => {
+  const produto = $('#codigo-produto').val();
+  $('#detalhes-produto').show();
+});
 
 // Adicionar para linhas de tabelas
 $('.c-clickable').click(function() {
