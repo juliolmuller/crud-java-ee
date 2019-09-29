@@ -29,12 +29,12 @@
     </div>
 
     <!-- Corpo da página -->
-    <main class="container">
+    <main class="container mb-5">
       <h1 class="text-center text-primary display-3 c-title">
         <img src="assets/reclame-ali-blue.png" class="c-logo-large" alt="Logo do Sistema" />
         Reclame Ali
       </h1>
-      <div class="row my-5">
+      <div class="row my-3">
         <div class="col-6 p-3 d-flex align-items-stretch">
 
           <!-- Formulário de login -->
@@ -42,31 +42,47 @@
             <h2 class="card-header">Entrar</h2>
             <img class="card-img-top" src="assets/cover.jpg" alt="Capa">
             <div class="card-body">
-              <p class="card-text">Para acessar o sistema, é necessário fornecer suas credenciais de acesso:</p>
+              <a class="card-text mt-1">
+                Você está prestaes a acessar o sistema SAC (Serviço de Atendimento ao Cliente) da empresa mais top
+                que existe no mundo. Tenha em mente os <a href="#">Termos de Uso</a> da plataforma e de que qualquer
+                irregularidade pode resultar em processos jurídicos.
+              </p>
+              <p class="card-text mb-5">
+                Para acessar o sistema, é necessário fornecer suas credenciais de acesso:
+              </p>
+              <div class="form-group">
+                <label for="email">Endereço de email:</label>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">
-                      @
+                      <i class="fas fa-at"></i>
                     </span>
                   </div>
-                  <input type="email" class="form-control" name="email" placeholder="Email" />
+                  <input type="email" id="email" class="form-control" name="email" />
                 </div>
+              </div>
+              <div class="form-group">
+                <label for="senha">Senha de acesso:</label>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">
                       <i class="fas fa-unlock-alt"></i>
                     </span>
                   </div>
-                  <input type="password" class="form-control" name="senha" placeholder="Senha" />
+                  <input type="password" id="senha" class="form-control" name="senha" />
                 </div>
+              </div>
+              <div class="text-center">
+                <p class="mt-4 mb-0 h5">
+                  Esqueceu a senha? <a href="mailto:example@email.com">Contate nosso suporte</a>
+                </p>
+              </div>
             </div>
-            <div class="card-footer d-flex justify-content-between">
-              <div>Esqueceu a senha? <a href="mailto:example@email.com">Contate nosso suporte</a>.</div>
-              <button type="submit" class="btn btn-primary">
+            <div class="card-footer text-center">
+              <button type="submit" class="btn btn-lg btn-primary w-50">
                 Entrar
               </button>
             </div>
-            <!-- <img class="card-img-bottom" src="assets/cover.jpg" alt="Capa"> -->
           </form>
         </div>
 
@@ -79,7 +95,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">
-                    #
+                    <i class="fab fa-slack-hash"></i>
                   </span>
                 </div>
                 <input type="number" class="form-control" name="cpf" placeholder="CPF" step="1" />
@@ -103,10 +119,57 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">
-                    @
+                    <i class="fas fa-at"></i>
                   </span>
                 </div>
                 <input type="email" class="form-control" name="email" placeholder="Email de acesso" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-mobile-alt"></i>
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="telefone" placeholder="Telefone (con DDD)" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="cep" placeholder="CEP" />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="buscar-cep">
+                    Buscar CEP
+                  </button>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-map"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="rua" placeholder="Endereço (rua, avenida, alameda...)" disabled />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-map-marked-alt"></i>
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="numero" placeholder="Número" />
+                <input type="text" class="form-control" name="complemento" placeholder="Complemento" />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-globe-americas"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="cidade" placeholder="Cidade" disabled />
+                <input type="text" class="form-control" name="estado" placeholder="Estado" disabled />
               </div>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -131,8 +194,8 @@
                 </label>
               </div>
             </div>
-            <div class="card-footer text-right">
-              <button type="submit" class="btn btn-primary">
+            <div class="card-footer text-center">
+              <button type="click" class="btn btn-lg btn-primary w-50">
                 Cadastrar
               </button>
             </div>
