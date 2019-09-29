@@ -1,6 +1,18 @@
 
+@import url('https://fonts.googleapis.com/css?family=Slabo+27px&display=swap');
+
+.c-logo-large {
+  margin-top: -1rem;
+  height: 4.4rem;
+}
+
 .c-title {
   margin-top: 2rem;
   margin-bottom: 1rem;
-  font-family: serif;
+  font-family: 'Slabo 27px', serif;
+  color: #1D4A97;
+}
+
+.btn-primary {
+  background: #1D4A97;
 }

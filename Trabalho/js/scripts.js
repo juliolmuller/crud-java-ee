@@ -6,4 +6,5 @@ document.getElementById('form-login').addEventListener('submit', e => {
 });
 document.getElementById('form-signup').addEventListener('submit', e => {
   e.preventDefault();
+  alert('Recurso indisponível.');
 });
