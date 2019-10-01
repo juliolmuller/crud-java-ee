@@ -45,6 +45,12 @@ $('#buscar-produto').click(() => {
 $('.c-clickable').click(function() {
   window.location = $(this).data('href');
 });
+$('a[title="Excluir"]').click(function(e) {
+  e.preventDefault();
+  if (confirm('Tem certeza que quer excluir este item?')) {
+    $(this).parent().parent().remove();
+  }
+});
 
 // Adicionar evento para filtro de tabelas
 $('#filtro-atendimentos').change(function() {
