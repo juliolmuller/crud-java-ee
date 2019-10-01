@@ -41,7 +41,25 @@ $('#buscar-produto').click(() => {
   $('#detalhes-produto').show();
 });
 
-// Adicionar para linhas de tabelas
+// Adicionar evento para linhas de tabelas
 $('.c-clickable').click(function() {
   window.location = $(this).data('href');
+});
+
+// Adicionar evento para filtro de tabelas
+$('#filtro-atendimentos').change(function() {
+  $('tr').show();
+  switch ($(this).val()) {
+    case 'abertos':
+      $('td span.badge-success').parent().parent().hide();
+      break;
+    case 'vencidos':
+      $('tbody tr').hide();
+      $('tr.table-danger').show();
+      break;
+    case 'fechados':
+      $('tbody tr').hide();
+      $('td span.badge-success').parent().parent().show();
+      break;
+  }
 });
