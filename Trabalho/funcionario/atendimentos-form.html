@@ -68,6 +68,10 @@
 
       <!-- Dados do atendimento -->
       <form action="atendimentos.html" method="POST">
+        <button type="submit" class="btn btn-primary float-right w-25">
+          <i class="far fa-save"></i>
+          Salvar Alterações
+        </button>
         <div class="form-group row">
           <label for="atendimento-id" class="col-2 col-form-label">Atendimento:</label>
           <div class="col-10">
@@ -157,18 +161,14 @@
               <div class="input-group">
                 <textarea id="atendimento-msg" class="form-control" rows="2" name="desc" placeholder="Nova mensagem..."></textarea>
                 <div class="input-group-append">
-                  <span class="input-group-text" id="my-addon">
+                  <button type="button" class="btn btn-primary" id="enviar-msg">
                     <i class="fas fa-paper-plane"></i>
-                  </span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-lg btn-primary w-25">
-          <i class="fas fa-save"></i>
-          Salvar Alterações
-        </button>
       </form>
     </main>
 
