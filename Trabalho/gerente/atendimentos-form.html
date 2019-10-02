@@ -44,10 +44,7 @@
               <a class="nav-link active" href="atendimentos.html">Atendimentos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="categorias.html">Cadastro de Categorias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="produtos.html">Cadastro de Produtos</a>
+              <a class="nav-link" href="colaboradores.html">Cadastro de Colaboradores</a>
             </li>
           </ul>
         </div>
@@ -68,6 +65,10 @@
 
       <!-- Dados do atendimento -->
       <form action="atendimentos.html" method="POST">
+        <a href="atendimentos.html" class="btn btn-secondary float-right w-25">
+          <i class="fas fa-chevron-circle-left"></i>
+          Voltar
+        </a>
         <div class="form-group row">
           <label for="atendimento-id" class="col-2 col-form-label">Atendimento:</label>
           <div class="col-10">
@@ -88,27 +89,14 @@
         </div>
         <div class="form-group row">
           <label for="atendimento-tipo" class="col-2 col-form-label">Tipo do atendimento:</label>
-          <div class="col-6">
-            <select id="atendimento-tipo" class="form-control" name="tipo">
-              <option>Selecione...</option>
-              <option value="1">Financeiro</option>
-              <option value="2">Produto não recebido</option>
-              <option value="3" selected>Produto com defeito</option>
-              <option value="4">Saúde</option>
-              <option value="5">Sugesões de melhoria</option>
-              <option value="0">Outros</option>
-            </select>
+          <div class="col-10">
+            <input type="text" id="atendimento-tipo" class="form-control-plaintext" readonly value="Produto com defeito" />
           </div>
         </div>
         <div class="form-group row">
           <label for="atendimento-status" class="col-2 col-form-label">Status:</label>
-          <div class="col-6">
-            <select id="atendimento-status" class="form-control" name="status">
-              <option value="1">Recebido</option>
-              <option value="2">Sob Análise</option>
-              <option value="3" selected>Contestado</option>
-              <option value="4">Encerrado</option>
-            </select>
+          <div class="col-10">
+            <input type="text" id="atendimento-status" class="form-control-plaintext" readonly value="Contestado" />
           </div>
         </div>
         <div class="form-group">
@@ -153,22 +141,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-10 col-md-8 offset-2 offset-md-4">
-              <div class="input-group">
-                <textarea id="atendimento-msg" class="form-control" rows="2" name="desc" placeholder="Nova mensagem..."></textarea>
-                <div class="input-group-append">
-                  <span class="input-group-text" id="my-addon">
-                    <i class="fas fa-paper-plane"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-lg btn-primary w-25">
-          <i class="fas fa-save"></i>
-          Salvar Alterações
-        </button>
       </form>
     </main>
 
