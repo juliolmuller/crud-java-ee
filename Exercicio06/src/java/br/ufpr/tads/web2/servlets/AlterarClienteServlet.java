@@ -6,31 +6,14 @@ import br.ufpr.tads.web2.dao.ClienteDAO;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "AlterarCliente", urlPatterns = {"/clientes-alterar"})
+@WebServlet(name = "AlterarCliente", urlPatterns = {"/clientes/alterar"})
 public class AlterarClienteServlet extends HttpServlet {
-
-    // Validar se usuário está logado
-    private boolean validarRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        if (request.getSession().getAttribute("login") == null) {
-            request.setAttribute("msg", "Faça-me o favor de logar antes!");
-            request.setAttribute("cor", "danger");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return false;
-        }
-        return true;
-    }
 
     // Retornar o formulário de edição do cliente
     @Override
@@ -38,11 +21,6 @@ public class AlterarClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-
-        // Validar se usuário está logado
-        if (!validarRequest(request, response)) {
-            return;
-        }
 
         // Verifica se há um parâmetro 'id' e se o registro existe
         Cliente cliente = null;
@@ -58,7 +36,7 @@ public class AlterarClienteServlet extends HttpServlet {
 
         // Setar bean em atributo da requisição e redirecionar
         request.setAttribute("cliente", cliente);
-        request.getRequestDispatcher("clientesForm.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
     }
 
     // Recebe os dados do cliente e salva em banco de dados
@@ -67,11 +45,6 @@ public class AlterarClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-
-        // Validar se usuário está logado
-        if (!validarRequest(request, response)) {
-            return;
-        }
 
         // Definir encoding dos dados da requisição
         request.setCharacterEncoding("UTF-8");
@@ -97,10 +70,5 @@ public class AlterarClienteServlet extends HttpServlet {
         // Salvar cliente em banco de dados e redirecionar para lista
         ClienteDAO.atualizar(cliente);
         response.sendRedirect(request.getContextPath() + "/clientes");
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 }

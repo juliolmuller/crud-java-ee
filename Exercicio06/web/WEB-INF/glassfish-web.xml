@@ -5,6 +5,10 @@
   <session-config>
     <session-timeout>1440</session-timeout>
   </session-config>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/erro.jsp</location>
+  </error-page>
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>

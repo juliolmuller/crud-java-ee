@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
 
-@WebServlet(name = "CadastroUsuario", urlPatterns = {"/cadastro-usuario"})
+@WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios"})
 public class CadastroUsuarioServlet extends HttpServlet {
 
     private boolean validarRequest(

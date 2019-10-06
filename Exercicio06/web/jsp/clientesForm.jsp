@@ -1,15 +1,3 @@
-<%
-  // Validar se usuário está logado
-  if (session.getAttribute("login") == null) {
-    try {
-      request.setAttribute("msg", "Faça-me o favor de logar antes!");
-      request.setAttribute("cor", "danger");
-      request.getRequestDispatcher("index.jsp").forward(request, response);
-      return;
-    } catch (ServletException e) {}
-  }
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -20,8 +8,8 @@
     <title>
       Web 2 :: Exercício 06
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/window-down.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
 
@@ -29,7 +17,7 @@
     <header class="container-fluid fade-in" style="z-index:99;">
       <div id="fake-navbar" class="fixed-top fade-in.fourth" >
         <div class="float-left">
-          <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
+          <img src="${pageContext.request.contextPath}/img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>
         <a href="${pageContext.request.contextPath}/logout" class="float-right btn btn-danger rounded">
           <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -47,7 +35,7 @@
       </div>
     </header>
 
-    <%-- Formulário de cadastro de clientes--%>
+    <%-- Formulário de cadastro de clientes --%>
     <main  class="wrapper with-menu fade-in-down">
       <% if (request.getAttribute("erro") != null) { %>
         <div class="container">
@@ -66,7 +54,7 @@
               Novo Cliente
           <% } %>
         </h3>
-        <form action="${pageContext.request.contextPath}/clientes-${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
+        <form action="${pageContext.request.contextPath}/clientes/${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
           <input type="hidden" id="id" name="id" value="${cliente.id}" />
           <input
             type="number"
@@ -133,7 +121,7 @@
             name="rua"
             value="${cliente.endereco.rua}"
             required
-            readonly
+            ${readOnly ? "readonly" : ""}
           />
           <input
             type="number"
@@ -177,7 +165,7 @@
                   Salvar
                 </button>
               <% } else { %>
-                <a href="${pageContext.request.contextPath}/clientes-alterar?id=${cliente.id}" id="btn-ok" class="button">
+                <a href="${pageContext.request.contextPath}/clientes/alterar?id=${cliente.id}" id="btn-ok" class="button">
                   <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                     <path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/>
                   </svg>
@@ -199,7 +187,7 @@
     </main>
 
     <%-- Arquivos de scripts --%>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/manage-customers.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/manage-customers.js"></script>
   </body>
 </html>

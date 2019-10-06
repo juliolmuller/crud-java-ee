@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
 
 <!DOCTYPE html>
 <html lan="pt-BR">
@@ -8,20 +8,20 @@
     <title>
       Web 2 :: Exercício 06
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/window-down.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
     <div class="wrapper fade-in-down">
       <div class="form-content">
         <div class="fade-in first">
-          <img src="img/uncheck-icon.png" id="icon" alt="Ícone de erro" />
+          <img src="${pageContext.request.contextPath}/img/uncheck-icon.png" id="icon" alt="Ícone de erro" />
         </div>
         <h3 class="mb-5 fade-in third text-danger">
           ${msg}
         </h3>
         <div class="list-group list-group-flush fade-in then ">
-          <a href="${page}" class="list-group-item underline-hover">
+          <a href="${pageContext.request.contextPath}/" class="list-group-item underline-hover">
             Acessar o formulário de login
           </a>
         </div>

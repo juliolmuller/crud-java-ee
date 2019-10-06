@@ -1,15 +1,3 @@
-<%
-  // Validar se usuário está logado
-  if (session.getAttribute("login") == null) {
-    try {
-      request.setAttribute("msg", "Faça-me o favor de logar antes!");
-      request.setAttribute("cor", "danger");
-      request.getRequestDispatcher("index.jsp").forward(request, response);
-      return;
-    } catch (ServletException e) {}
-  }
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -20,8 +8,8 @@
     <title>
       Web 2 :: Exercício 06
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/window-down.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
 
@@ -29,7 +17,7 @@
     <header class="container-fluid fade-in" style="z-index:99;">
       <div id="fake-navbar" class="fixed-top fade-in.fourth" >
         <div class="float-left">
-          <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
+          <img src="${pageContext.request.contextPath}/img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>
         <a href="${pageContext.request.contextPath}/logout" class="float-right btn btn-danger rounded">
           <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -120,7 +108,7 @@
     </main>
 
     <%-- Arquivos de scripts --%>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/manage-users.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/manage-users.js"></script>
   </body>
 </html>

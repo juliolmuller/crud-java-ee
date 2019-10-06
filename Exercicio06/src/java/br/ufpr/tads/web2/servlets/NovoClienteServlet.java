@@ -12,22 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "NovoCliente", urlPatterns = {"/clientes-novo"})
+@WebServlet(name = "NovoCliente", urlPatterns = {"/clientes/novo"})
 public class NovoClienteServlet extends HttpServlet {
-
-    // Validar se usuário está logado
-    private boolean validarRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        if (request.getSession().getAttribute("login") == null) {
-            request.setAttribute("msg", "Faça-me o favor de logar antes!");
-            request.setAttribute("cor", "danger");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return false;
-        }
-        return true;
-    }
 
     // Retornar o formulário de cadastro de cliente
     @Override
@@ -36,13 +22,8 @@ public class NovoClienteServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Validar se usuário está logado
-        if (!validarRequest(request, response)) {
-            return;
-        }
-
         // Redirecionar para formulário de cadastro
-        request.getRequestDispatcher("clientesForm.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
     }
 
     // Recebe os dados do cliente e salva em banco de dados
@@ -51,11 +32,6 @@ public class NovoClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-
-        // Validar se usuário está logado
-        if (!validarRequest(request, response)) {
-            return;
-        }
 
         // Definir encoding dos dados da requisição
         request.setCharacterEncoding("UTF-8");
@@ -70,7 +46,9 @@ public class NovoClienteServlet extends HttpServlet {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             cliente.setDataNasc(formatter.parse(request.getParameter("nasc")));
-        } catch (ParseException e) {}
+        } catch (ParseException | NullPointerException e) {
+            cliente.setDataNasc(null);
+        }
         endereco.setCep(request.getParameter("cep"));
         endereco.setRua(request.getParameter("rua"));
         endereco.setNumero(Integer.parseInt(request.getParameter("numero")));
@@ -88,11 +66,6 @@ public class NovoClienteServlet extends HttpServlet {
 
         // Salvar cliente em banco de dados e redirecionar para lista
         ClienteDAO.inserir(cliente);
-        response.sendRedirect("clientes");
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+        response.sendRedirect(request.getContextPath() + "/clientes");
     }
 }

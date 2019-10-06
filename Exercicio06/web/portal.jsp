@@ -1,15 +1,3 @@
-<%
-  // Validar se usuário está logado
-  if (session.getAttribute("login") == null) {
-    try {
-      request.setAttribute("msg", "Faça-me o favor de logar antes!");
-      request.setAttribute("cor", "danger");
-      request.getRequestDispatcher("index.jsp").forward(request, response);
-      return;
-    } catch (ServletException e) {}
-  }
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -20,8 +8,8 @@
     <title>
       Web 2 :: Exercício 06
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/window-down.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
 
@@ -29,7 +17,7 @@
     <header class="container-fluid fade-in" style="z-index:99;">
       <div id="fake-navbar" class="fixed-top fade-in.fourth" >
         <div class="float-left">
-          <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
+          <img src="${pageContext.request.contextPath}/img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>
         <a href="${pageContext.request.contextPath}/logout" class="float-right btn btn-danger rounded">
           <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -51,14 +39,14 @@
     <div class="wrapper with-menu fade-in-down">
       <div class="form-content">
         <div class="my-5 fade-in then">
-          <img src="img/avatar.svg" id="icon" alt="Avatar do usuário" />
+          <img src="${pageContext.request.contextPath}/img/avatar.svg" id="icon" alt="Avatar do usuário" />
         </div>
         <h3 class="mb-5 fade-in then text-primary">
           Bem-vindo, ${login.nomeUsuario}!
         </h3>
         <div class="list-group list-group-flush fade-in then ">
-          <a href="usuarios.jsp" class="list-group-item underline-hover">Gerenciar Usuários</a>
-          <a href="clientes" class="list-group-item underline-hover">Gerenciar Clientes</a>
+          <a href="${pageContext.request.contextPath}/usuarios.jsp" class="list-group-item underline-hover">Gerenciar Usuários</a>
+          <a href="${pageContext.request.contextPath}/clientes" class="list-group-item underline-hover">Gerenciar Clientes</a>
         </div>
         <div id="form-footer fade-in then" style="margin-top:3rem;">
           Em caso de problemas, contate-nos:<br>

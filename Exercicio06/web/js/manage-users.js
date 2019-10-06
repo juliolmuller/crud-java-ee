@@ -1,6 +1,6 @@
 
 // URL de requisições AJAX
-const apiUrl = 'cadastro-usuario';
+const apiUrl = './usuarios';
 
 // Monta e adiciona a linha no corpo da tabela
 function montarLinha(dados) {

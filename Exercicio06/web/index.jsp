@@ -8,15 +8,15 @@
     <title>
       Web 2 :: Exercício 06
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/window-down.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
 
     <div class="wrapper fade-in-down">
       <div class="form-content">
         <div class="my-3 fade-in then">
-          <img src="img/tads-blue.png" id="icon" alt="Ícone do sistema" />
+          <img src="${pageContext.request.contextPath}/img/tads-blue.png" id="icon" alt="Ícone do sistema" />
         </div>
         <% if (request.getAttribute("msg") != null) { %>
           <div class="alert alert-${cor} border-${cor}">
