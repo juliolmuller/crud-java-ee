@@ -34,3 +34,9 @@ Incremente a aplicação do exercício 03 utilizando-se de Java Beans e DAO.
 Incremente a aplicação do exercício 04 elaborando um CRUD completo com a **tabela de clientes**.
 
 **NOTA:** as orientações para se configurar o banco de dados são as mesmas do **Exercício 04**. Contudo, além da `tb_usuario`, será necessária a criação da tabela `tb_cliente`. [Acesse o script SQL aqui](./Exercicio05/src/java/br/ufpr/tads/web2/dao/db-setup.sql).
+
+## [Exercício 06](./Exercicio06/Exercício%2006%20-%20MVC.pdf)
+
+Incremente a aplicação do exercício 05 implementando alguns design patters, conforme o enunciado.
+
+...
