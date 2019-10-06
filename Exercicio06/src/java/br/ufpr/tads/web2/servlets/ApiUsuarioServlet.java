@@ -12,30 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
 
-@WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios"})
-public class CadastroUsuarioServlet extends HttpServlet {
-
-    private boolean validarRequest(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws IOException {
-
-        // Validar se usuário está logado
-        if (request.getSession().getAttribute("login") != null) {
-            // Configurar input e output
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");
-            return true;
-        }
-
-        // Setar status 403 e retornar requisição como inválida
-        response.setStatus(403);
-        return false;
-    }
+@WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios", "/api/usuarios"})
+public class ApiUsuarioServlet extends HttpServlet {
 
     private List<String> validarDados(Usuario usuario, boolean novo) {
-
+        
         // Instanciar lista para armazenar mensagens de erro
         List<String> erros = new ArrayList<>();
 
@@ -74,8 +55,16 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Validar session e configurar entrada e saída de dados
-        if (!validarRequest(request, response)) return;
+        // Avaliar se deseja-se a página ou a API
+        if (request.getRequestURI().split("/")[2].equals("usuarios")) {
+            request.getRequestDispatcher("/jsp/usuarios.jsp").forward(request, response);
+            return;
+        }
+
+        // Configurar input e output
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
 
         // Recuperar dados do banco
         List<Usuario> usuarios = UsuarioDAO.listar();
@@ -98,8 +87,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Validar session e configurar entrada e saída de dados
-        if (!validarRequest(request, response)) return;
+        // Configurar input e output
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
 
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
@@ -147,8 +138,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Validar session e configurar entrada e saída de dados
-        if (!validarRequest(request, response)) return;
+        // Configurar input e output
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
 
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
@@ -189,8 +182,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        // Validar session e configurar entrada e saída de dados
-        if (!validarRequest(request, response)) return;
+        // Configurar input e output
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
 
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
@@ -237,10 +232,5 @@ public class CadastroUsuarioServlet extends HttpServlet {
             }
             out.print("]}");
         }
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 }

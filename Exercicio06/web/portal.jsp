@@ -45,7 +45,7 @@
           Bem-vindo, ${login.nomeUsuario}!
         </h3>
         <div class="list-group list-group-flush fade-in then ">
-          <a href="${pageContext.request.contextPath}/usuarios.jsp" class="list-group-item underline-hover">Gerenciar Usuários</a>
+          <a href="${pageContext.request.contextPath}/usuarios" class="list-group-item underline-hover">Gerenciar Usuários</a>
           <a href="${pageContext.request.contextPath}/clientes" class="list-group-item underline-hover">Gerenciar Clientes</a>
         </div>
         <div id="form-footer fade-in then" style="margin-top:3rem;">
