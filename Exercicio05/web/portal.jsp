@@ -27,7 +27,7 @@
 
     <%-- Cabeçalho da página --%>
     <header class="container-fluid fade-in" style="z-index:99;">
-      <div id="fake-navbar" class="fixed-top fade-in.fourth" >
+      <div id="fake-navbar" class="fixed-top" >
         <div class="float-left">
           <img src="img/tads-white.png" class="system-icon" alt="Ícone do sistema" />
         </div>

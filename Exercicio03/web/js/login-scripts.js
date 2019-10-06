@@ -1,5 +1,5 @@
 
 var forgotPassword = function(e) {
   e.preventDefault();
-  alert('FICA A DICA:\nA senha é o mesmo texto do seu login.');
-}
+  window.alert('Foda né?. Formate o computador ou envie os dados do cartão de crédito para JJSOLUTIONS.NET');
+};

@@ -79,7 +79,7 @@
             min="1"
             max="99999999999"
             required
-            ${readOnly ? "readonly" : "autofocus"}
+            ${readOnly ? "readonly" : ""}
           />
           <input
             type="text"
@@ -133,7 +133,7 @@
             name="rua"
             value="${cliente.endereco.rua}"
             required
-            readonly
+            ${readOnly ? "readonly" : ""}
           />
           <input
             type="number"
@@ -155,7 +155,7 @@
             name="cidade"
             value="${cliente.endereco.cidade}"
             required
-            readonly
+            ${readOnly ? "readonly" : ""}
           />
           <input
             type="text"
@@ -165,7 +165,7 @@
             name="estado"
             value="${cliente.endereco.uf}"
             required
-            readonly
+            ${readOnly ? "readonly" : ""}
           />
           <div class="row">
             <div class="col-6">
