@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -18,11 +19,11 @@
         <div class="my-3 fade-in then">
           <img src="${pageContext.request.contextPath}/img/tads-blue.png" id="icon" alt="Ícone do sistema" />
         </div>
-        <% if (request.getAttribute("msg") != null) { %>
+        <c:if test="${msg != null}">
           <div class="alert alert-${cor} border-${cor}">
-            ${msg}
+            <c:out value="${msg}" />
           </div>
-        <% } %>
+        </c:if>
         <form action="login" method="POST">
           <input
             type="text"
@@ -48,7 +49,7 @@
         <div id="form-footer fade-in then">
           Em caso de problemas, contate-nos:<br>
           <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
-            ${configuracao.emailAdmin}
+            <c:out value="${configuracao.emailAdmin}" />
           </a>
         </div>
       </div>

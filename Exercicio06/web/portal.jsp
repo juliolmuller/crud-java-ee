@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
           <img src="${pageContext.request.contextPath}/img/avatar.svg" id="icon" alt="Avatar do usuário" />
         </div>
         <h3 class="mb-5 fade-in then text-primary">
-          Bem-vindo, ${login.nomeUsuario}!
+          Bem-vindo, <c:out value="${login.nomeUsuario}" />!
         </h3>
         <div class="list-group list-group-flush fade-in then ">
           <a href="${pageContext.request.contextPath}/usuarios" class="list-group-item underline-hover">Gerenciar Usuários</a>
@@ -51,7 +52,7 @@
         <div id="form-footer fade-in then" style="margin-top:3rem;">
           Em caso de problemas, contate-nos:<br>
           <a href="mailto:${configuracao.emailAdmin}" class="underline-hover">
-            ${configuracao.emailAdmin}
+            <c:out value="${configuracao.emailAdmin}" />
           </a>
         </div>
       </div>

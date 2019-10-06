@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -37,22 +38,30 @@
 
     <%-- Formulário de cadastro de clientes --%>
     <main  class="wrapper with-menu fade-in-down">
-      <% if (request.getAttribute("erro") != null) { %>
+      <c:if test="${erro != null}">
         <div class="container">
-          <div class="alert alert-danger w-100 text-center">${erro}</div>
+          <div class="alert alert-danger w-100 text-center">
+            <c:out value="${erro}" />
+          </div>
         </div>
-      <% } %>
+      </c:if>
       <div class="form-content">
         <h3 class="mt-3">
-          <% if (request.getAttribute("cliente") != null && request.getAttribute("erro") == null) {
-            if (request.getAttribute("readOnly") == null) { %>
-              Alteração do Cliente #${cliente.id}
-            <% } else { %>
-              Cliente #${cliente.id}
-            <% }
-          } else { %>
+          <c:choose>
+            <c:when test="${cliente != null && erro == null}">
+              <c:choose>
+                <c:when test="${readOnly == null}">
+                  Alteração do Cliente #<c:out value="${cliente.id}" />
+                </c:when>
+                <c:otherwise>
+                  Cliente #<c:out value="${cliente.id}" />
+                </c:otherwise>
+              </c:choose>
+            </c:when>
+            <c:otherwise>
               Novo Cliente
-          <% } %>
+            </c:otherwise>
+          </c:choose>
         </h3>
         <form action="${pageContext.request.contextPath}/clientes/${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
           <input type="hidden" id="id" name="id" value="${cliente.id}" />
@@ -67,7 +76,7 @@
             min="1"
             max="99999999999"
             required
-            ${readOnly ? "readonly" : "autofocus"}
+            ${cliente != null ? "readonly" : "autofocus"}
           />
           <input
             type="text"
@@ -87,7 +96,7 @@
             name="email"
             value="${cliente.email}"
             required
-            ${readOnly ? "readonly" : ""}
+            ${cliente != null ? "readonly" : ""}
           />
           <input
             type="date"
@@ -157,21 +166,24 @@
           />
           <div class="row">
             <div class="col-6">
-              <% if (request.getAttribute("readOnly") == null) { %>
-                <button type="submit" id="btn-ok">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                    <path fill="currentColor" d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM272 80v80H144V80h128zm122 352H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h42v104c0 13.255 10.745 24 24 24h176c13.255 0 24-10.745 24-24V83.882l78.243 78.243a6 6 0 0 1 1.757 4.243V426a6 6 0 0 1-6 6zM224 232c-48.523 0-88 39.477-88 88s39.477 88 88 88 88-39.477 88-88-39.477-88-88-88zm0 128c-22.056 0-40-17.944-40-40s17.944-40 40-40 40 17.944 40 40-17.944 40-40 40z"></path>
-                  </svg>
-                  Salvar
-                </button>
-              <% } else { %>
-                <a href="${pageContext.request.contextPath}/clientes/alterar?id=${cliente.id}" id="btn-ok" class="button">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                    <path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/>
-                  </svg>
-                  Editar
-                </a>
-              <% } %>
+              <c:choose>
+                <c:when test="${readOnly == null}">
+                  <button type="submit" id="btn-ok">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path fill="currentColor" d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM272 80v80H144V80h128zm122 352H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h42v104c0 13.255 10.745 24 24 24h176c13.255 0 24-10.745 24-24V83.882l78.243 78.243a6 6 0 0 1 1.757 4.243V426a6 6 0 0 1-6 6zM224 232c-48.523 0-88 39.477-88 88s39.477 88 88 88 88-39.477 88-88-39.477-88-88-88zm0 128c-22.056 0-40-17.944-40-40s17.944-40 40-40 40 17.944 40 40-17.944 40-40 40z"></path>
+                    </svg>
+                    Salvar
+                  </button>
+                </c:when>
+                <c:otherwise>
+                  <a href="${pageContext.request.contextPath}/clientes/alterar?id=${cliente.id}" id="btn-ok" class="button">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                      <path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/>
+                    </svg>
+                    Editar
+                  </a>
+                </c:otherwise>
+              </c:choose>
             </div>
             <div class="col-6">
               <a href="${pageContext.request.contextPath}/clientes" id="btn-cancel" class="button">
