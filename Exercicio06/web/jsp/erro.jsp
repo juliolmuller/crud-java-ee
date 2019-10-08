@@ -19,12 +19,11 @@
           <img src="${pageContext.request.contextPath}/img/uncheck-icon.png" id="icon" alt="Ícone de erro" />
         </div>
         <h3 class="mb-5 fade-in third text-danger">
-          <c:out value="${msg}" />
+          <c:out value="${pageContext.exception.message}" />
         </h3>
-        <div class="list-group list-group-flush fade-in then ">
-          <a href="${pageContext.request.contextPath}/" class="list-group-item underline-hover">
-            Acessar o formulário de login
-          </a>
+        <div class="text-danger fade-in then ">
+          ${pageContext.out.flush()}
+          ${pageContext.exception.printStackTrace(pageContext.response.writer)}
         </div>
         <div id="form-footer fade-in then" style="margin-top:3rem;">
           Em caso de problemas, contate-nos:<br>
