@@ -9,11 +9,16 @@ import java.util.Properties;
 public abstract class ConnectionFactory {
 
     private static final String PROPS_FILE = "/br/ufpr/tads/web2/dao/db.properties";
+    private static Properties props = null;
 
+    private ConnectionFactory() {}
+    
     public static Connection getConnection() {
         try {
-            Properties props = new Properties();
-            props.load(ConnectionFactory.class.getResourceAsStream(PROPS_FILE));
+            if (props == null) {
+                props = new Properties();
+                props.load(ConnectionFactory.class.getResourceAsStream(PROPS_FILE));
+            }
             Class.forName(props.getProperty("db.driver"));
             String dbUrl = props.getProperty("db.url")
                 + props.getProperty("db.host") + ":"
