@@ -2,7 +2,7 @@ package br.ufpr.tads.web2.servlets;
 
 import br.ufpr.tads.web2.beans.Cliente;
 import br.ufpr.tads.web2.beans.Endereco;
-import br.ufpr.tads.web2.dao.ClienteDAO;
+import br.ufpr.tads.web2.facades.ClienteFacade;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,7 @@ public class AlterarClienteServlet extends HttpServlet {
         Cliente cliente = null;
         try {
             Integer id = Integer.parseInt(request.getParameter("id"));
-            cliente = ClienteDAO.comId(id);
+            cliente = ClienteFacade.buscar(id);
             if (cliente == null) {
                 throw new NullPointerException();
             }
@@ -68,7 +68,7 @@ public class AlterarClienteServlet extends HttpServlet {
         cliente.setEndereco(endereco);
 
         // Salvar cliente em banco de dados e redirecionar para lista
-        ClienteDAO.atualizar(cliente);
+        ClienteFacade.alterar(cliente);
         response.sendRedirect(request.getContextPath() + "/clientes");
     }
 }

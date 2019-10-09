@@ -1,8 +1,5 @@
 package br.ufpr.tads.web2.servlets;
 
-import br.ufpr.tads.web2.beans.Cliente;
-import br.ufpr.tads.web2.beans.Endereco;
-import br.ufpr.tads.web2.dao.ClienteDAO;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.ufpr.tads.web2.beans.Cliente;
+import br.ufpr.tads.web2.beans.Endereco;
+import br.ufpr.tads.web2.facades.ClienteFacade;
 
 @WebServlet(name = "NovoCliente", urlPatterns = {"/clientes/novo"})
 public class NovoClienteServlet extends HttpServlet {
@@ -57,15 +57,16 @@ public class NovoClienteServlet extends HttpServlet {
         cliente.setEndereco(endereco);
 
         // Validar se CPF já está cadastrado
-        if (ClienteDAO.comCpf(cpf) != null) {
+        if (ClienteFacade.buscar(cpf) != null) {
             request.setAttribute("cliente", cliente);
             request.setAttribute("erro", "CPF já cadastrado!");
             this.doGet(request, response);
-            return;
         }
 
         // Salvar cliente em banco de dados e redirecionar para lista
-        ClienteDAO.inserir(cliente);
-        response.sendRedirect(request.getContextPath() + "/clientes");
+        else {
+            ClienteFacade.inserir(cliente);
+            response.sendRedirect(request.getContextPath() + "/clientes");
+        }
     }
 }
