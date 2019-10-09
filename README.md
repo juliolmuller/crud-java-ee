@@ -39,4 +39,26 @@ Incremente a aplicação do exercício 04 elaborando um CRUD completo com a **ta
 
 Incremente a aplicação do exercício 05 implementando alguns design patters, conforme o enunciado.
 
-...
+- Arquivo de configuração do banco de dados: [`src/java/br/ufpr/tads/web2/dao/db.properties.example`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db.properties.example) (fazer uma cópia e renomeá-la como `db.properties`)
+- Scripts de criação de tabelas e inserção de dados: [`src/java/br/ufpr/tads/web2/dao/db-setup.sql`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db-setup.sql)
+
+**Rotas da aplicação:**
+
+| URL                    | Método   | Restrita           | JSP/Servlet         | Ação                                                                                 |
+| ---------------------- | -------- | ------------------ | ------------------- | ------------------------------------------------------------------------------------ |
+| `/` ou `/index.jsp`    | *GET*    | :x:                | `/index.jsp`        | Exibe formulário de acesso ao sistema.                                               |
+| `/login`               | *POST*   | :x:                | `LoginServlet`      | Valida os parâmetros **login** e **senha** e guarda dados na sessão do usuário.      |
+| `/logout`              | *GET*    | :heavy_check_mark: | `LogoutServlet`     | Invalida a sessão existente.                                                         |
+| `/portal.jsp`          | *GET*    | :heavy_check_mark: | `/portal.jsp`       | Exibe a página inicial do sistema, com menu para formulários de usuários e clientes. |
+| `/usuarios`            | *GET*    | :heavy_check_mark: | `ApiUsuarioServlet` | Exibe a SPA para gerenciamento de usuários.                                          |
+| `/api/usuarios`        | *GET*    | :heavy_check_mark: | `ApiUsuarioServlet` | Retorna todos os registros de usuários no formato JSON.                              |
+| `/api/usuarios`        | *POST*   | :heavy_check_mark: | `ApiUsuarioServlet` | Salva um novo registro de usuário.                                                   |
+| `/api/usuarios`        | *PUT*    | :heavy_check_mark: | `ApiUsuarioServlet` | Atualiza um registro de usuário existente.                                           |
+| `/api/usuarios`        | *DELETE* | :heavy_check_mark: | `ApiUsuarioServlet` | Exclui um registro de usuário.                                                       |
+| `/clientes`            | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe uma lista de todos os clientes cadastrados.                                    |
+| `/clientes/novo`       | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe o formulário para criação de novo cliente.                                     |
+| `/clientes/novo`       | *POST*   | :heavy_check_mark: | `ClienteServlet`    | Lê os parâmetros recebidos e insere um novo registro de cliente.                     |
+| `/clientes/visualizar` | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe os dados de um cliente em modo leitura.                                        |
+| `/clientes/atualizar`  | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe o formulário para edição de cliente existente.                                 |
+| `/clientes/atualizar`  | *POST*   | :heavy_check_mark: | `ClienteServlet`    | Lê os parâmetros recebidos e atualiza o registro existente.                          |
+| `/clientes/excluir`    | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Executa a exclusão de um registro de cliente a partir de um parâmetro **ID**..       |
