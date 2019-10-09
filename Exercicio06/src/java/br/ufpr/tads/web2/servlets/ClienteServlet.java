@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @WebServlet(name = "Clientes", urlPatterns = {"/clientes/*"})
-public class ClientesServlet extends HttpServlet {
+public class ClienteServlet extends HttpServlet {
 
     @Override
     protected void doGet(
