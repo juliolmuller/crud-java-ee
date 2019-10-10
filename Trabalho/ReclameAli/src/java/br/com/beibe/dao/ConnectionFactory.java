@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public abstract class ConnectionFactory {
 
-    private static final String PROPS_FILE = "/db.properties";
+    private static final String PROPS_FILE = "/db.props";
     private static Properties props = null;
 
     private ConnectionFactory() {}
