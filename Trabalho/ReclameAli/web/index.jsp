@@ -10,32 +10,17 @@
     <title>
       RECLAME ALI :: [Trabalho Web 2 (parte 1) - ProtÃ³tipo]
     </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/fontawesome.min.css" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
   </head>
   <body>
-
-    <!-- CabeÃ§alho de aviso de prototipagem -->
-    <div class="conteiner-fluid bg-dark">
-      <div class="d-flex justify-content-between text-white">
-        <div><small><b>ProtÃ³tipo Funcional do Sistema</b></small></div>
-        <div>
-          <small>
-            <b>VisÃµes:</b>
-            <a href="cliente/index.html">Cliente</a> |
-            <a href="funcionario/index.html">FuncionÃ¡rio</a> |
-            <a href="gerente/index.html">Gerente</a>
-          </small>
-        </div>
-      </div>
-    </div>
 
     <!-- Corpo da pÃ¡gina -->
     <main class="container mb-5">
       <div class="text-center">
         <h1 class="text-primary display-3 c-title">
-          <img src="assets/reclame-ali-blue.png" class="c-logo-large" alt="Logo do Sistema" />
+          <img src="${pageContext.request.contextPath}/img/reclame-ali-blue.png" class="c-logo-large" alt="Logo do Sistema" />
           Reclame Ali
         </h1>
         <span class="text-secondary c-subtitle">
@@ -48,7 +33,7 @@
           <!-- FormulÃ¡rio de login -->
           <form id="form-login" action="#" method="POST" class="card">
             <h2 class="card-header">Entrar</h2>
-            <img class="card-img-top" src="assets/cover.jpg" alt="Capa">
+            <img class="card-img-top" src="img/cover.jpg" alt="Capa">
             <div class="card-body">
               <a class="card-text mt-1">
                 VocÃª estÃ¡ prestes a acessar o sistema SAC (ServiÃ§o de Atendimento ao Cliente) da empresa mais top
@@ -234,7 +219,7 @@
       </div>
     </div>
 
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
   </body>
 </html>

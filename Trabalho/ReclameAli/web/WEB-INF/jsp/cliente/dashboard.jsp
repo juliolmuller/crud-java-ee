@@ -10,32 +10,17 @@
     <title>
       RECLAME ALI :: [Trabalho Web 2 (parte 1) - Protótipo]
     </title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/fontawesome.min.css" />
-    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
   </head>
   <body>
-
-    <!-- Cabeçalho de aviso de prototipagem -->
-    <div class="conteiner-fluid bg-dark">
-      <div class="d-flex justify-content-between text-white">
-        <div><small><b>Protótipo Funcional do Sistema</b></small></div>
-        <div>
-          <small>
-            <b>Visões:</b>
-            <a href="../cliente/index.html">Cliente</a> |
-            <a href="../funcionario/index.html">Funcionário</a> |
-            <a href="../gerente/index.html">Gerente</a>
-          </small>
-        </div>
-      </div>
-    </div>
 
     <!-- Cabeçalho da página -->
     <header class="container-fluid bg-dark mb-5">
       <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
         <a class="navbar-brand" href="index.html">
-          <img src="../assets/reclame-ali-white.png" width="30" height="30" class="d-inline-block align-top" alt="Logo do sistema" />
+          <img src="${pageContext.request.contextPath}/img/reclame-ali-white.png" width="30" height="30" class="d-inline-block align-top" alt="Logo do sistema" />
           <span class="text-white-50 h4 c-title">Reclame Ali</span>
         </a>
         <div class="container">
@@ -93,7 +78,7 @@
       </div>
     </main>
 
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
   </body>
 </html>
