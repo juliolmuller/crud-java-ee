@@ -53,7 +53,7 @@ public class PublicRoutesServlet extends HttpServlet {
                 }
                 return;
             case "signup":
-                Usuario newUser = extractIserData(request);
+                Usuario newUser = extractUserData(request);
                 List<String> errors = UsuarioFacade.validate(newUser);
                 if (errors.isEmpty()) {
                     try {
@@ -77,7 +77,7 @@ public class PublicRoutesServlet extends HttpServlet {
         request.getRequestDispatcher(rolesRoutes.getProperty(user.getRole())).forward(request, response);
     }
 
-    private Usuario extractIserData(HttpServletRequest request) {
+    private Usuario extractUserData(HttpServletRequest request) {
         return null;
     }
 }

@@ -5,13 +5,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public final class ClienteController {
+public final class GerenteController {
 
-    private static ClienteController classInstance;
+    private static GerenteController classInstance;
 
-    public static ClienteController getInstance() {
+    public static GerenteController getInstance() {
         if (classInstance == null)
-            classInstance = new ClienteController();
+            classInstance = new GerenteController();
         return classInstance;
     }
 
@@ -29,13 +29,6 @@ public final class ClienteController {
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
     }
 
-    public void displayNewTicketForm(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
-    }
-
     public void displayExistingTicketForm(
         HttpServletRequest request,
         HttpServletResponse response
@@ -43,38 +36,45 @@ public final class ClienteController {
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
     }
 
-    public void displayCustomerData(
+    public void displayUsers(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/users-index.jsp").forward(request, response);
+    }
+
+    public void displayUsersForm(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
     }
 
-    public void displayCustomerDataForm(
+    public void generateReport(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/gerente");
     }
 
-    public void processNewTicket(
+    public void processNewUser(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
+        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
     }
 
-    public void processExistingTicket(
+    public void processExistingUser(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
+        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
     }
 
-    public void processExistingCustomer(
+    public void deleteUser(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/dados-pessoais");
+        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
     }
 }

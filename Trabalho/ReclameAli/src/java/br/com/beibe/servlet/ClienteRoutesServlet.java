@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.controller.ClienteController;
 
-@WebServlet(name = "PublicRoutes", urlPatterns = {"/cliente/*"})
-public class ClienteServlet extends HttpServlet {
+@WebServlet(name = "ClienteRoutes", urlPatterns = {"/cliente/*"})
+public class ClienteRoutesServlet extends HttpServlet {
 
     private final ClienteController ctrl = ClienteController.getInstance();
 
@@ -18,8 +18,9 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURL().substring(request.getContextPath().length());
+        String uri = request.getRequestURI().substring((request.getContextPath() + "/cliente").length());
         switch (uri) {
+            case "":
             case "/":
                 ctrl.displayHome(request, response);
                 return;
@@ -29,7 +30,7 @@ public class ClienteServlet extends HttpServlet {
             case "/atendimentos/novo":
                 ctrl.displayNewTicketForm(request, response);
                 return;
-            case "/atendimentos/info":
+            case "/atendimentos/acompanhar":
                 ctrl.displayExistingTicketForm(request, response);
                 return;
             case "/dados-pessoais":
@@ -39,6 +40,7 @@ public class ClienteServlet extends HttpServlet {
                 ctrl.displayCustomerDataForm(request, response);
                 return;
             default:
+                System.out.println("Cliente 404: (GET) " + uri);
                 response.sendError(404);
         }
     }
@@ -48,18 +50,19 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURL().substring(request.getContextPath().length());
+        String uri = request.getRequestURI().substring(request.getContextPath().length());
         switch (uri) {
             case "/atendimentos/novo":
                 ctrl.processNewTicket(request, response);
                 return;
-            case "/atendimentos/info":
-                ctrl.processTicketUpdate(request, response);
+            case "/atendimentos/acompanhar":
+                ctrl.processExistingTicket(request, response);
                 return;
             case "/dados-pessoais/editar":
-                ctrl.processCustomerUpdate(request, response);
+                ctrl.processExistingCustomer(request, response);
                 return;
             default:
+                System.out.println("Cliente 404: (POST) " + uri);
                 response.sendError(404);
         }
     }
