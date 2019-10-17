@@ -14,18 +14,18 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="atendimentos.html">Meus Atendimentos</a>
+            <a class="nav-link active" href="${baseUri}/atendimentos">Meus Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="cliente-dados.html">Meus Dados</a>
+            <a class="nav-link" href="${baseUri}/dados-pessoais">Meus Dados</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -40,7 +40,7 @@
     </h2>
 
     <%-- Botão para abertura de novo atendimento --%>
-    <a href="atendimentos-form.html" class="btn btn-lg btn-primary">
+    <a href="${baseUri}/atendimentos/novo" class="btn btn-lg btn-primary">
       <i class="fa fa-plus"></i>
       Solicitar Atendimento
     </a>
@@ -59,14 +59,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="c-clickable text-center" data-href="atendimentos-form.html">
+          <tr class="c-clickable text-center" data-href="${baseUri}/atendimentos/editar">
             <th scope="row">100123</th>
             <td>Shampoo Ass-Hair (para cachos ruivos)</td>
             <td>Produto não recebido</td>
             <td>15-set-2019</td>
             <td><span class="badge badge-sm badge-info c-status">Recebido</span></td>
           </tr>
-          <tr class="c-clickable text-center" data-href="atendimentos-form.html">
+          <tr class="c-clickable text-center" data-href="${baseUri}/atendimentos/editar">
             <th scope="row">100123</th>
             <td>Sabonete SOAP (aroma lavanda)</td>
             <td>Produto com defeito</td>

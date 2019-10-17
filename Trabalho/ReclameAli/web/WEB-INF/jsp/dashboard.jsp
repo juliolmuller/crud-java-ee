@@ -14,18 +14,18 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">Início</a>
+            <a class="nav-link active" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="atendimentos.html">Meus Atendimentos</a>
+            <a class="nav-link" href="${baseUri}/atendimentos">Meus Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="cliente-dados.html">Meus Dados</a>
+            <a class="nav-link" href="${baseUri}/dados-pessoais">Meus Dados</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -48,7 +48,7 @@
             <p class="card-text h6">
               atendimento(s)<br> em aberto
             </p>
-            <a href="atendimentos.html" class="stretched-link h-0"></a>
+            <a href="${baseUri}/atendimentos" class="stretched-link h-0"></a>
           </div>
         </div>
         <div class="card border border-primary text-primary">
@@ -59,7 +59,7 @@
             <p class="card-text h6">
               Solicitar Atendimento
             </p>
-            <a href="atendimentos-form.html" class="stretched-link h-0"></a>
+            <a href="${baseUri}/atendimentos/novo" class="stretched-link h-0"></a>
           </div>
         </div>
       </div>

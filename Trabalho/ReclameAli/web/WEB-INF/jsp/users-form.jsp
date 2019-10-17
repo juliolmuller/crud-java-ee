@@ -14,18 +14,18 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="atendimentos.html">Meus Atendimentos</a>
+            <a class="nav-link" href="${baseUri}/atendimentos">Meus Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="cliente-dados.html">Meus Dados</a>
+            <a class="nav-link active" href="${baseUri}/dados-pessoais">Meus Dados</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -40,7 +40,7 @@
     </h2>
 
     <%-- Formulário dos dados do usuário --%>
-    <form action="#" method="POST" class="mt-5">
+    <form action="${baseUri}/dados-pessoais/editar" method="POST" class="mt-5">
       <div class="row">
         <div class="col-12 jsutify-content-between">
           <button type="submit" class="btn btn-primary float-right w-25">
@@ -178,7 +178,7 @@
     </form>
 
     <%-- Formulário de alteração de senha --%>
-    <form action="#" method="POST" class="mt-5">
+    <form action="${baseUri}/dados-pessoais/editar?password=true" method="POST" class="mt-5">
       <div class="row">
         <div class="col-12 jsutify-content-between">
           <button type="submit" class="btn btn-primary float-right w-25">

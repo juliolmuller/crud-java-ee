@@ -14,18 +14,18 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="atendimentos.html">Meus Atendimentos</a>
+            <a class="nav-link active" href="${baseUri}/atendimentos">Meus Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="cliente-dados.html">Meus Dados</a>
+            <a class="nav-link" href="${baseUri}/dados-pessoais">Meus Dados</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -40,7 +40,7 @@
     </h2>
 
     <%-- Formulário para abertura de atendimento --%>
-    <form action="atendimentos.html" method="POST">
+    <form action="${baseUri}/atendimentos/novo" method="POST">
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="form-group">

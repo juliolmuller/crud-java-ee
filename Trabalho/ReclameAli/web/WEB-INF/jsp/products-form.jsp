@@ -14,21 +14,21 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="atendimentos.html">Atendimentos</a>
+            <a class="nav-link" href="${baseUri}/atendimentos">Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="categorias.html">Cadastro de Categorias</a>
+            <a class="nav-link" href="${baseUri}/categorias">Cadastro de Categorias</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="produtos.html">Cadastro de Produtos</a>
+            <a class="nav-link active" href="${baseUri}/produtos">Cadastro de Produtos</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -43,7 +43,7 @@
     </h2>
 
     <%-- Formulário para criação de produto --%>
-    <form action="produtos.html" method="POST">
+    <form action="${baseUri}/produtos/novo" method="POST">
       <div class="row">
         <div class="col-12 jsutify-content-between">
           <button type="submit" class="btn btn-primary float-right w-25">

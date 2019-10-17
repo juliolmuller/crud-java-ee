@@ -14,18 +14,18 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="atendimentos.html">Meus Atendimentos</a>
+            <a class="nav-link" href="${baseUri}/atendimentos">Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="cliente-dados.html">Meus Dados</a>
+            <a class="nav-link active" href="${baseUri}/colaboradores">Cadastro de Colaboradores</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -36,173 +36,138 @@
   <%-- Corpo da página --%>
   <main class="container">
     <h2 class="mb-4">
-      Meus Dados
+      Cadastro de Funcionários & Gerentes
     </h2>
 
-    <%-- Formulário dos dados do usuário --%>
-    <form action="#" method="POST" class="mt-5">
-      <div class="row">
-        <div class="col-12 jsutify-content-between">
-          <button type="submit" class="btn btn-primary float-right w-25">
-            <i class="far fa-save"></i>
-            Salvar
-          </button>
-          <h3 class="mb-3 h4">Dados Pessoais</h3>
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="cliente-nome">Nome completo:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-user"></i>
-                </span>
-              </div>
-              <input type="text" id="cliente-nome" class="form-control" value="Josnei Ornitorrinco da Silva" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-cpf">CPF:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fab fa-slack-hash"></i>
-                </span>
-              </div>
-              <input type="text" id="cliente-cpf" class="form-control" value="123.456.789-10" readonly />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-data-nasc">Data de nascimento:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="far fa-calendar-alt"></i>
-                </span>
-              </div>
-              <input type="date" id="cliente-data-nasc" class="form-control" name="data_nasc" value="2000-06-24" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-email">Email de acesso:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-at"></i>
-                </span>
-              </div>
-              <input type="email" id="cliente-email" class="form-control" value="josnei@email.com" readonly />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-telefone">Telefone de contato:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-mobile-alt"></i>
-                </span>
-              </div>
-              <input type="text" id="cliente-telefone" class="form-control" value="(41) 99988-8777" />
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="cliente-cep">CEP:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-map-marker-alt"></i>
-                </span>
-              </div>
-              <input type="text" id="cliente-cep" class="form-control" name="cep" value="82510-100" />
-              <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" id="buscar-cep">
-                  Buscar CEP
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-rua">Endereço:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-map"></i>
-                </span>
-              </div>
-              <input type="text" id="cliente-rua" class="form-control" name="rua" value="Rua Venezuela" readonly />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label for="cliente-numero">Endereço:</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="fas fa-map-marked-alt"></i>
-                    </span>
-                  </div>
-                  <input type="number" id="cliente-numero" class="form-control" name="numero" value="220" />
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label for="cliente-complemento">Complemento:</label>
-                <input type="text" id="cliente-complemento" class="form-control" name="complemento" value="" />
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-cidade">Cidade:</label>
-            <input type="text" id="cliente-cidade" class="form-control" name="cidade" value="Curitiba" readonly />
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label for="cliente-estado">Estado:</label>
-                <input type="text" id="cliente-estado" class="form-control" name="estado" value="PR" readonly />
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label for="cliente-pais">País:</label>
-                <input type="text" id="cliente-pais" class="form-control" value="Brasil" readonly />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
+    <%-- Botão para abertura de novo atendimento --%>
+    <a href="${baseUri}/colaboradores/novo" class="btn btn-lg btn-primary">
+      <i class="fa fa-plus"></i>
+      Novo Colaborador
+    </a>
 
-    <%-- Formulário de alteração de senha --%>
-    <form action="#" method="POST" class="mt-5">
-      <div class="row">
-        <div class="col-12 jsutify-content-between">
-          <button type="submit" class="btn btn-primary float-right w-25">
-            <i class="far fa-save"></i>
-            Alterar
-          </button>
-          <h3 class="mb-3 h4">Alterar Senha</h3>
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="cliente-senha-atual">Senha atual:</label>
-            <input type="password" id="cliente-senha-atual" class="form-control" name="senha_atual" />
-          </div>
-          <div class="form-group">
-            <label for="cliente-senha-nova1">Nova senha:</label>
-            <input type="password" id="cliente-senha-nova1" class="form-control" name="senha_nova1" />
-          </div>
-          <div class="form-group">
-            <label for="cliente-senha-nova2">Repetir nova senha:</label>
-            <input type="password" id="cliente-senha-nova2" class="form-control" name="senha_nova2" />
-          </div>
-        </div>
-      </div>
-    </form>
+    <%-- Tabela com atendimentos em aberto --%>
+    <div class="mt-5">
+      <table class="table table-hover">
+        <thead class="c-thead">
+          <tr class="text-center">
+            <th scope="col">#</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Nome Completo</th>
+            <th scope="col">Nascido em</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Gerente</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center">
+            <th scope="row">809</th>
+            <td>123.456.789-10</td>
+            <td class="text-left">Josnei da Silva Peixoto</td>
+            <td>18-dez-1992</td>
+            <td>99988-8777</td>
+            <td><i class="fas fa-user-check"></i></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">820</th>
+            <td>111.222.333-44</td>
+            <td class="text-left">Josnete Claudete</td>
+            <td>24-jun-1995</td>
+            <td>99988-8777</td>
+            <td></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">822</th>
+            <td>444.555.666-77</td>
+            <td class="text-left">Aurélio Dicionários</td>
+            <td>18-dez-1992</td>
+            <td>99988-8777</td>
+            <td><i class="fas fa-user-check"></i></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">829</th>
+            <td>777.888.999-00</td>
+            <td class="text-left">Darti Veiderson</td>
+            <td>1-jan-1990</td>
+            <td>99988-8777</td>
+            <td></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">830</th>
+            <td>098.765.432-10</td>
+            <td class="text-left">Milkicheickson Ostentação</td>
+            <td>30-jun-1999</td>
+            <td>99988-8777</td>
+            <td></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">832</th>
+            <td>090.871.219-01</td>
+            <td class="text-left">Dilermano Júnior</td>
+            <td>24-out-1997</td>
+            <td>99988-8777</td>
+            <td></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr class="text-center">
+            <th scope="row">834</th>
+            <td>123.321.132-31</td>
+            <td class="text-left">Samuela Fisher</td>
+            <td>2-mai-1998</td>
+            <td>99988-8777</td>
+            <td></td>
+            <td>
+              <a href="${baseUri}/colaboradores/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/colaboradores/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/colaboradores/exckuir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </main>
 
 </t:baseLayout>

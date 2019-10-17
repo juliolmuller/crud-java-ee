@@ -14,21 +14,21 @@
       <div class="container">
         <ul class="navbar-nav text-white">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
+            <a class="nav-link" href="${baseUri}/">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="atendimentos.html">Atendimentos</a>
+            <a class="nav-link" href="${baseUri}/atendimentos">Atendimentos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="categorias.html">Cadastro de Categorias</a>
+            <a class="nav-link active" href="${baseUri}/categorias">Cadastro de Categorias</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="produtos.html">Cadastro de Produtos</a>
+            <a class="nav-link" href="${baseUri}/produtos">Cadastro de Produtos</a>
           </li>
         </ul>
       </div>
       <div class="form-inline">
-        <a href="../index.html" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
           <i class="fas fa-door-open"></i>
           Sair
         </a>
@@ -43,7 +43,7 @@
     </h2>
 
     <%-- Botão para abertura de novo atendimento --%>
-    <a href="categorias-form.html" class="btn btn-lg btn-primary">
+    <a href="${baseUri}/categorias/nova" class="btn btn-lg btn-primary">
       <i class="fa fa-plus"></i>
       Criar Nova Categoria
     </a>
@@ -63,45 +63,55 @@
             <th scope="row">2001</th>
             <td>Sabonetes</td>
             <td>
-              <a href="categorias-form.html" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
-              <a href="categorias-form.html" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+              <a href="${baseUri}/categorias/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/categorias/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/categorias/excluir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
             </td>
           </tr>
           <tr class="text-center">
             <th scope="row">2002</th>
             <td>Maquiagens</td>
             <td>
-              <a href="categorias-form.html" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
-              <a href="categorias-form.html" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+              <a href="${baseUri}/categorias/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/categorias/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/categorias/excluir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
             </td>
           </tr>
           <tr class="text-center">
             <th scope="row">2003</th>
             <td>Batons</td>
             <td>
-              <a href="categorias-form.html" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
-              <a href="categorias-form.html" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+              <a href="${baseUri}/categorias/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/categorias/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/categorias/excluir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
             </td>
           </tr>
           <tr class="text-center">
             <th scope="row">2004</th>
             <td>Xampus Femininos</td>
             <td>
-              <a href="categorias-form.html" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
-              <a href="categorias-form.html" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+              <a href="${baseUri}/categorias/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/categorias/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/categorias/excluir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
             </td>
           </tr>
           <tr class="text-center">
             <th scope="row">2005</th>
             <td>Xampus Masculinos</td>
             <td>
-              <a href="categorias-form.html" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
-              <a href="categorias-form.html" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+              <a href="${baseUri}/categorias/visualizar" class="btn btn-sm btn-success" title="Visualizar"><i class="fas fa-eye"></i></a>
+              <a href="${baseUri}/categorias/editar" class="btn btn-sm btn-info" title="Editar"><i class="fas fa-edit"></i></a>
+              <form action="${baseUri}/categorias/excluir">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+              </form>
             </td>
           </tr>
         </tbody>
