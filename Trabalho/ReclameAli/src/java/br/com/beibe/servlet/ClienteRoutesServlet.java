@@ -18,7 +18,9 @@ public class ClienteRoutesServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURI().substring((request.getContextPath() + "/cliente").length());
+        String baseUri = request.getContextPath() + "/cliente";
+        request.setAttribute("baseUri", baseUri);
+        String uri = request.getRequestURI().substring(baseUri.length());
         switch (uri) {
             case "":
             case "/":

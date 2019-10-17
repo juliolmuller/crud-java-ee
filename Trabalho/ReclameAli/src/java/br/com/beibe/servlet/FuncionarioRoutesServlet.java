@@ -18,7 +18,9 @@ public class FuncionarioRoutesServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURI().substring((request.getContextPath() + "/funcionario").length());
+        String baseUri = request.getContextPath() + "/funcionario";
+        request.setAttribute("baseUri", baseUri);
+        String uri = request.getRequestURI().substring(baseUri.length());
         switch (uri) {
             case "":
             case "/":

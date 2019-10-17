@@ -18,7 +18,9 @@ public class GerenteRoutesServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURI().substring((request.getContextPath() + "/gerente").length());
+        String baseUri = request.getContextPath() + "/gerente";
+        request.setAttribute("baseUri", baseUri);
+        String uri = request.getRequestURI().substring(baseUri.length());
         switch (uri) {
             case "":
             case "/":
