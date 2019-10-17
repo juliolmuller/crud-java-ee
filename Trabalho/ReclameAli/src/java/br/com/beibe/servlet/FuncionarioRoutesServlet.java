@@ -34,6 +34,7 @@ public class FuncionarioRoutesServlet extends HttpServlet {
                 ctrl.displayCategories(request, response);
                 return;
             case "/categorias/nova":
+            case "/categorias/visualizar":
             case "/categorias/editar":
                 ctrl.displayCategoriesForm(request, response);
                 return;
@@ -41,6 +42,7 @@ public class FuncionarioRoutesServlet extends HttpServlet {
                 ctrl.displayProducts(request, response);
                 return;
             case "/produtos/novo":
+            case "/produtos/visualizar":
             case "/produtos/editar":
                 ctrl.displayProductsForm(request, response);
                 return;

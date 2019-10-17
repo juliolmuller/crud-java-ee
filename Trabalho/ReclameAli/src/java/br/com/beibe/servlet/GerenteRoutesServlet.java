@@ -34,6 +34,7 @@ public class GerenteRoutesServlet extends HttpServlet {
                 ctrl.displayUsers(request, response);
                 return;
             case "/colaboradores/novo":
+            case "/colaboradores/visualizar":
             case "/colaboradores/editar":
                 ctrl.displayUsersForm(request, response);
                 return;
