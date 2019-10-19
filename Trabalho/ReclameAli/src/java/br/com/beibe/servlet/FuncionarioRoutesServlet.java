@@ -1,17 +1,30 @@
 package br.com.beibe.servlet;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.com.beibe.beans.Hyperlink;
 import br.com.beibe.controller.FuncionarioController;
 
 @WebServlet(name = "FuncionarioRoutes", urlPatterns = {"/funcionario/*"})
 public class FuncionarioRoutesServlet extends HttpServlet {
 
     private final FuncionarioController ctrl = FuncionarioController.getInstance();
+
+    private void setHeaderLinks(HttpServletRequest request, int activePage) {
+        List<Hyperlink> headerLinks = new ArrayList<>();
+        headerLinks.add(new Hyperlink("Home", "/"));
+        headerLinks.add(new Hyperlink("Atendimentos", "/atendimentos"));
+        headerLinks.add(new Hyperlink("Categorias", "/categorias"));
+        headerLinks.add(new Hyperlink("Produtos", "/produtos"));
+        headerLinks.get(activePage).setActive(true);
+        request.setAttribute("headerLinks", headerLinks);
+    }
 
     @Override
     protected void doGet(
@@ -24,28 +37,35 @@ public class FuncionarioRoutesServlet extends HttpServlet {
         switch (uri) {
             case "":
             case "/":
+                setHeaderLinks(request, 0);
                 ctrl.displayHome(request, response);
                 return;
             case "/atendimentos":
+                setHeaderLinks(request, 1);
                 ctrl.displayTickets(request, response);
                 return;
             case "/atendimentos/acompanhar":
+                setHeaderLinks(request, 1);
                 ctrl.displayExistingTicketForm(request, response);
                 return;
             case "/categorias":
+                setHeaderLinks(request, 2);
                 ctrl.displayCategories(request, response);
                 return;
             case "/categorias/nova":
             case "/categorias/visualizar":
             case "/categorias/editar":
+                setHeaderLinks(request, 2);
                 ctrl.displayCategoriesForm(request, response);
                 return;
             case "/produtos":
+                setHeaderLinks(request, 3);
                 ctrl.displayProducts(request, response);
                 return;
             case "/produtos/novo":
             case "/produtos/visualizar":
             case "/produtos/editar":
+                setHeaderLinks(request, 3);
                 ctrl.displayProductsForm(request, response);
                 return;
             default:

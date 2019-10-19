@@ -5,36 +5,7 @@
 <t:baseLayout>
 
   <%-- Cabeçalho da página --%>
-  <header class="container-fluid bg-dark mb-5">
-    <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
-      <a class="navbar-brand" href="index.html">
-        <img src="${pageContext.request.contextPath}/img/reclame-ali-white.png" width="30" height="30" class="d-inline-block align-top" alt="Logo do sistema" />
-        <span class="text-white-50 h4 c-title">Reclame Ali</span>
-      </a>
-      <div class="container">
-        <ul class="navbar-nav text-white">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Início</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="atendimentos.html">Atendimentos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categorias.html">Cadastro de Categorias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="produtos.html">Cadastro de Produtos</a>
-          </li>
-        </ul>
-      </div>
-      <div class="form-inline">
-        <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
-          <i class="fas fa-door-open"></i>
-          Sair
-        </a>
-      </div>
-    </nav>
-  </header>
+  <t:header baseUrl="${baseUri}" hyperlinks="${headerLinks}" />
 
   <%-- Corpo da página --%>
   <main class="container">

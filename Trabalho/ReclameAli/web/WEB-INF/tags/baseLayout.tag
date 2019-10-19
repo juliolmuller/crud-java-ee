@@ -1,3 +1,5 @@
+<%@tag language="java" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -5,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-      BEIBE :: Reclame Ali - Serviço de Atendimento ao Cliente
+      BEIBE :: Reclame Ali - ServiÃ§o de Atendimento ao Cliente
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome.min.css" />
