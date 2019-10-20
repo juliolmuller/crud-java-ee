@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletConfig;
 import javax.servlet.annotation.WebInitParam;
-import br.com.beibe.beans.Usuario;
-import br.com.beibe.facade.UsuarioFacade;
+import br.com.beibe.beans.User;
+import br.com.beibe.facade.UserFacade;
 
 @WebServlet(name = "PublicRoutes", urlPatterns = {"/entrar"}, initParams = {
     @WebInitParam(name = "routesFile", value = "/routes.properties")
@@ -44,7 +44,7 @@ public class PublicRoutesServlet extends HttpServlet {
             case "signin":
                 String login = request.getParameter("login");
                 String password = request.getParameter("password");
-                Usuario user = UsuarioFacade.authenticate(login, password);
+                User user = UserFacade.authenticate(login, password);
                 if (user != null) {
                     configSessionAndForward(user, request, response);
                 } else {
@@ -53,11 +53,11 @@ public class PublicRoutesServlet extends HttpServlet {
                 }
                 return;
             case "signup":
-                Usuario newUser = extractUserData(request);
-                List<String> errors = UsuarioFacade.validate(newUser);
+                User newUser = extractUserData(request);
+                List<String> errors = UserFacade.validate(newUser);
                 if (errors.isEmpty()) {
                     try {
-                        UsuarioFacade.save(newUser);
+                        UserFacade.save(newUser);
                         configSessionAndForward(newUser, request, response);
                     } catch (SQLException ex) {
                         throw new ServletException(ex);
@@ -70,14 +70,14 @@ public class PublicRoutesServlet extends HttpServlet {
         response.sendError(404);
     }
 
-    private void configSessionAndForward(Usuario user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void configSessionAndForward(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("userData", user);
         session.setAttribute("accessRole", user.getRole());
-        request.getRequestDispatcher(rolesRoutes.getProperty(user.getRole())).forward(request, response);
+        request.getRequestDispatcher(rolesRoutes.getProperty("cliente")).forward(request, response);
     }
 
-    private Usuario extractUserData(HttpServletRequest request) {
+    private User extractUserData(HttpServletRequest request) {
         return null;
     }
 }
