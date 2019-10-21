@@ -48,7 +48,7 @@ public class PublicRoutesServlet extends HttpServlet {
                 if (user != null) {
                     configSessionAndForward(user, request, response);
                 } else {
-                    request.setAttribute("authError", "Usuário e/ou senha inválidos.");
+                    request.setAttribute("authError", true);
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
                 }
                 return;

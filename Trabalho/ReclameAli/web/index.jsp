@@ -24,7 +24,7 @@
         <p class="mb-3 h5 text-center">
           Forneça suas credenciais de acesso:
         </p>
-        <c:if test="${signinFail != null}">
+        <c:if test="${authError != null}">
           <div class="alert alert-danger border-danger c-alert" role="alert">
             Credenciais inválidas. Tente novamente!
           </div>
