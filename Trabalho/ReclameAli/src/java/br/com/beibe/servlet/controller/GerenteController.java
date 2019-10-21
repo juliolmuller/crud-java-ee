@@ -1,4 +1,4 @@
-package br.com.beibe.controller;
+package br.com.beibe.servlet.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

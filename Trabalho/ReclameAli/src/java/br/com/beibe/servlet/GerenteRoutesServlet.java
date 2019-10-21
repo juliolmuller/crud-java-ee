@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
-import br.com.beibe.controller.GerenteController;
+import br.com.beibe.servlet.controller.GerenteController;
 
 @WebServlet(name = "GerenteRoutes", urlPatterns = {"/gerente/*"})
 public class GerenteRoutesServlet extends HttpServlet {

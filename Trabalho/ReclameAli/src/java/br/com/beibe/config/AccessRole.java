@@ -1,4 +1,4 @@
-package br.com.beibe.beans;
+package br.com.beibe.config;
 
 public enum AccessRole {
 

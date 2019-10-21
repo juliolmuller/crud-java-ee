@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
-import br.com.beibe.controller.ClienteController;
+import br.com.beibe.servlet.controller.ClienteController;
 
 @WebServlet(name = "ClienteRoutes", urlPatterns = {"/cliente/*"})
 public class ClienteRoutesServlet extends HttpServlet {

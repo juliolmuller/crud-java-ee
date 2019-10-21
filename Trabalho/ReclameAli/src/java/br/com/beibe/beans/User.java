@@ -1,5 +1,6 @@
 package br.com.beibe.beans;
 
+import br.com.beibe.config.AccessRole;
 import java.util.Date;
 import java.io.Serializable;
 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
-import br.com.beibe.controller.FuncionarioController;
+import br.com.beibe.servlet.controller.FuncionarioController;
 
 @WebServlet(name = "FuncionarioRoutes", urlPatterns = {"/funcionario/*"})
 public class FuncionarioRoutesServlet extends HttpServlet {
