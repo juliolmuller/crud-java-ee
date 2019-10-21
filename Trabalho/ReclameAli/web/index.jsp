@@ -2,6 +2,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/WEB-INF/jsp/error-page.jsp" %>
 
+<c:if test="${accessRole != null}">
+  <c:set var="roleHome" value="${accessRole.toString()}" />
+  <c:redirect url="${pageContext.request.contextPath}/${roleHome}" />
+</c:if>
+
 <t:baseLayout>
 
   <%-- Cabeçalho da página (com logotipo) --%>
