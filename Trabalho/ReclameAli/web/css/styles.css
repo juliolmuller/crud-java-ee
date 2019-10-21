@@ -11,8 +11,40 @@
 }
 
 .c-subtitle {
+  position: relative;
+  top: -1rem;
   margin-bottom: 1rem;
   font-size: medium;
+}
+
+.c-signin-card {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.c-alert {
+  text-align: center;
+  font-weight: bold;
+}
+
+.c-sign-buttons {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-around;
+}
+
+.c-sign-buttons button {
+  margin-bottom: 0.5em;
+}
+
+@media (min-width: 768px) {
+  .c-sign-buttons {
+    flex-direction: row;
+  }
+  .c-sign-buttons button {
+    flex-basis: 40%;
+  }
 }
 
 input::-webkit-inner-spin-button,

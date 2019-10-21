@@ -5,7 +5,7 @@
 <t:baseLayout>
 
   <%-- Cabeçalho da página (com logotipo) --%>
-  <main class="container mb-5">
+  <main class="container">
     <div class="text-center">
       <h1 class="text-primary display-3 c-title">
         <img src="${pageContext.request.contextPath}/img/reclame-ali-blue.png" class="c-logo-large" alt="Logo do Sistema" />
@@ -15,195 +15,230 @@
         Serviço de Atendimento ao Cliente da <strong>Beibe</strong><sup>&copy;</sup>
       </span>
     </div>
-    <div class="row my-3">
-      <div class="col-6 p-3 d-flex align-items-stretch">
 
-        <%-- Formulário de login --%>
-        <form id="form-login" action="#" method="POST" class="card">
-          <h2 class="card-header">Entrar</h2>
-          <img class="card-img-top" src="img/cover.jpg" alt="Capa">
-          <div class="card-body">
-            <a class="card-text mt-1">
-              Você está prestes a acessar o sistema SAC (Serviço de Atendimento ao Cliente) da empresa mais top
-              que existe no mundo, a <strong>Beibe</strong><sup>&copy;</sup>. Tenha em mente todos os
-              <a href="#">Termos de Uso</a> da plataforma e de que qualquer irregularidade pode resultar
-              infração dos termos do contrato.
-            </p>
-            <p class="card-text mb-5">
-              Para acessar o sistema, é necessário fornecer suas credenciais de acesso:
-            </p>
-            <div class="form-group">
-              <label for="email">Endereço de email:</label>
+    <%-- Formulário de login --%>
+    <form action="${pageContext.request.contextPath}/entrar?action=signin" method="POST" id="form-signin" class="card c-signin-card" novalidate>
+      <h2 class="card-header">Entrar</h2>
+      <img class="card-img-top" src="${pageContext.request.contextPath}/img/cover.jpg" alt="Capa">
+      <div class="card-body">
+        <p class="mb-3 h5 text-center">
+          Forneça suas credenciais de acesso:
+        </p>
+        <c:if test="${signinFail != null}">
+          <div class="alert alert-danger border-danger c-alert" role="alert">
+            Credenciais inválidas. Tente novamente!
+          </div>
+        </c:if>
+        <div class="form-group">
+          <label for="signin-login">Endereço de email:</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-at"></i>
+              </span>
+            </div>
+            <input type="text" id="signin-login" class="form-control" name="login" autofocus required />
+            <div class="invalid-feedback ml-5">Campo obrigatório</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Senha de acesso:</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-unlock-alt"></i>
+              </span>
+            </div>
+            <input type="password" id="signin-password" class="form-control" name="password"  required />
+            <div class="invalid-feedback ml-5">Campo obrigatório</div>
+          </div>
+        </div>
+        <div class="text-center">
+          <p class="mt-3 mb-0">
+            Esqueceu a senha? <a href="mailto:${config.emailSupport}">Contate o suporte</a>
+          </p>
+        </div>
+      </div>
+      <div class="card-footer c-sign-buttons">
+        <button type="button" class="btn btn-lg btn-light" data-toggle="modal" data-target="#signup-modal">
+          Cadastrar-se
+        </button>
+        <button type="submit" class="btn btn-lg btn-primary">
+          Entrar
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <%-- Modal --%>
+  <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <form action="${pageContext.request.contextPath}/entrar?action=signup" method="POST" id="form-signup" class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Cadastro de Usuário</h2>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Prezado(a) cliente,
+          </p>
+          <p>
+            Para acessar o sistema de Serviço de Atendimento ao Cliente (SAC) da <strong>Beibe<sup>&copy;</sup></strong>,
+            você precisa fornecer os seguintes dados que o identifiquem:
+          </p>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" name="first_name" placeholder="Seu nome" autocapitalize="words" required />
+                <div id="invalid-first_name" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" name="last_name" placeholder="Seu sobrenome" autocapitalize="words" required />
+                <div id="invalid-last_name" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fab fa-slack-hash"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="cpf" placeholder="CPF (somente números)" required />
+                <div id="invalid-cpf" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                  </span>
+                </div>
+                <input type="date" class="form-control" name="date_birth" placeholder="Data de nascimento" required />
+                <div id="invalid-date_birth" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-at"></i>
                   </span>
                 </div>
-                <input type="email" id="email" class="form-control" name="email" />
+                <input type="email" class="form-control" name="email" placeholder="Email de acesso" required />
+                <div id="invalid-email" class="invalid-feedback ml-5"></div>
               </div>
             </div>
-            <div class="form-group">
-              <label for="senha">Senha de acesso:</label>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-mobile-alt"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="phone" placeholder="Telefone (con DDD)" required />
+                <div id="invalid-phone" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="zip_code" placeholder="CEP" required />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-primary" type="button" id="buscar-cep">
+                    Buscar CEP
+                  </button>
+                </div>
+                <div id="invalid-zip_code" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-map"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="street" placeholder="Endereço (rua, avenida, alameda...)" required />
+                <div id="invalid-street" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-map-marked-alt"></i>
+                  </span>
+                </div>
+                <input type="number" class="form-control" name="number" placeholder="Número" required />
+                <input type="text" class="form-control" name="complement" placeholder="Complemento" />
+                <div id="invalid-number" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-globe-americas"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="city" placeholder="Cidade" />
+                <input type="text" class="form-control" name="state" placeholder="Estado" minlength="2" maxlength="2" />
+                <div id="invalid-city" class="invalid-feedback ml-5"></div>
+                <div id="invalid-state" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-unlock-alt"></i>
                   </span>
                 </div>
-                <input type="password" id="senha" class="form-control" name="senha" />
+                <input type="password" class="form-control" name="password1" placeholder="Senha de acesso" />
+                <div id="invalid-password1" class="invalid-feedback ml-5"></div>
               </div>
             </div>
-            <div class="text-center">
-              <p class="mt-4 mb-0 h5">
-                Esqueceu a senha? <a href="mailto:example@email.com">Contate nosso suporte</a>
-              </p>
+            <div class="col-12 col-md-6">
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-unlock-alt"></i>
+                  </span>
+                </div>
+                <input type="password" class="form-control" name="password2" placeholder="Repetir senha" />
+                <div id="invalid-password2" class="invalid-feedback ml-5"></div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="custom-control custom-switch mb-2">
+                <input type="checkbox" class="custom-control-input" id="use-terms" name="terms" />
+                <label class="custom-control-label" for="use-terms">
+                  Declaro que li e que aceito os <a href="#">Termos de Uso</a> da plataforma <strong>Reclame Ali<sup>&copy;</sup></strong>
+                </label>
+                <div id="invalid-terms" class="invalid-feedback ml-5"></div>
+              </div>
             </div>
           </div>
-          <div class="card-footer text-center">
-            <button type="submit" class="btn btn-lg btn-primary w-50">
-              Entrar
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <%-- Formulário de cadastro --%>
-      <div class="col-6 p-3 d-flex align-items-stretch">
-        <form id="form-signup" action="#" method="POST" class="card">
-          <h2 class="card-header">Cadastro</h2>
-          <div class="card-body">
-            <p class="card-text">Crie uma conta como cliente para acessar o sistema:</p>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fab fa-slack-hash"></i>
-                </span>
-              </div>
-              <input type="number" class="form-control" name="cpf" placeholder="CPF" step="1" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-user"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" name="nome" placeholder="Nome completo" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="far fa-calendar-alt"></i>
-                </span>
-              </div>
-              <input type="date" class="form-control" name="data_nasc" placeholder="Data de nascimento" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-at"></i>
-                </span>
-              </div>
-              <input type="email" class="form-control" name="email" placeholder="Email de acesso" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-mobile-alt"></i>
-                </span>
-              </div>
-              <input type="number" class="form-control" name="telefone" placeholder="Telefone (con DDD)" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-map-marker-alt"></i>
-                </span>
-              </div>
-              <input type="number" class="form-control" name="cep" placeholder="CEP" />
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="buscar-cep">
-                  Buscar CEP
-                </button>
-              </div>
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-map"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" name="rua" placeholder="Endereço (rua, avenida, alameda...)" disabled />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-map-marked-alt"></i>
-                </span>
-              </div>
-              <input type="number" class="form-control" name="numero" placeholder="Número" />
-              <input type="text" class="form-control" name="complemento" placeholder="Complemento" />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-globe-americas"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" name="cidade" placeholder="Cidade" disabled />
-              <input type="text" class="form-control" name="estado" placeholder="Estado" disabled />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-unlock-alt"></i>
-                </span>
-              </div>
-              <input type="password" class="form-control" name="senha1" placeholder="Senha de acesso" />
-            </div>
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-unlock-alt"></i>
-                </span>
-              </div>
-              <input type="password" class="form-control" name="senha2" placeholder="Repetir senha" />
-            </div>
-            <div class="custom-control custom-switch mb-2">
-              <input type="checkbox" class="custom-control-input" id="termos-de-uso" name="termos" />
-              <label class="custom-control-label" for="termos-de-uso">
-                Aceito os <a href="#">Termos de Uso</a> do serviço <strong>Reclame Ali<sup>&copy;</sup></strong>
-              </label>
-            </div>
-          </div>
-          <div class="card-footer text-center">
-            <button type="click" class="btn btn-lg btn-primary w-50">
-              Cadastrar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
-
-  <%-- Modal --%>
-  <div class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Acessar protótipo como...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-footer c-sign-buttons">
+          <button type="button" class="btn btn-lg btn-light" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-lg btn-primary">
+            Cadastrar
           </button>
         </div>
-        <div class="modal-body">
-          <div class="list-group text-center w-100">
-            <a href="cliente/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Cliente</a>
-            <a href="funcionario/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Funcionário</a>
-            <a href="gerente/index.html" class="text-primary list-group-item list-group-item-action list-group-item-light">Gerente</a>
-          </div>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 

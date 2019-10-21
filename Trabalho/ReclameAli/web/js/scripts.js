@@ -1,12 +1,32 @@
 
 // Adicionar eventos de submissão de formulário
-$('#form-login').submit(e => {
-  e.preventDefault();
-  $('.modal').modal('show');
+$('#form-signin').submit(e => {
+  const login = $(`input[name="login"]`).val();
+  const pswd = $(`input[name="password"]`).val();
+  if (!login || !pswd) {
+    e.preventDefault();
+    e.target.classList.add('was-validated');
+  }
 });
-$('form[method="POST"]').submit(e => {
+$('#form-signup').submit(e => {
   e.preventDefault();
-  alert('Recurso indisponível!');
+  $.ajax({
+    method: 'POST',
+    url: e.target.action,
+    success() {
+      let baseUrl = window.location.href.split('/');
+      baseUrl[4] = 'cliente';
+      window.location.href = baseUrl.join('/');
+    },
+    error(response) {
+      if (response.errors) {
+        for (let err in response.errors) {
+          $(`input[name="${err.field}"]`).addClass('is-invalid');
+          $(`#invalid-${err.field}`).text(err.message);
+        }
+      }
+    }
+  })
 });
 
 // Adicionar eventos em formulário
