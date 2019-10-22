@@ -21,19 +21,6 @@ import br.com.beibe.facade.UserFacade;
 })
 public class PublicRoutesServlet extends HttpServlet {
 
-    private Properties rolesRoutes;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        try (InputStream is = this.getClass().getResourceAsStream(config.getInitParameter("routesFile"))) {
-            rolesRoutes = new Properties();
-            rolesRoutes.load(is);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-        }
-    }
-
     @Override
     protected void doPost(
         HttpServletRequest request,
@@ -74,7 +61,7 @@ public class PublicRoutesServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("userData", user);
         session.setAttribute("accessRole", user.getRole());
-        request.getRequestDispatcher(rolesRoutes.getProperty("cliente")).forward(request, response);
+        request.getRequestDispatcher("/" + user.getRole()).forward(request, response);
     }
 
     private User extractUserData(HttpServletRequest request) {
