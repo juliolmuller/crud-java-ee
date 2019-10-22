@@ -60,7 +60,7 @@
         </div>
         <div class="text-center">
           <p class="mt-3 mb-0">
-            Esqueceu a senha? <a href="mailto:${config.emailSupport}">Contate o suporte</a>
+            Esqueceu a senha? <a href="mailto:${emailSupport}">Contate o suporte</a>
           </p>
         </div>
       </div>
