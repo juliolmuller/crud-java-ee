@@ -78,7 +78,7 @@
   <%-- Modal --%>
   <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-      <form action="${pageContext.request.contextPath}/entrar?action=signup" method="POST" id="form-signup" class="modal-content">
+      <form action="${pageContext.request.contextPath}/entrar?action=signup" method="POST" id="form-signup" class="modal-content" novalidate>
         <div class="modal-header">
           <h2 class="modal-title">Cadastro de Usuário</h2>
           <button type="button" class="close" data-dismiss="modal">
@@ -102,7 +102,7 @@
             </div>
             <div class="col-12 col-md-6">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" name="last_name" placeholder="Seu sobrenome" autocapitalize="words" required />
+                <input type="text" class="form-control" name="last_name" placeholder="Seu sobrenome" autocapitalize="words" />
                 <div id="invalid-last_name" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -113,7 +113,7 @@
                     <i class="fab fa-slack-hash"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" name="cpf" placeholder="CPF (somente números)" required />
+                <input type="text" class="form-control" name="cpf" placeholder="CPF (somente números)" />
                 <div id="invalid-cpf" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -124,7 +124,7 @@
                     <i class="far fa-calendar-alt"></i>
                   </span>
                 </div>
-                <input type="date" class="form-control" name="date_birth" placeholder="Data de nascimento" required />
+                <input type="date" class="form-control" name="date_birth" placeholder="Data de nascimento" />
                 <div id="invalid-date_birth" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -135,7 +135,7 @@
                     <i class="fas fa-at"></i>
                   </span>
                 </div>
-                <input type="email" class="form-control" name="email" placeholder="Email de acesso" required />
+                <input type="email" class="form-control" name="email" placeholder="Email de acesso" />
                 <div id="invalid-email" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -146,7 +146,7 @@
                     <i class="fas fa-mobile-alt"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" name="phone" placeholder="Telefone (con DDD)" required />
+                <input type="text" class="form-control" name="phone" placeholder="Telefone (con DDD)" />
                 <div id="invalid-phone" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -157,9 +157,9 @@
                     <i class="fas fa-map-marker-alt"></i>
                   </span>
                 </div>
-                <input type="number" class="form-control" name="zip_code" placeholder="CEP" required />
+                <input type="number" class="form-control" name="zip_code" placeholder="CEP" />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-primary" type="button" id="buscar-cep">
+                  <button class="btn btn-outline-primary" type="button" id="find-zip_code">
                     Buscar CEP
                   </button>
                 </div>
@@ -173,7 +173,7 @@
                     <i class="fas fa-map"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" name="street" placeholder="Endereço (rua, avenida, alameda...)" required />
+                <input type="text" class="form-control" name="street" placeholder="Endereço (rua, avenida, alameda...)" />
                 <div id="invalid-street" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -184,7 +184,7 @@
                     <i class="fas fa-map-marked-alt"></i>
                   </span>
                 </div>
-                <input type="number" class="form-control" name="number" placeholder="Número" required />
+                <input type="number" class="form-control" name="number" placeholder="Número" />
                 <input type="text" class="form-control" name="complement" placeholder="Complemento" />
                 <div id="invalid-number" class="invalid-feedback ml-5"></div>
               </div>
@@ -197,7 +197,7 @@
                   </span>
                 </div>
                 <input type="text" class="form-control" name="city" placeholder="Cidade" />
-                <input type="text" class="form-control" name="state" placeholder="Estado" minlength="2" maxlength="2" />
+                <input type="text" class="form-control" name="state" placeholder="Estado" />
                 <div id="invalid-city" class="invalid-feedback ml-5"></div>
                 <div id="invalid-state" class="invalid-feedback ml-5"></div>
               </div>

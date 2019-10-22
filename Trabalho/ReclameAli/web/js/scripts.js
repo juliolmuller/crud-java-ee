@@ -1,5 +1,5 @@
 
-// Adicionar eventos de submissão de formulário
+// VErificar se formulário de signin está preenchido
 $('#form-signin').submit(e => {
   const login = $(`input[name="login"]`).val();
   const pswd = $(`input[name="password"]`).val();
@@ -8,17 +8,29 @@ $('#form-signin').submit(e => {
     e.target.classList.add('was-validated');
   }
 });
+
+// Função para extração dos dados de usuário do formulpario
+function extractUserData(formSelector) {
+  const userData = {};
+  $(`${formSelector} input`).each((i, el) => (userData[el.name] = el.value));
+  return userData;
+}
+
+// Enviar dados de signup via AJAX e aguardar resposta
 $('#form-signup').submit(e => {
   e.preventDefault();
+  const userData = extractUserData('#form-signup');
   $.ajax({
     method: 'POST',
     url: e.target.action,
+    data: userData,
     success() {
       let baseUrl = window.location.href.split('/');
       baseUrl[4] = 'cliente';
       window.location.href = baseUrl.join('/');
     },
     error(response) {
+      console.log('Fail to register: review validation messages and try again');
       if (response.errors) {
         for (let err in response.errors) {
           $(`input[name="${err.field}"]`).addClass('is-invalid');
@@ -29,36 +41,37 @@ $('#form-signup').submit(e => {
   })
 });
 
-// Adicionar eventos em formulário
-$('#buscar-cep').click(() => {
-  const cep = $('input[name="cep"]').val();
-  const formatoCEP = /^[0-9]{8}$/;
-  if (cep && formatoCEP.test(cep)) {
-    $('input[name="cep"]').attr('disabled', true);
-    $('input[name="rua"]').val('');
-    $('input[name="numero"]').val('');
-    $('input[name="complemento"]').val('');
-    $('input[name="cidade"]').val('');
-    $('input[name="estado"]').val('');
+// Adicionar recurso de consulta de CEP
+$('#find-zip_code').click(() => {
+  const zip = $('input[name="zip_code"]').val();
+  const zipFormat = /^[0-9]{8}$/;
+  if (zip && zipFormat.test(zip)) {
+    $('input[name="zip_code"]').attr('disabled', true);
+    $('input[name="street"]').val('');
+    $('input[name="number"]').val('');
+    $('input[name="complement"]').val('');
+    $('input[name="city"]').val('');
+    $('input[name="state"]').val('');
     $.ajax({
       method: 'GET',
-      url: `https://viacep.com.br/ws/${cep}/json`,
+      url: `https://viacep.com.br/ws/${zip}/json`,
       success(response) {
-        console.log($('input[name="estado"]'))
-        $('input[name="rua"]').val(response.logradouro);
-        $('input[name="cidade"]').val(response.localidade);
-        $('input[name="estado"]').val(response.uf);
-        $('input[name="numero"]').focus();
+        $('input[name="street"]').val(response.logradouro);
+        $('input[name="city"]').val(response.localidade);
+        $('input[name="state"]').val(response.uf);
+        $('input[name="number"]').focus();
       },
       complete() {
-        $('input[name="cep"]').attr('disabled', false);
+        $('input[name="zip_code"]').attr('disabled', false);
       }
     });
   }
 });
-$('#buscar-produto').click(() => {
-  const produto = $('#codigo-produto').val();
-  $('#detalhes-produto').show();
+
+// Adicionar recurso de busca de produto
+$('#find-product').click(() => {
+  const produto = $('#product-code').val();
+  $('#product-details').show();
 });
 
 // Adicionar evento para linhas de tabelas
