@@ -9,21 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
-import br.com.beibe.servlet.controller.ClienteController;
 
 @WebServlet(name = "ClienteRoutes", urlPatterns = {"/cliente/*"})
 public class ClienteRoutesServlet extends HttpServlet {
-
-    private final ClienteController ctrl = ClienteController.getInstance();
-
-    private void setHeaderLinks(HttpServletRequest request, int activePage) {
-        List<Hyperlink> headerLinks = new ArrayList<>();
-        headerLinks.add(new Hyperlink("Home", "/"));
-        headerLinks.add(new Hyperlink("Meus Atendimentos", "/atendimentos"));
-        headerLinks.add(new Hyperlink("Meus Dados", "/dados-pessoais"));
-        headerLinks.get(activePage).setActive(true);
-        request.setAttribute("headerLinks", headerLinks);
-    }
 
     @Override
     protected void doGet(
@@ -37,27 +25,27 @@ public class ClienteRoutesServlet extends HttpServlet {
             case "":
             case "/":
                 setHeaderLinks(request, 0);
-                ctrl.displayHome(request, response);
+                displayHome(request, response);
                 return;
             case "/atendimentos":
                 setHeaderLinks(request, 1);
-                ctrl.displayTickets(request, response);
+                displayTickets(request, response);
                 return;
             case "/atendimentos/novo":
                 setHeaderLinks(request, 1);
-                ctrl.displayNewTicketForm(request, response);
+                displayNewTicketForm(request, response);
                 return;
             case "/atendimentos/acompanhar":
                 setHeaderLinks(request, 1);
-                ctrl.displayExistingTicketForm(request, response);
+                displayExistingTicketForm(request, response);
                 return;
             case "/dados-pessoais":
                 setHeaderLinks(request, 2);
-                ctrl.displayCustomerData(request, response);
+                displayCustomerData(request, response);
                 return;
             case "/dados-pessoais/editar":
                 setHeaderLinks(request, 2);
-                ctrl.displayCustomerDataForm(request, response);
+                displayCustomerDataForm(request, response);
                 return;
             default:
                 System.out.println("Cliente 404: (GET) " + uri);
@@ -73,17 +61,89 @@ public class ClienteRoutesServlet extends HttpServlet {
         String uri = request.getRequestURI().substring(request.getContextPath().length());
         switch (uri) {
             case "/atendimentos/novo":
-                ctrl.processNewTicket(request, response);
+                processNewTicket(request, response);
                 return;
             case "/atendimentos/acompanhar":
-                ctrl.processExistingTicket(request, response);
+                processExistingTicket(request, response);
                 return;
             case "/dados-pessoais/editar":
-                ctrl.processExistingCustomer(request, response);
+                processExistingCustomer(request, response);
                 return;
             default:
                 System.out.println("Cliente 404: (POST) " + uri);
                 response.sendError(404);
         }
+    }
+
+    private void setHeaderLinks(HttpServletRequest request, int activePage) {
+        List<Hyperlink> headerLinks = new ArrayList<>();
+        headerLinks.add(new Hyperlink("Home", "/"));
+        headerLinks.add(new Hyperlink("Meus Atendimentos", "/atendimentos"));
+        headerLinks.add(new Hyperlink("Meus Dados", "/dados-pessoais"));
+        headerLinks.get(activePage).setActive(true);
+        request.setAttribute("headerLinks", headerLinks);
+    }
+
+    public void displayHome(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp").forward(request, response);
+    }
+
+    public void displayTickets(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
+    }
+
+    public void displayNewTicketForm(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
+    }
+
+    public void displayExistingTicketForm(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
+    }
+
+    public void displayCustomerData(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
+    }
+
+    public void displayCustomerDataForm(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
+    }
+
+    public void processNewTicket(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
+    }
+
+    public void processExistingTicket(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
+    }
+
+    public void processExistingCustomer(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/cliente/dados-pessoais");
     }
 }
