@@ -10,9 +10,10 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String cpf;
+    private String email;
     private Date dateBirth;
-    private Address address;
     private String phone;
+    private Address address;
     private AccessRole role;
     private String password;
 
@@ -56,12 +57,12 @@ public class User implements Serializable {
         this.dateBirth = dateBirth;
     }
 
-    public Address getAddress() {
-        return this.address;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhone() {
@@ -72,9 +73,18 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
+    public Address getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public AccessRole getRole() {
         return this.role;
     }
+
     public void setRole(AccessRole role) {
         this.role = role;
     }
