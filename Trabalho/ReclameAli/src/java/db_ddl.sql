@@ -5,18 +5,6 @@ CREATE TABLE roles(
   name VARCHAR(20) NOT NULL
 );
 
--- Tabela de Endereços
-CREATE TABLE addresses(
-  id SERIAL PRIMARY KEY,
-  zip_code CHAR(8),
-  street VARCHAR(255),
-  number INT,
-  complement VARCHAR(30),
-  neightborhood VARCHAR(80),
-  city VARCHAR(80),
-  state VARCHAR(80)
-);
-
 -- Tebela de Usuários
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
@@ -26,9 +14,20 @@ CREATE TABLE users(
   date_birth DATE NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   phone VARCHAR(16),
-  address_id INT REFERENCES addresses(id),
   role_id INT REFERENCES roles(id),
   password VARCHAR(255)
+);
+
+-- Tabela de Endereços
+CREATE TABLE addresses(
+  user_id SERIAL PRIMARY KEY REFERENCES users(id),
+  zip_code CHAR(8),
+  street VARCHAR(255),
+  number INT,
+  complement VARCHAR(30),
+  neightborhood VARCHAR(80),
+  city VARCHAR(80),
+  state VARCHAR(80)
 );
 
 -- Tabela de CAtegorias de Produtos
