@@ -3,20 +3,20 @@ package br.com.beibe.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-import br.com.beibe.service.ConnectionFactory;
-import br.com.beibe.beans.User;
 import java.sql.Date;
 import java.sql.ResultSet;
+import br.com.beibe.service.ConnectionFactory;
+import br.com.beibe.beans.User;
 
 public final class UserDAO extends DAO {
     
-    private final static String USER_TABLE = "users";
-    private final static String[] USER_COLUMNS = {
+    private static final String USER_TABLE = "users";
+    private static final String[] USER_COLUMNS = {
         "first_name", "last_name", "cpf", "email",
         "date_birth", "phone", "role_id", "password"
     };
-    private final static String ADDRESS_TABLE = "addresses";
-    private final static String[] ADDRESS_COLUMNS = {
+    private static final String ADDRESS_TABLE = "addresses";
+    private static final String[] ADDRESS_COLUMNS = {
         "user_id", "zip_code", "street", "number",
         "complement", "neightborhood", "city", "state"
     };
@@ -24,7 +24,7 @@ public final class UserDAO extends DAO {
 
     private UserDAO() {}
     
-    public User insert(User user) throws SQLException{
+    public static User insert(User user) throws SQLException{
         Connection conn = ConnectionFactory.getConnection(false);
         try {
             PreparedStatement stmt;
@@ -36,7 +36,7 @@ public final class UserDAO extends DAO {
             rs = stmt.executeQuery();
             if (!rs.next()) throw new SQLException("Unable to find role '" + user.getRole() + "'");
             long roleId = rs.getLong("id");
-            stmt = conn.prepareStatement(buildInsertQuery(USER_TABLE, USER_COLUMNS));
+            stmt = conn.prepareStatement(buildInsertQuery(USER_TABLE, USER_COLUMNS, true));
             stmt.setString(1, user.getFirstName());
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getCpf());
@@ -49,7 +49,7 @@ public final class UserDAO extends DAO {
             rs.next();
             long userId = rs.getLong("id");
             user.setId(userId);
-            stmt = conn.prepareStatement(buildInsertQuery(ADDRESS_TABLE, ADDRESS_COLUMNS));
+            stmt = conn.prepareStatement(buildInsertQuery(ADDRESS_TABLE, ADDRESS_COLUMNS, false));
             stmt.setLong(1, userId);
             stmt.setString(2, user.getAddress().getZipCode());
             stmt.setString(3, user.getAddress().getStreet());

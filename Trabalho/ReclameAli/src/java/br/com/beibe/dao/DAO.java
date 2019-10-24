@@ -2,7 +2,7 @@ package br.com.beibe.dao;
 
 public abstract class DAO {
     
-    protected String buildInsertQuery(String tableName, String[] columns) {
+    protected static String buildInsertQuery(String tableName, String[] columns, boolean withReturn) {
         int colCount = columns.length;
         StringBuilder sb = new StringBuilder("INSERT INTO " + tableName + "(");
         for (int i = 0; i < colCount; i++) {
@@ -19,10 +19,11 @@ public abstract class DAO {
             }
         }
         sb.append(")");
+        if (withReturn) sb.append(" RETURNING id");
         return sb.toString();
     }
     
-    protected String buildUpdateQuery(String tableName, String[] columns, long id) {
+    protected static String buildUpdateQuery(String tableName, String[] columns, long id) {
         int colCount = columns.length;
         StringBuilder sb = new StringBuilder("UPDATE " + tableName + " SET ");
         for (int i = 0; i < colCount; i++) {
