@@ -1,9 +1,10 @@
 package br.com.beibe.facade;
 
-import java.util.ArrayList;
 import java.util.List;
-import br.com.beibe.beans.User;
+import java.util.ArrayList;
 import java.sql.SQLException;
+import br.com.beibe.beans.User;
+import br.com.beibe.dao.UserDAO;
 
 public final class UserFacade {
 
@@ -19,7 +20,7 @@ public final class UserFacade {
         return new ArrayList<>();
     }
 
-    public static void save(User user) throws SQLException {
-        // Implementação pendente
+    public static User save(User user) throws SQLException {
+        return UserDAO.insert(user);
     }
 }
