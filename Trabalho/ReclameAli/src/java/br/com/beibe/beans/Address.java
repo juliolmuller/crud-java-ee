@@ -4,20 +4,20 @@ import java.io.Serializable;
 
 public class Address implements Serializable {
 
-    private long id;
+    private Long id;
     private String zipCode;
     private String street;
-    private int number;
+    private Integer number;
     private String complement;
     private String neightborhood;
     private String city;
     private String state;
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return this.number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

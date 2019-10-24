@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Ticket implements Serializable {
 
-    private long id;
+    private Long id;
     private Date openingDate;
     private Date closingDate;
     private TicketStatus status;
@@ -14,11 +14,11 @@ public class Ticket implements Serializable {
     private User oepnBy;
     private Set<TicketMessage> messages;
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
-    private double weight;
+    private Double weight;
     private Category category;
     private String utc;
     private String ean;
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,11 +36,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return this.weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 

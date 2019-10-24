@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String cpf;
@@ -17,11 +17,11 @@ public class User implements Serializable {
     private AccessRole role;
     private String password;
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
