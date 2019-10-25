@@ -1,4 +1,11 @@
 
+// Função para extração dos dados de usuário do formulpario
+function extractUserData(formSelector) {
+  const userData = {};
+  $(`${formSelector} input`).each((i, el) => (userData[el.name] = el.value));
+  return userData;
+}
+
 // VErificar se formulário de signin está preenchido
 $('#form-signin').submit(e => {
   const login = $(`input[name="login"]`).val();
@@ -9,17 +16,11 @@ $('#form-signin').submit(e => {
   }
 });
 
-// Função para extração dos dados de usuário do formulpario
-function extractUserData(formSelector) {
-  const userData = {};
-  $(`${formSelector} input`).each((i, el) => (userData[el.name] = el.value));
-  return userData;
-}
-
 // Enviar dados de signup via AJAX e aguardar resposta
 $('#form-signup').submit(e => {
   e.preventDefault();
   const userData = extractUserData('#form-signup');
+  console.log(userData); // TODO: remover
   $.ajax({
     method: 'POST',
     url: e.target.action,
@@ -38,7 +39,7 @@ $('#form-signup').submit(e => {
         }
       }
     }
-  })
+  });
 });
 
 // Adicionar recurso de consulta de CEP
@@ -73,6 +74,11 @@ $('#find-product').click(() => {
   const produto = $('#product-code').val();
   $('#product-details').show();
 });
+
+// Colocar máscara nos formulários
+$('input[name="zip_code"]').mask('00000-000');
+$('input[name="phone"]').mask('(00) 0000-0000');
+$('input[name="cpf"]').mask('000.000.000-00', { reverse: true });
 
 // Adicionar evento para linhas de tabelas
 $('.c-clickable').click(function() {
