@@ -1,13 +1,15 @@
 package br.ufpr.tads.web2.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import br.ufpr.tads.web2.dao.ConnectionFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import br.ufpr.tads.web2.beans.Usuario;
 
 public abstract class UsuarioDAO {
@@ -31,7 +33,7 @@ public abstract class UsuarioDAO {
             }
             return usuarios;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -44,7 +46,7 @@ public abstract class UsuarioDAO {
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -55,7 +57,7 @@ public abstract class UsuarioDAO {
                 + " WHERE login_usuario = ? AND senha_usuario = ?;"
             );
             stmt.setString(1, login.toUpperCase());
-            stmt.setString(2, senha);
+            stmt.setString(2, encriptarSenha(senha));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Usuario usuario = new Usuario();
@@ -67,7 +69,7 @@ public abstract class UsuarioDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -79,6 +81,7 @@ public abstract class UsuarioDAO {
             );
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
+            usuario.setSenha(encriptarSenha(usuario.getSenha()));
             stmt.setString(3, usuario.getSenha());
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -86,7 +89,7 @@ public abstract class UsuarioDAO {
             usuario.setId(id);
             return id;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -97,11 +100,11 @@ public abstract class UsuarioDAO {
             );
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
-            stmt.setString(3, usuario.getSenha());
+            stmt.setString(3, encriptarSenha(usuario.getSenha()));
             stmt.setInt(4, usuario.getId());
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -113,7 +116,20 @@ public abstract class UsuarioDAO {
             stmt.setInt(1, usuario.getId());
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String encriptarSenha(String senha) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] senhaDigest = md5.digest(senha.getBytes("UTF-8"));
+            StringBuilder senhaHash = new StringBuilder();
+            for (byte b : senhaDigest)
+                senhaHash.append(String.format("%02X", 0xFF & b));
+            return senhaHash.toString();
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }
