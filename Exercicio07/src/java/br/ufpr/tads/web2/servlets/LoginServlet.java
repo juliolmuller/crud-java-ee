@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         // Validar credenciais e efetuar login
         Usuario usuario;
         if (login != null && senha != null) {
-            usuario = UsuarioDAO.validar(login, senha);
+            usuario = UsuarioDAO.validarCredenciais(login, senha);
             if (usuario != null) {
                 LoginBean bean = new LoginBean();
                 bean.setIdUsuario(usuario.getId());

@@ -1,16 +1,17 @@
 package br.ufpr.tads.web2.servlets;
 
-import br.ufpr.tads.web2.beans.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.ufpr.tads.web2.beans.Usuario;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
+import br.ufpr.tads.web2.exception.UsuarioDuplicadoException;
 
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios", "/api/usuarios"})
 public class ApiUsuarioServlet extends HttpServlet {
@@ -29,8 +30,6 @@ public class ApiUsuarioServlet extends HttpServlet {
         }
         if (usuario.getLogin() == null || usuario.getLogin().equals("")) {
             erros.add("O campo LOGIN é obrigatório.");
-        } else if (novo && UsuarioDAO.existe(usuario.getLogin())) {
-            erros.add("Já existe um usuário com o login " + usuario.getLogin().toUpperCase() + ".");
         }
         if (usuario.getSenha() == null || usuario.getSenha().equals("")) {
             erros.add("O campo SENHA é obrigatório.");
@@ -105,16 +104,22 @@ public class ApiUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
 
-                // Salvar instância de usuário em banco de dados
-                UsuarioDAO.inserir(usuario);
+                try {
+                    // Salvar instância de usuário em banco de dados
+                    UsuarioDAO.inserir(usuario);
 
-                // Retornar dados de usuário inserido como JSON
-                out.print("{");
-                out.print("\"status\":\"success\",");
-                out.print("\"data\":");
-                out.print(usuarioComoJSON(usuario));
-                out.print("}");
-                return;
+                    // Retornar dados de usuário inserido como JSON
+                    out.print("{");
+                    out.print("\"status\":\"success\",");
+                    out.print("\"data\":");
+                    out.print(usuarioComoJSON(usuario));
+                    out.print("}");
+                    return;
+                
+                // Em caso de duplicidade, retornar erro
+                } catch (UsuarioDuplicadoException ex) {
+                    erros.add(ex.getMessage());
+                }
             }
 
             // Em caso de erro, retornar status 422
@@ -205,8 +210,9 @@ public class ApiUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
 
-                // Atualizar usuário em banco de dados
-                if (UsuarioDAO.atualizar(usuario)) {
+                try {
+                    // Atualizar usuário em banco de dados
+                    UsuarioDAO.atualizar(usuario);
 
                     // Retornar dados de usuário inserido como JSON
                     out.print("{");
@@ -215,8 +221,11 @@ public class ApiUsuarioServlet extends HttpServlet {
                     out.print(usuarioComoJSON(usuario));
                     out.print("}");
                     return;
+
+                // Em caso de duplicidade, retornar erro
+                } catch (UsuarioDuplicadoException ex) {
+                    erros.add(ex.getMessage());
                 }
-                erros.add("ID #" + usuario.getId() + " não eancontrado para atualização.");
             }
 
             // Em caso de erro, retornar status 422

@@ -68,13 +68,14 @@ function exibirMensagem(alerta, mensagens) {
 function editar(e) {
   e.preventDefault();
   window.linha = e.target;
-  while (linha.tagName != 'TR') {
+  while (linha.tagName !== 'TR') {
     linha = linha.parentNode;
   }
   const dados = coletarDados(linha);
   for (let campo in dados) {
     $(`input[name="${campo}"]`).val(dados[campo]);
   }
+  $('input[name="senha"]').val('');
   $('input[name="nome"]').focus();
   $('#btn-ok').html('Atualizar');
 }
@@ -84,7 +85,7 @@ function requisitarListaUsuarios() {
   $.ajax({
     method: 'GET',
     url: apiUrl,
-    success: function(response) {
+    success(response) {
       for (let usuario of response) {
         $('tbody').append(montarLinha(usuario));
       }
@@ -92,21 +93,22 @@ function requisitarListaUsuarios() {
   });
 }
 
-// Envia os dados do formulário para "/cadastro-usuario" para criação de novo usuário
+// Envia os dados do formulário para "/api/usuarios" para criação de novo usuário
 function enviarDados(e) {
   e.preventDefault();
+  e.stopPropagation();
   const dados = coletarDados();
   if (!dados.id) {
     $.ajax({
       method: 'POST',
       url: apiUrl,
       data: dados,
-      success: function(response) {
+      success(response) {
         limparForm();
         $('tbody').append(montarLinha(response.data));
         exibirMensagem($('.alert-success'), ['Usuário cadastrado com sucesso']);
       },
-      error: function(response) {
+      error(response) {
         exibirMensagem($('.alert-danger'), response.responseJSON.messages);
       }
     });
@@ -114,14 +116,14 @@ function enviarDados(e) {
     $.ajax({
       method: 'PUT',
       url: `${apiUrl}?id=${dados.id}&nome=${dados.nome}&login=${dados.login}&senha=${dados.senha}`,
-      success: function(response) {
+      success(response) {
         limparForm();
         $('tbody > tr').filter(function(i, el) {
-          return el.id == response.data.id;
+          return (el.id == response.data.id);
         }).replaceWith(montarLinha(response.data));
         exibirMensagem($('.alert-success'), ['Usuário atualizado com sucesso']);
       },
-      error: function(response) {
+      error(response) {
         exibirMensagem($('.alert-danger'), response.responseJSON.messages);
       }
     });
@@ -140,11 +142,11 @@ function excluir(e) {
     $.ajax({
       method: 'DELETE',
       url: `${apiUrl}?id=${id}`,
-      success: function() {
+      success() {
         linha.parentNode.removeChild(linha);
         exibirMensagem($('.alert-success'), ['Usuário excluído com sucesso']);
       },
-      error: function(response) {
+      errors(response) {
         exibirMensagem($('.alert-danger'), response.responseJSON.messages);
       }
     });
@@ -155,5 +157,5 @@ function excluir(e) {
 $(document).ready(function() {
   requisitarListaUsuarios();
   $('form').submit(enviarDados);
-  $('#btn-cancel').click(limparForm)
+  $('#btn-cancel').click(limparForm);
 });

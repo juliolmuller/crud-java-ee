@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 import br.ufpr.tads.web2.beans.Usuario;
+import br.ufpr.tads.web2.exception.UsuarioDuplicadoException;
 
 public abstract class UsuarioDAO {
 
@@ -37,24 +38,55 @@ public abstract class UsuarioDAO {
         }
     }
 
-    public static boolean existe(String login) {
+    public static Usuario com(int id) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "SELECT id_usuario FROM " + TABELA + " WHERE login_usuario = ?;"
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario " +
+                "FROM " + TABELA + " WHERE id = ?;"
             );
-            stmt.setString(1, login.toUpperCase());
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            return rs.next();
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome_usuario"));
+                usuario.setLogin(rs.getString("login_usuario"));
+                usuario.setSenha(rs.getString("senha_usuario"));
+                return usuario;
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static Usuario validar(String login, String senha) {
+    public static Usuario com(String login) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario FROM " + TABELA
-                + " WHERE login_usuario = ? AND senha_usuario = ?;"
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario " +
+                "FROM " + TABELA + " WHERE login_usuario = ?;"
+            );
+            stmt.setString(1, login.toUpperCase());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome_usuario"));
+                usuario.setLogin(rs.getString("login_usuario"));
+                usuario.setSenha(rs.getString("senha_usuario"));
+                return usuario;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Usuario validarCredenciais(String login, String senha) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario " +
+                "FROM " + TABELA + " WHERE login_usuario = ? AND senha_usuario = ?;"
             );
             stmt.setString(1, login.toUpperCase());
             stmt.setString(2, encriptarSenha(senha));
@@ -73,11 +105,13 @@ public abstract class UsuarioDAO {
         }
     }
 
-    public static int inserir(Usuario usuario) {
+    public static void inserir(Usuario usuario) throws UsuarioDuplicadoException {
+        if (com(usuario.getLogin()) != null) 
+            throw new UsuarioDuplicadoException("Já existe um usuário com login '" + usuario.getLogin().toUpperCase() + "' cadastrado");
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO " + TABELA + "(nome_usuario, login_usuario, senha_usuario) "
-                + "VALUES(?, ?, ?) RETURNING id_usuario;"
+                "INSERT INTO " + TABELA + "(nome_usuario, login_usuario, senha_usuario) " +
+                "VALUES(?, ?, ?) RETURNING id_usuario, nome_usuario, login_usuario, senha_usuario;"
             );
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
@@ -85,24 +119,34 @@ public abstract class UsuarioDAO {
             stmt.setString(3, usuario.getSenha());
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            int id = rs.getInt("id_usuario");
-            usuario.setId(id);
-            return id;
+            usuario.setId(rs.getInt("id_usuario"));
+            usuario.setNome(rs.getString("nome_usuario"));
+            usuario.setLogin(rs.getString("login_usuario"));
+            usuario.setSenha(rs.getString("senha_usuario"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static boolean atualizar(Usuario usuario) {
+    public static void atualizar(Usuario usuario) throws UsuarioDuplicadoException {
+        Usuario u = com(usuario.getLogin());
+        if (u != null && u.getId() != usuario.getId())
+            throw new UsuarioDuplicadoException("Já existe um outro usuário com login '" + usuario.getLogin().toUpperCase() + "' cadastrado");
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE " + TABELA + " SET nome_usuario = ?, login_usuario = ?, senha_usuario = ? WHERE id_usuario = ?;"
+                "UPDATE " + TABELA + " SET nome_usuario = ?, login_usuario = ?, senha_usuario = ? " +
+                "WHERE id_usuario = ? RETURNING id_usuario, nome_usuario, login_usuario, senha_usuario;"
             );
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
             stmt.setString(3, encriptarSenha(usuario.getSenha()));
             stmt.setInt(4, usuario.getId());
-            return stmt.executeUpdate() == 1;
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            usuario.setId(rs.getInt("id_usuario"));
+            usuario.setNome(rs.getString("nome_usuario"));
+            usuario.setLogin(rs.getString("login_usuario"));
+            usuario.setSenha(rs.getString("senha_usuario"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
