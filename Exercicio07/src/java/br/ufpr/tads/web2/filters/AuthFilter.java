@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
     "/api/*",
     "/logout",
     "/portal.jsp",
-    "/usuarios.jsp",
+    "/usuarios/*",
     "/clientes/*"
 })
 public class AuthFilter implements Filter {
