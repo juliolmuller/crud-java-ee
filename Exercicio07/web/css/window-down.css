@@ -42,9 +42,7 @@ a {
   background: #fff;
   width: 90%;
   max-width: 450px;
-  -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   padding: 0px;
   text-align: center;
@@ -114,7 +112,7 @@ button:active, a.button:active {
   text-align: center;
 }
 
-input {
+input, select {
   display: inline-block;
   width: 85%;
   background-color: #f6f6f6;
@@ -135,16 +133,16 @@ input {
   border-radius: 5px 5px 5px 5px;
 }
 
-input:focus {
+input:focus, select:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
 
-input:placeholder {
+input:placeholder, select:placeholder {
   color: #fff;
 }
 
-input[readonly] {
+input[readonly], select[readonly] {
   background-color: #d6d6d6;
   color: #292929;
 }
