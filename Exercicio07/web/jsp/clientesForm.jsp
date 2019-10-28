@@ -113,12 +113,14 @@
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input type="text" class="fade-in then" placeholder="Unidade Federativa"
-            name="estado"
-            value="${cliente.endereco.cidade.estado.sigla}"
-            required
-            readonly
-          />
+          <select class="fade-in then" name="estado" required>
+            <option>Estado...</option>
+            <c:forEach var="estado" items="${estados}">
+              <option value="${estado.id}" ${estado.id == cliente.endereco.cidade.estado.id ? "selected" : ""}>
+                <c:out value="${estado.sigla} - ${estado.nome}" />
+              </option>
+            </c:forEach>
+          </select>
           <input type="text" class="fade-in then" placeholder="Cidade"
             name="cidade"
             value="${cliente.endereco.cidade.nome}"

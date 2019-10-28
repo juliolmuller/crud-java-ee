@@ -9,11 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
-import br.ufpr.tads.web2.facades.ClienteFacade;
 import br.ufpr.tads.web2.beans.Cliente;
-import br.ufpr.tads.web2.beans.Endereco;
 import br.ufpr.tads.web2.beans.Cidade;
+import br.ufpr.tads.web2.beans.Endereco;
+import br.ufpr.tads.web2.beans.Estado;
 import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
+import br.ufpr.tads.web2.facades.ClienteFacade;
 
 @WebServlet(name = "Clientes", urlPatterns = {"/clientes/*"})
 public class ClienteServlet extends HttpServlet {
@@ -34,6 +35,10 @@ public class ClienteServlet extends HttpServlet {
             request.getRequestDispatcher("/jsp/clientesListar.jsp").forward(request, response);
             return;
         }
+
+        // Colocar lista de estados no escopo da requisição
+        List<Estado> estados = ClienteFacade.buscarEstados();
+        request.setAttribute("estados", estados);
         
         // Se não, avaliar parâmetro e preparar resposta adequada
         int id;
