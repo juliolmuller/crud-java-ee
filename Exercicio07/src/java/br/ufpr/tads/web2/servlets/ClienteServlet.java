@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,18 +36,18 @@ public class ClienteServlet extends HttpServlet {
             request.getRequestDispatcher("/jsp/clientesListar.jsp").forward(request, response);
             return;
         }
-
-        // Colocar lista de estados no escopo da requisição
-        List<Estado> estados = ClienteFacade.buscarEstados();
-        request.setAttribute("estados", estados);
         
         // Se não, avaliar parâmetro e preparar resposta adequada
         int id;
+        List<Estado> estados;
+        List<Cidade> cidades;
         Cliente cliente;
         switch (uri[3]) {
             
             // Redirecionar para formulário de cadastro
             case "novo": 
+                estados = ClienteFacade.buscarEstados();
+                request.setAttribute("estados", estados);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
                 return;
             
@@ -62,6 +63,12 @@ public class ClienteServlet extends HttpServlet {
                 id = Integer.parseInt(request.getParameter("id"));
                 cliente = ClienteFacade.buscar(id);
                 request.setAttribute("cliente", cliente);
+                estados = new ArrayList<>();
+                estados.add(cliente.getEndereco().getCidade().getEstado());
+                request.setAttribute("estados", estados);
+                cidades = new ArrayList<>();
+                cidades.add(cliente.getEndereco().getCidade());
+                request.setAttribute("cidades", cidades);
                 request.setAttribute("readOnly", true);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
                 return;
@@ -71,6 +78,10 @@ public class ClienteServlet extends HttpServlet {
                 id = Integer.parseInt(request.getParameter("id"));
                 cliente = ClienteFacade.buscar(id);
                 request.setAttribute("cliente", cliente);
+                estados = ClienteFacade.buscarEstados();
+                request.setAttribute("estados", estados);
+                cidades = ClienteFacade.buscarCidades(cliente.getEndereco().getCidade().getEstado().getId());
+                request.setAttribute("cidades", cidades);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
                 return;
         }
