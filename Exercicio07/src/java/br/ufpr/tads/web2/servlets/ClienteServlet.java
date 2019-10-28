@@ -1,17 +1,19 @@
 package br.ufpr.tads.web2.servlets;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import javax.servlet.ServletException;
 import br.ufpr.tads.web2.facades.ClienteFacade;
 import br.ufpr.tads.web2.beans.Cliente;
 import br.ufpr.tads.web2.beans.Endereco;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import br.ufpr.tads.web2.beans.Cidade;
+import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
 
 @WebServlet(name = "Clientes", urlPatterns = {"/clientes/*"})
 public class ClienteServlet extends HttpServlet {
@@ -41,14 +43,14 @@ public class ClienteServlet extends HttpServlet {
             // Redirecionar para formulário de cadastro
             case "novo": 
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
-                break;
+                return;
             
             // Excluir registro do banco de dados
             case "excluir":
                 id = Integer.parseInt(request.getParameter("id"));
                 ClienteFacade.remover(id);
                 response.sendRedirect(request.getContextPath() + "/clientes");
-                break;
+                return;
             
             // Busca o cliente para exibir em formulário de visualização
             case "visualizar":
@@ -57,7 +59,7 @@ public class ClienteServlet extends HttpServlet {
                 request.setAttribute("cliente", cliente);
                 request.setAttribute("readOnly", true);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
-                break;
+                return;
            
             // Busca o cliente para exibir em formulário de visualização
             case "alterar":
@@ -65,12 +67,11 @@ public class ClienteServlet extends HttpServlet {
                 cliente = ClienteFacade.buscar(id);
                 request.setAttribute("cliente", cliente);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
-                break;
-            
-            // Exibir erro em qualquer outra URI
-            default:
-                response.sendError(404);
+                return;
         }
+
+        // Exibir erro em qualquer outra URI
+        response.sendError(404);
     }
     
     @Override
@@ -89,8 +90,14 @@ public class ClienteServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
 
             // Instanciar modelos e associar parâmetros
-            Cliente cliente = new Cliente();
+            Cidade cidade = new Cidade();
+            cidade.setId(Integer.parseInt(request.getParameter("cidade")));
             Endereco endereco = new Endereco();
+            endereco.setCep(request.getParameter("cep"));
+            endereco.setRua(request.getParameter("rua"));
+            endereco.setNumero(Integer.parseInt(request.getParameter("numero")));
+            endereco.setCidade(cidade);
+            Cliente cliente = new Cliente();
             cliente.setId(Integer.parseInt("0" + request.getParameter("id")));
             cliente.setCpf(request.getParameter("cpf"));
             cliente.setNome(request.getParameter("nome"));
@@ -101,30 +108,28 @@ public class ClienteServlet extends HttpServlet {
             } catch (ParseException | NullPointerException e) {
                 cliente.setDataNasc(null);
             }
-            endereco.setCep(request.getParameter("cep"));
-            endereco.setRua(request.getParameter("rua"));
-            endereco.setNumero(Integer.parseInt(request.getParameter("numero")));
-            endereco.setCidade(request.getParameter("cidade"));
-            endereco.setUf(request.getParameter("estado"));
             cliente.setEndereco(endereco);
             
-            // Em caso de novo registro, validar se CPF já está cadastrado e salvá-lo
-            if (uri[3].equals("novo")) {
-                if (ClienteFacade.buscar(cliente.getCpf()) != null) {
-                    request.setAttribute("cliente", cliente);
-                    request.setAttribute("erro", "CPF já cadastrado!");
-                    this.doGet(request, response);
-                } else {
+            try {
+                // Em caso de novo registro, validar se CPF já está cadastrado e salvá-lo
+                if (uri[3].equals("novo")) {
                     ClienteFacade.inserir(cliente);
                     response.sendRedirect(request.getContextPath() + "/clientes");
+                    return;
                 }
-                return;
-            } 
             
-            // Em caso de atualização, apenas salvá-la e redirecionar
-            else if (uri[3].equals("alterar")) {
-                ClienteFacade.alterar(cliente);
-                response.sendRedirect(request.getContextPath() + "/clientes");
+                // Em caso de atualização, apenas salvá-la e redirecionar
+                else if (uri[3].equals("alterar")) {
+                    ClienteFacade.alterar(cliente);
+                    response.sendRedirect(request.getContextPath() + "/clientes");
+                    return;
+                }
+
+            // Em caso de erro no processamento, processar resposta de erro
+            } catch (ClienteDuplicadoException e) {
+                request.setAttribute("cliente", cliente);
+                request.setAttribute("erro", e.getMessage());
+                doGet(request, response);
                 return;
             }
         }

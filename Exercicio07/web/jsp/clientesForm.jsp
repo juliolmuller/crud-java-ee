@@ -64,55 +64,32 @@
           </c:choose>
         </h3>
         <form action="${pageContext.request.contextPath}/clientes/${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
-          <input type="hidden" id="id" name="id" value="${cliente.id}" />
-          <input
-            type="number"
-            id="cpf"
-            class="fade-in then"
-            placeholder="CPF do Cliente"
+          <input type="hidden" name="id" value="${cliente.id}" />
+          <input type="text" class="fade-in then" placeholder="CPF do Cliente"
             name="cpf"
             value="${cliente.cpf}"
-            step="1"
-            min="1"
-            max="99999999999"
             required
             ${cliente != null ? "readonly" : "autofocus"}
           />
-          <input
-            type="text"
-            id="nome"
-            class="fade-in then"
-            placeholder="Nome do Cliente"
+          <input type="text" class="fade-in then" placeholder="Nome do Cliente"
             name="nome"
             value="${cliente.nome}"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input
-            type="email"
-            id="email"
-            class="fade-in then"
-            placeholder="Email do Cliente"
+          <input type="email" class="fade-in then" placeholder="Email do Cliente"
             name="email"
             value="${cliente.email}"
             required
             ${cliente != null ? "readonly" : ""}
           />
-          <input
-            type="date"
-            id="nasc"
-            class="fade-in then"
-            placeholder="Data de Nascimento"
+          <input type="date" class="fade-in then" placeholder="Data de Nascimento"
             name="nasc"
             value="${cliente.dataNasc}"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input
-            type="number"
-            id="cep"
-            class="fade-in then"
-            placeholder="CEP"
+          <input type="number" class="fade-in then" placeholder="CEP"
             name="cep"
             value="${cliente.endereco.cep}"
             step="1"
@@ -122,21 +99,13 @@
             ${readOnly ? "readonly" : ""}
             onkeyup="buscarCEP(event)"
           />
-          <input
-            type="text"
-            id="rua"
-            class="fade-in then"
-            placeholder="Endereço do cliente"
+          <input type="text" class="fade-in then" placeholder="Endereço do cliente"
             name="rua"
             value="${cliente.endereco.rua}"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input
-            type="number"
-            id="numero"
-            class="fade-in then"
-            placeholder="Logradouro"
+          <input type="number" class="fade-in then" placeholder="Logradouro"
             name="numero"
             value="${cliente.endereco.numero}"
             step="1"
@@ -144,23 +113,15 @@
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input
-            type="text"
-            id="cidade"
-            class="fade-in then"
-            placeholder="Cidade"
-            name="cidade"
-            value="${cliente.endereco.cidade}"
+          <input type="text" class="fade-in then" placeholder="Unidade Federativa"
+            name="estado"
+            value="${cliente.endereco.cidade.estado.sigla}"
             required
             readonly
           />
-          <input
-            type="text"
-            id="estado"
-            class="fade-in then"
-            placeholder="Unidade Federativa"
-            name="estado"
-            value="${cliente.endereco.uf}"
+          <input type="text" class="fade-in then" placeholder="Cidade"
+            name="cidade"
+            value="${cliente.endereco.cidade.nome}"
             required
             readonly
           />
@@ -200,6 +161,7 @@
 
     <%-- Arquivos de scripts --%>
     <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery-mask.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/manage-customers.js"></script>
   </body>
 </html>
