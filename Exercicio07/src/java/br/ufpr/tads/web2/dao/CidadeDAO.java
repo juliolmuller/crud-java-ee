@@ -48,7 +48,7 @@ public abstract class CidadeDAO {
                 "SELECT id_cidade, nome_cidade, id_estado, nome_estado, sigla_estado " +
                 "FROM " + TABELA_CIDADE + " " +
                 "INNER JOIN " + TABELA_ESTADO + " ON estado_id = id_estado " +
-                "WHERE sigla_estado = ?;"
+                "WHERE estado_id = ?;"
             );
             stmt.setInt(1, idEstado);
             ResultSet rs = stmt.executeQuery();
