@@ -10,6 +10,7 @@
       Web 2 :: Exercício 07
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/window-down.css" />
   </head>
   <body>
@@ -68,33 +69,35 @@
           <input type="text" class="fade-in then" placeholder="CPF do Cliente"
             name="cpf"
             value="${cliente.cpf}"
+            maxlength="14"
             required
             ${cliente != null ? "readonly" : "autofocus"}
           />
           <input type="text" class="fade-in then" placeholder="Nome do Cliente"
             name="nome"
             value="${cliente.nome}"
+            maxlength="100"
             required
             ${readOnly ? "readonly" : ""}
           />
           <input type="email" class="fade-in then" placeholder="Email do Cliente"
             name="email"
             value="${cliente.email}"
+            maxlength="100"
             required
             ${cliente != null ? "readonly" : ""}
           />
-          <input type="date" class="fade-in then" placeholder="Data de Nascimento"
+          <input type="text" class="fade-in then" placeholder="Data de Nascimento"
             name="nasc"
             value="${cliente.dataNasc}"
+            maxlength="10"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input type="number" class="fade-in then" placeholder="CEP"
+          <input type="text" class="fade-in then" placeholder="CEP do Cliente"
             name="cep"
             value="${cliente.endereco.cep}"
-            step="1"
-            min="1000"
-            max="99999999"
+            maxlength="9"
             required
             ${readOnly ? "readonly" : ""}
             onkeyup="buscarCEP(event)"
@@ -102,18 +105,22 @@
           <input type="text" class="fade-in then" placeholder="Endereço do cliente"
             name="rua"
             value="${cliente.endereco.rua}"
+            maxlength="100"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <input type="number" class="fade-in then" placeholder="Logradouro"
+          <input type="text" class="fade-in then" placeholder="Logradouro"
             name="numero"
             value="${cliente.endereco.numero}"
-            step="1"
-            min="0"
+            maxlength="7"
             required
             ${readOnly ? "readonly" : ""}
           />
-          <select class="fade-in then" name="estado" required>
+          <select class="fade-in then"
+            name="estado"
+            required
+            ${readOnly ? "readonly" : ""}
+          >
             <option>Estado...</option>
             <c:forEach var="estado" items="${estados}">
               <option value="${estado.id}" ${estado.id == cliente.endereco.cidade.estado.id ? "selected" : ""}>
@@ -121,12 +128,20 @@
               </option>
             </c:forEach>
           </select>
-          <input type="text" class="fade-in then" placeholder="Cidade"
+          <select class="fade-in then"
             name="cidade"
-            value="${cliente.endereco.cidade.nome}"
             required
-            readonly
-          />
+            ${readOnly ? "readonly" : ""}
+          >
+            <c:if test="${cidades != null}">
+              <option>Cidade...</option>
+              <c:forEach var="cidade" items="${cidades}">
+                <option value="${cidade.id}" ${cidade.id == cliente.endereco.cidade.id ? "selected" : ""}>
+                  <c:out value="${cidade.nome}" />
+                </option>
+              </c:forEach>
+            </c:if>
+          </select>
           <div class="row">
             <div class="col-6">
               <c:choose>
@@ -164,6 +179,7 @@
     <%-- Arquivos de scripts --%>
     <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery-mask.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/manage-customers.js"></script>
   </body>
 </html>

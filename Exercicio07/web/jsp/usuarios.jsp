@@ -55,6 +55,7 @@
             class="fade-in then"
             placeholder="Nome do Usuário"
             name="nome"
+            maxlength="100"
             required autofocus
           />
           <input
@@ -63,6 +64,7 @@
             class="fade-in then"
             placeholder="Login de Acesso"
             name="login"
+            maxlength="50"
             required
           />
           <input
@@ -71,6 +73,7 @@
             class="fade-in then"
             placeholder="Senha de Acesso"
             name="senha"
+            maxlength="50"
             required
           />
           <div class="row">
