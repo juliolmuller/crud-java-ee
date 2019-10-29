@@ -15,7 +15,7 @@ import br.ufpr.tads.web2.beans.Cidade;
 import br.ufpr.tads.web2.beans.Endereco;
 import br.ufpr.tads.web2.beans.Estado;
 import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
-import br.ufpr.tads.web2.facades.ClienteFacade;
+import br.ufpr.tads.web2.facades.Facade;
 
 @WebServlet(name = "Clientes", urlPatterns = {"/clientes/*"})
 public class ClienteServlet extends HttpServlet {
@@ -31,7 +31,7 @@ public class ClienteServlet extends HttpServlet {
         
         // Se rota não possuir parâmetros, retornar lista
         if (uri.length == 3) {
-            List<Cliente> clientes = ClienteFacade.buscarTodos();
+            List<Cliente> clientes = Facade.buscarTodos();
             request.setAttribute("clientes", clientes);
             request.getRequestDispatcher("/jsp/clientesListar.jsp").forward(request, response);
             return;
@@ -46,7 +46,7 @@ public class ClienteServlet extends HttpServlet {
             
             // Redirecionar para formulário de cadastro
             case "novo": 
-                estados = ClienteFacade.buscarEstados();
+                estados = Facade.buscarEstados();
                 request.setAttribute("estados", estados);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
                 return;
@@ -54,14 +54,14 @@ public class ClienteServlet extends HttpServlet {
             // Excluir registro do banco de dados
             case "excluir":
                 id = Integer.parseInt(request.getParameter("id"));
-                ClienteFacade.remover(id);
+                Facade.remover(id);
                 response.sendRedirect(request.getContextPath() + "/clientes");
                 return;
             
             // Busca o cliente para exibir em formulário de visualização
             case "visualizar":
                 id = Integer.parseInt(request.getParameter("id"));
-                cliente = ClienteFacade.buscar(id);
+                cliente = Facade.buscar(id);
                 request.setAttribute("cliente", cliente);
                 estados = new ArrayList<>();
                 estados.add(cliente.getEndereco().getCidade().getEstado());
@@ -76,11 +76,11 @@ public class ClienteServlet extends HttpServlet {
             // Busca o cliente para exibir em formulário de visualização
             case "alterar":
                 id = Integer.parseInt(request.getParameter("id"));
-                cliente = ClienteFacade.buscar(id);
+                cliente = Facade.buscar(id);
                 request.setAttribute("cliente", cliente);
-                estados = ClienteFacade.buscarEstados();
+                estados = Facade.buscarEstados();
                 request.setAttribute("estados", estados);
-                cidades = ClienteFacade.buscarCidades(cliente.getEndereco().getCidade().getEstado().getId());
+                cidades = Facade.buscarCidades(cliente.getEndereco().getCidade().getEstado().getId());
                 request.setAttribute("cidades", cidades);
                 request.getRequestDispatcher("/jsp/clientesForm.jsp").forward(request, response);
                 return;
@@ -129,14 +129,14 @@ public class ClienteServlet extends HttpServlet {
             try {
                 // Em caso de novo registro, validar se CPF já está cadastrado e salvá-lo
                 if (uri[3].equals("novo")) {
-                    ClienteFacade.inserir(cliente);
+                    Facade.inserir(cliente);
                     response.sendRedirect(request.getContextPath() + "/clientes");
                     return;
                 }
             
                 // Em caso de atualização, apenas salvá-la e redirecionar
                 else if (uri[3].equals("alterar")) {
-                    ClienteFacade.alterar(cliente);
+                    Facade.alterar(cliente);
                     response.sendRedirect(request.getContextPath() + "/clientes");
                     return;
                 }

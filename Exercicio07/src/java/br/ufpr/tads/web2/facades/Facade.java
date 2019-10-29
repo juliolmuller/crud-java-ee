@@ -9,7 +9,7 @@ import br.ufpr.tads.web2.dao.ClienteDAO;
 import br.ufpr.tads.web2.dao.EstadoDAO;
 import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
 
-public abstract class ClienteFacade {
+public abstract class Facade {
     
     public static void inserir(Cliente cliente) throws ClienteDuplicadoException {
         ClienteDAO.inserir(cliente);
