@@ -19,3 +19,19 @@ $('input[name="nasc"]').datepicker({
   changeMonth: true,
   changeYear: true
 });
+
+// Configurar evento de requisição de cidades para o estado selecionado
+$('select[name="estado"]').change(function() {
+  $.ajax({
+    method: 'GET',
+    url: `../api/cidades?estado=${$(this).val()}`,
+    success(response) {
+      const comboCidade = $('select[name="cidade"]');
+      comboCidade.empty();
+      comboCidade.append('<option>Cidade...</option>');
+      response.forEach(cidade => {
+        comboCidade.append(`<option value="${cidade.id}">${cidade.nome}</option>`);
+      });
+    }
+  });
+});
