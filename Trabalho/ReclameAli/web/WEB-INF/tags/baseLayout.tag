@@ -17,7 +17,9 @@
     <jsp:doBody />
 
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery-mask.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/toastr.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
   </body>
 </html>
