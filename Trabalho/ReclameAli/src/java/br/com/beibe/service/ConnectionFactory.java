@@ -16,21 +16,26 @@ public abstract class ConnectionFactory {
         try (InputStream is = ConnectionFactory.class.getResourceAsStream(PROPS_FILE)) {
             PROPS.load(is);
         } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+            throw new RuntimeException(ex);
         }
     }
 
     private ConnectionFactory() {}
 
-    public static Connection getConnection(boolean autoCommit) throws SQLException {
-        String dbUrl = PROPS.getProperty("DB_URL")
-            + PROPS.getProperty("DB_HOST") + ":"
-            + PROPS.getProperty("DB_PORT") + "/"
-            + PROPS.getProperty("DB_SCHEMA");
-        String dbUser = PROPS.getProperty("DB_USER");
-        String dbPassword = PROPS.getProperty("DB_PASSWORD");
-        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        conn.setAutoCommit(autoCommit);
-        return conn;
+    public static Connection getConnection(boolean autoCommit) {
+        try {
+            Class.forName(PROPS.getProperty("DB_DRIVER"));
+            String dbUrl = PROPS.getProperty("DB_URL")
+                + PROPS.getProperty("DB_HOST") + ":"
+                + PROPS.getProperty("DB_PORT") + "/"
+                + PROPS.getProperty("DB_SCHEMA");
+            String dbUser = PROPS.getProperty("DB_USER");
+            String dbPassword = PROPS.getProperty("DB_PASSWORD");
+            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            conn.setAutoCommit(autoCommit);
+            return conn;
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
