@@ -18,6 +18,13 @@ CREATE TABLE users(
   password VARCHAR(255)
 );
 
+-- Tabela de Estados
+CREATE TABLE states(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  abrev CHAR(2) NOT NULL
+);
+
 -- Tabela de Endereços
 CREATE TABLE addresses(
   user_id SERIAL PRIMARY KEY REFERENCES users(id),
@@ -27,7 +34,7 @@ CREATE TABLE addresses(
   complement VARCHAR(30),
   neightborhood VARCHAR(80),
   city VARCHAR(80),
-  state VARCHAR(80)
+  state_id INT REFERENCES states(id)
 );
 
 -- Tabela de CAtegorias de Produtos

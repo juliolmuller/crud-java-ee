@@ -11,7 +11,7 @@ public class Address implements Serializable {
     private String complement;
     private String neightborhood;
     private String city;
-    private String state;
+    private State state;
 
     public Long getId() {
         return this.id;
@@ -69,11 +69,11 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public String getState() {
+    public State getState() {
         return this.state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 }

@@ -9,7 +9,7 @@ import br.com.beibe.service.ConnectionFactory;
 import br.com.beibe.beans.User;
 
 public final class UserDAO extends DAO {
-    
+
     private static final String USER_TABLE = "users";
     private static final String[] USER_COLUMNS = {
         "first_name", "last_name", "cpf", "email",
@@ -20,18 +20,17 @@ public final class UserDAO extends DAO {
         "user_id", "zip_code", "street", "number",
         "complement", "neightborhood", "city", "state"
     };
-    private static final String ROLES_TABLE = "roles";
+    private static final String ROLE_TABLE = "roles";
 
     private UserDAO() {}
-    
+
     public static User insert(User user) throws SQLException{
         Connection conn = ConnectionFactory.getConnection(false);
         try {
             PreparedStatement stmt;
             ResultSet rs;
-            stmt = conn.prepareStatement(
-                "SELECT id FROM " + ROLES_TABLE + " WHERE name = ?"
-            );
+            String[] roleColumns = { "id" };
+            stmt = conn.prepareStatement(buildSelectQuery(ROLE_TABLE, roleColumns, "WHERE name = ?"));
             stmt.setString(1, user.getRole().toString());
             rs = stmt.executeQuery();
             if (!rs.next()) throw new SQLException("Unable to find role '" + user.getRole() + "'");
@@ -57,7 +56,7 @@ public final class UserDAO extends DAO {
             stmt.setString(5, user.getAddress().getComplement());
             stmt.setString(6, user.getAddress().getNeightborhood());
             stmt.setString(7, user.getAddress().getCity());
-            stmt.setString(8, user.getAddress().getState());
+            stmt.setLong(8, user.getAddress().getState().getId());
             stmt.executeUpdate();
             conn.commit();
             return user;

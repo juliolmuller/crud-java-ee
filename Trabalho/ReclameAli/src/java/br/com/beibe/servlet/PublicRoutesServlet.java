@@ -1,9 +1,9 @@
 package br.com.beibe.servlet;
 
-import java.util.List;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,16 +11,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.annotation.WebInitParam;
-import br.com.beibe.beans.User;
 import br.com.beibe.beans.Address;
+import br.com.beibe.beans.User;
+import br.com.beibe.beans.State;
 import br.com.beibe.config.AccessRole;
+import br.com.beibe.dao.StateDAO;
 import br.com.beibe.facade.UserFacade;
 
-@WebServlet(name = "PublicRoutes", urlPatterns = {"/entrar"}, initParams = {
-    @WebInitParam(name = "routesFile", value = "/routes.properties")
-})
+@WebServlet(name = "PublicRoutes", urlPatterns = {"/entrar"})
 public class PublicRoutesServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
+        List<State> states = StateDAO.getAll();
+        request.setAttribute("states", states);
+        request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(
@@ -86,14 +95,19 @@ public class PublicRoutesServlet extends HttpServlet {
         address.setComplement(request.getParameter("complement"));
         address.setNeightborhood(request.getParameter("neightborhood"));
         address.setCity(request.getParameter("city"));
-        address.setState(request.getParameter("state"));
+        try {
+            State state = new State();
+            state.setId(Long.parseLong(request.getParameter("state")));
+            address.setState(state);
+        } catch (NullPointerException | NumberFormatException ex) {
+            address.setState(null);
+        }
         try {
             String number = request.getParameter("number");
-            if (number == null) {
+            if (number == null)
                 address.setNumber(null);
-            } else {
+            else
                 address.setNumber(Integer.parseInt(number));
-            }
         } catch (NumberFormatException ex) {
             address.setNumber(-1);
         }
