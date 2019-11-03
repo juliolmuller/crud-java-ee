@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px&display=swap');
 
+html, body {
+  overflow: auto scroll;
+}
+
 .c-logo-large {
   margin-top: -1rem;
   height: 4.4rem;
