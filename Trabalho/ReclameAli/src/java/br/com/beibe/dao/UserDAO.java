@@ -18,7 +18,7 @@ public final class UserDAO extends DAO {
     private static final String ADDRESS_TABLE = "addresses";
     private static final String[] ADDRESS_COLUMNS = {
         "user_id", "zip_code", "street", "number",
-        "complement", "neightborhood", "city", "state"
+        "complement", "neightborhood", "city", "state_id"
     };
     private static final String ROLE_TABLE = "roles";
 
