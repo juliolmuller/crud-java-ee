@@ -70,8 +70,7 @@ public class PublicRoutesServlet extends HttpServlet {
 
     private void configSessionAndForward(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("userData", user);
-        session.setAttribute("accessRole", user.getRole());
+        session.setAttribute("userCredentials", user);
         response.sendRedirect(request.getContextPath() + "/" + user.getRole());
     }
 
@@ -95,12 +94,12 @@ public class PublicRoutesServlet extends HttpServlet {
         address.setComplement(request.getParameter("complement"));
         address.setNeightborhood(request.getParameter("neightborhood"));
         address.setCity(request.getParameter("city"));
+        State state = new State();
         try {
-            State state = new State();
             state.setId(Long.parseLong(request.getParameter("state")));
             address.setState(state);
         } catch (NullPointerException | NumberFormatException ex) {
-            address.setState(null);
+            address.setState(state);
         }
         try {
             String number = request.getParameter("number");
