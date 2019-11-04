@@ -3,7 +3,7 @@
 <%@attribute name="hyperlinks" required="false" rtexprvalue="true" type="java.util.List" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<header class="container-fluid bg-dark mb-5">
+<header class="container-fluid bg-dark fixed-top c-header">
   <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
     <a class="navbar-brand" href="index.html">
       <img src="${pageContext.request.contextPath}/img/reclame-ali-white.png" width="30" height="30" class="d-inline-block align-top" alt="Logo do sistema" />

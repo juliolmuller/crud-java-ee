@@ -8,7 +8,7 @@
   <t:header baseUrl="${baseUri}" hyperlinks="${headerLinks}" />
 
   <%-- Corpo da página --%>
-  <main class="container">
+  <main class="container c-main">
     <h2 class="mb-4">
       Bem-vindo(a), <strong>[nome do gerente]</strong>
     </h2>
@@ -83,5 +83,8 @@
       </div>
     </div>
   </main>
+
+  <%-- Rodapé da página --%>
+  <t:footer />
 
 </t:baseLayout>

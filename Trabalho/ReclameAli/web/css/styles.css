@@ -1,7 +1,33 @@
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px&display=swap');
 
 html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
   overflow: auto scroll;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header.c-header {
+  flex-shrink: 0;
+  background-color: #fff;
+}
+
+main.c-main {
+  flex: 1 0 auto;
+  margin-top: 70px;
+  margin-bottom: 15px;
+  padding: 20px 10px;
+  background-color: #fff;
+}
+
+footer.c-footer {
+  flex-shrink: 0;
 }
 
 .c-logo-large {
