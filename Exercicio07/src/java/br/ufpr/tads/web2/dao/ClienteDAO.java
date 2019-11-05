@@ -12,7 +12,6 @@ import br.ufpr.tads.web2.beans.Cliente;
 import br.ufpr.tads.web2.beans.Cidade;
 import br.ufpr.tads.web2.beans.Endereco;
 import br.ufpr.tads.web2.beans.Estado;
-import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
 
 public abstract class ClienteDAO {
 
@@ -130,12 +129,7 @@ public abstract class ClienteDAO {
         return ClienteDAO.com(email, sql);
     }
 
-    public static Cliente inserir(Cliente cliente) throws ClienteDuplicadoException {
-        if (comCpf(cliente.getCpf()) != null) {
-            throw new ClienteDuplicadoException("Já existe um usuário com CPF '" + cliente.getCpf() + "' cadastrado");
-        } else if (comEmail(cliente.getEmail()) != null) {
-            throw new ClienteDuplicadoException("Já existe um usuário com o email '" + cliente.getCpf() + "' cadastrado");
-        }
+    public static Cliente inserir(Cliente cliente) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             conn.setAutoCommit(false);
             PreparedStatement stmt = conn.prepareStatement(
@@ -162,13 +156,7 @@ public abstract class ClienteDAO {
         }
     }
 
-    public static boolean atualizar(Cliente cliente) throws ClienteDuplicadoException {
-        Cliente c = comCpf(cliente.getCpf());
-        if (c != null && c.getId() != cliente.getId())
-            throw new ClienteDuplicadoException("Já existe um outro usuário com CPF '" + cliente.getCpf() + "' cadastrado");
-        c = comEmail(cliente.getEmail());
-        if (c != null && c.getId() != cliente.getId())
-            throw new ClienteDuplicadoException("Já existe um outro usuário com o email '" + cliente.getEmail() + "' cadastrado");
+    public static boolean atualizar(Cliente cliente) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE " + TABELA_CLIENTE + " SET " +

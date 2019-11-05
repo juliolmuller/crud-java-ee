@@ -14,7 +14,6 @@ import br.ufpr.tads.web2.beans.Cliente;
 import br.ufpr.tads.web2.beans.Cidade;
 import br.ufpr.tads.web2.beans.Endereco;
 import br.ufpr.tads.web2.beans.Estado;
-import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
 import br.ufpr.tads.web2.facades.Facade;
 
 @WebServlet(name = "Clientes", urlPatterns = {"/clientes/*"})
@@ -125,28 +124,29 @@ public class ClienteServlet extends HttpServlet {
                 cliente.setDataNasc(null);
             }
             cliente.setEndereco(endereco);
-            
-            try {
-                // Em caso de novo registro, validar se CPF já está cadastrado e salvá-lo
-                if (uri[3].equals("novo")) {
-                    Facade.inserir(cliente);
-                    response.sendRedirect(request.getContextPath() + "/clientes");
-                    return;
-                }
-            
-                // Em caso de atualização, apenas salvá-la e redirecionar
-                else if (uri[3].equals("alterar")) {
-                    Facade.alterar(cliente);
-                    response.sendRedirect(request.getContextPath() + "/clientes");
-                    return;
-                }
+
+            /*// Converter e validar dados
+            cliente.converter();
+            cliente.validar();
 
             // Em caso de erro no processamento, processar resposta de erro
-            } catch (ClienteDuplicadoException e) {
+            if (erros.isEmpty()) {
                 request.setAttribute("cliente", cliente);
-                request.setAttribute("erro", e.getMessage());
+                request.setAttribute("erros", erros);
                 doGet(request, response);
                 return;
+            }*/
+
+            // Em caso de novo registro, validar se CPF já está cadastrado e salvá-lo
+            if (uri[3].equals("novo")) {
+                Facade.inserir(cliente);
+                response.sendRedirect(request.getContextPath() + "/clientes");
+            }
+
+            // Em caso de atualização, apenas salvá-la e redirecionar
+            else if (uri[3].equals("alterar")) {
+                Facade.alterar(cliente);
+                response.sendRedirect(request.getContextPath() + "/clientes");
             }
         }
         

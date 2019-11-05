@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.ufpr.tads.web2.beans.Usuario;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
-import br.ufpr.tads.web2.exception.UsuarioDuplicadoException;
 
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios", "/api/usuarios"})
 public class ApiUsuarioServlet extends HttpServlet {
@@ -104,22 +103,16 @@ public class ApiUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
 
-                try {
-                    // Salvar instância de usuário em banco de dados
-                    UsuarioDAO.inserir(usuario);
+                // Salvar instância de usuário em banco de dados
+                UsuarioDAO.inserir(usuario);
 
-                    // Retornar dados de usuário inserido como JSON
-                    out.print("{");
-                    out.print("\"status\":\"success\",");
-                    out.print("\"data\":");
-                    out.print(usuarioComoJSON(usuario));
-                    out.print("}");
-                    return;
-                
-                // Em caso de duplicidade, retornar erro
-                } catch (UsuarioDuplicadoException ex) {
-                    erros.add(ex.getMessage());
-                }
+                // Retornar dados de usuário inserido como JSON
+                out.print("{");
+                out.print("\"status\":\"success\",");
+                out.print("\"data\":");
+                out.print(usuarioComoJSON(usuario));
+                out.print("}");
+                return;
             }
 
             // Em caso de erro, retornar status 422
@@ -210,22 +203,16 @@ public class ApiUsuarioServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (erros.isEmpty()) {
 
-                try {
-                    // Atualizar usuário em banco de dados
-                    UsuarioDAO.atualizar(usuario);
+                // Atualizar usuário em banco de dados
+                UsuarioDAO.atualizar(usuario);
 
-                    // Retornar dados de usuário inserido como JSON
-                    out.print("{");
-                    out.print("\"status\":\"success\",");
-                    out.print("\"data\":");
-                    out.print(usuarioComoJSON(usuario));
-                    out.print("}");
-                    return;
-
-                // Em caso de duplicidade, retornar erro
-                } catch (UsuarioDuplicadoException ex) {
-                    erros.add(ex.getMessage());
-                }
+                // Retornar dados de usuário inserido como JSON
+                out.print("{");
+                out.print("\"status\":\"success\",");
+                out.print("\"data\":");
+                out.print(usuarioComoJSON(usuario));
+                out.print("}");
+                return;
             }
 
             // Em caso de erro, retornar status 422

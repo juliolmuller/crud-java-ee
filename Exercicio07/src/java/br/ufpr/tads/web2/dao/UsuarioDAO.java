@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 import br.ufpr.tads.web2.beans.Usuario;
-import br.ufpr.tads.web2.exception.UsuarioDuplicadoException;
 
 public abstract class UsuarioDAO {
 
@@ -105,9 +104,7 @@ public abstract class UsuarioDAO {
         }
     }
 
-    public static void inserir(Usuario usuario) throws UsuarioDuplicadoException {
-        if (com(usuario.getLogin()) != null) 
-            throw new UsuarioDuplicadoException("Já existe um usuário com login '" + usuario.getLogin().toUpperCase() + "' cadastrado");
+    public static void inserir(Usuario usuario) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO " + TABELA + "(nome_usuario, login_usuario, senha_usuario) " +
@@ -128,10 +125,7 @@ public abstract class UsuarioDAO {
         }
     }
 
-    public static void atualizar(Usuario usuario) throws UsuarioDuplicadoException {
-        Usuario u = com(usuario.getLogin());
-        if (u != null && u.getId() != usuario.getId())
-            throw new UsuarioDuplicadoException("Já existe um outro usuário com login '" + usuario.getLogin().toUpperCase() + "' cadastrado");
+    public static void atualizar(Usuario usuario) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE " + TABELA + " SET nome_usuario = ?, login_usuario = ?, senha_usuario = ? " +

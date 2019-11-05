@@ -7,15 +7,14 @@ import br.ufpr.tads.web2.beans.Estado;
 import br.ufpr.tads.web2.dao.CidadeDAO;
 import br.ufpr.tads.web2.dao.ClienteDAO;
 import br.ufpr.tads.web2.dao.EstadoDAO;
-import br.ufpr.tads.web2.exception.ClienteDuplicadoException;
 
 public abstract class Facade {
     
-    public static void inserir(Cliente cliente) throws ClienteDuplicadoException {
+    public static void inserir(Cliente cliente) {
         ClienteDAO.inserir(cliente);
     }
     
-    public static void alterar(Cliente cliente) throws ClienteDuplicadoException {
+    public static void alterar(Cliente cliente) {
         ClienteDAO.atualizar(cliente);
     }
     
