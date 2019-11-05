@@ -124,7 +124,7 @@
                     <i class="far fa-calendar-alt"></i>
                   </span>
                 </div>
-                <input type="date" class="form-control" name="date_birth" placeholder="Data de nascimento" />
+                <input type="text" class="form-control" name="date_birth" placeholder="Data de nascimento" />
                 <div id="invalid-date_birth" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -135,7 +135,7 @@
                     <i class="fas fa-at"></i>
                   </span>
                 </div>
-                <input type="email" class="form-control" name="email" placeholder="Email de acesso" />
+                <input type="text" class="form-control" name="email" placeholder="Email de acesso" />
                 <div id="invalid-email" class="invalid-feedback ml-5"></div>
               </div>
             </div>
@@ -184,7 +184,7 @@
                     <i class="fas fa-map-marked-alt"></i>
                   </span>
                 </div>
-                <input type="number" class="form-control" name="number" placeholder="Número" />
+                <input type="text" class="form-control" name="number" placeholder="Número" />
                 <input type="text" class="form-control" name="complement" placeholder="Complemento" />
                 <div id="invalid-number" class="invalid-feedback ml-5"></div>
               </div>
