@@ -6,57 +6,57 @@ const phoneConfig = {
     field.mask(phoneMask.apply({}, arguments), options);
   }
 };
-$('input[name="first_name"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
-$('input[name="last_name"]').mask('S'.repeat(150), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
-$('input[name="cpf"]').mask('000.000.000-00', { reverse: true });
-$('input[name="date_birth"]').mask('00/00/0000');
-$('input[name="email"]').mask('S'.repeat(255), { translation: { S: { pattern: /[\w\.@]/ } } });
-$('input[name="phone"]').mask(phoneMask, phoneConfig);
-$('input[name="zip_code"]').mask('00000-000');
-$('input[name="street"]').mask('S'.repeat(255), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
-$('input[name="number"]').mask('999990', { reverse: true });
-$('input[name="complement"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
-$('input[name="city"]').mask('S'.repeat(80), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
-$('input[name="state"]').mask('SS', { translation: { S: /[A-Z]/ } });
+$('#form-signup [name="first_name"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
+$('#form-signup [name="last_name"]').mask('S'.repeat(150), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
+$('#form-signup [name="cpf"]').mask('000.000.000-00', { reverse: true });
+$('#form-signup [name="date_birth"]').mask('00/00/0000');
+$('#form-signup [name="email"]').mask('S'.repeat(255), { translation: { S: { pattern: /[\w\.@]/ } } });
+$('#form-signup [name="phone"]').mask(phoneMask, phoneConfig);
+$('#form-signup [name="zip_code"]').mask('00000-000');
+$('#form-signup [name="street"]').mask('S'.repeat(255), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
+$('#form-signup [name="number"]').mask('999990', { reverse: true });
+$('#form-signup [name="complement"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
+$('#form-signup [name="city"]').mask('S'.repeat(80), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
+$('#form-signup [name="state"]').mask('SS', { translation: { pattern: { S: /[A-Z]/ } } });
 
 // Configurar DatePicker para campo de data
-$('input[name="date_birth"]').datepicker({
-  dateFormat: 'dd/mm/yy',
-  dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
-  dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-  dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-  monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-  monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-  maxDate: '-18Y',
-  changeMonth: true,
-  changeYear: true
+$('#form-signup [name="date_birth"]').datepicker({
+  format: 'dd/mm/yyyy',
+  days: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  daysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  daysMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+  months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+  monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+  startView: 2,
+  autoHide: true,
+  zIndex: 2048
 });
 
 // Adicionar recurso de consulta de CEP
 $('#find-zip_code').click(() => {
   let zipFormat = /([0-9]{5})-([0-9]{3})/;
-  let zip = $('input[name="zip_code"]').val();
+  let zip = $('[name="zip_code"]').val();
   if (zip && zipFormat.test(zip)) {
     zip = zip.replace(zipFormat, '$1$2');
-    $('input[name="zip_code"]').attr('disabled', true);
-    $('input[name="street"]').val('');
-    $('input[name="number"]').val('');
-    $('input[name="complement"]').val('');
-    $('input[name="city"]').val('');
-    $('input[name="state"]').val('');
+    $('[name="zip_code"]').attr('disabled', true);
+    $('[name="street"]').val('');
+    $('[name="number"]').val('');
+    $('[name="complement"]').val('');
+    $('[name="city"]').val('');
+    $('[name="state"]').val('');
     $.ajax({
       method: 'GET',
       url: `https://viacep.com.br/ws/${zip}/json`,
       success(response) {
-        $('input[name="street"]').val(response.logradouro);
-        $('input[name="city"]').val(response.localidade);
+        $('[name="street"]').val(response.logradouro);
+        $('[name="city"]').val(response.localidade);
         $('select[name="state"] option')
           .filter((index, el) => el.text.substring(0, 2) === response.uf)
           .attr('selected', true);
-        $('input[name="number"]').focus();
+        $('[name="number"]').focus();
       },
       complete() {
-        $('input[name="zip_code"]').attr('disabled', false);
+        $('[name="zip_code"]').attr('disabled', false);
       }
     });
   }
@@ -71,8 +71,8 @@ function extractDataForm(formSelector) {
 
 // VErificar se formulário de signin está preenchido
 $('#form-signin').submit(e => {
-  const login = $(`input[name="login"]`).val();
-  const pswd = $(`input[name="password"]`).val();
+  const login = $(`#form-signin [name="login"]`).val();
+  const pswd = $(`#form-signin [name="password"]`).val();
   if (!login || !pswd) {
     e.preventDefault();
     e.target.classList.add('was-validated');
@@ -100,7 +100,7 @@ $('#form-signup').submit(e => {
       console.log('Fail to register: review validation messages and try again');
       if (response.errors) {
         for (let err in response.errors) {
-          $(`input[name="${err.field}"]`).addClass('is-invalid');
+          $(`[name="${err.field}"]`).addClass('is-invalid');
           $(`#invalid-${err.field}`).text(err.message);
         }
       }

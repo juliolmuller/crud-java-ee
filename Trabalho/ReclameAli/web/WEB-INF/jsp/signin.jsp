@@ -54,7 +54,7 @@
                 <i class="fas fa-unlock-alt"></i>
               </span>
             </div>
-            <input type="password" id="signin-password" class="form-control" name="password"  required />
+            <input type="password" id="signin-password" class="form-control clsDatePicker" name="password"  required />
             <div class="invalid-feedback ml-5">Campo obrigatório</div>
           </div>
         </div>
@@ -124,7 +124,7 @@
                     <i class="far fa-calendar-alt"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" name="date_birth" placeholder="Data de nascimento" />
+                <input type="text" class="form-control" name="date_birth" placeholder="Data de nascimento" readonly />
                 <div id="invalid-date_birth" class="invalid-feedback ml-5"></div>
               </div>
             </div>
