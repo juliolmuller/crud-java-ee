@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-      BEIBE :: Reclame Ali - ServiÃ§o de Atendimento ao Cliente
+      BEIBE :: Reclame Ali - Serviço de Atendimento ao Cliente
     </title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
