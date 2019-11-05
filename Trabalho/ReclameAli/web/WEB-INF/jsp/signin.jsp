@@ -9,9 +9,10 @@
 
 <t:baseLayout>
 
-  <%-- Cabeçalho da página (com logotipo) --%>
   <main class="container">
-    <div class="text-center">
+
+    <%-- Cabeçalho da página (com logotipo) --%>
+    <header class="text-center">
       <h1 class="text-primary display-3 c-title">
         <img src="${pageContext.request.contextPath}/img/reclame-ali-blue.png" class="c-logo-large" alt="Logo do Sistema" />
         Reclame Ali
@@ -19,7 +20,7 @@
       <span class="text-secondary c-subtitle">
         Serviço de Atendimento ao Cliente da <strong>Beibe</strong><sup>&copy;</sup>
       </span>
-    </div>
+    </header>
 
     <%-- Formulário de login --%>
     <form action="${pageContext.request.contextPath}/entrar?action=signin" method="POST" id="form-signin" class="card c-signin-card" novalidate>
@@ -75,7 +76,7 @@
     </form>
   </main>
 
-  <%-- Modal --%>
+  <%-- Formulário de auto-cadastro --%>
   <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <form action="${pageContext.request.contextPath}/entrar?action=signup" method="POST" id="form-signup" class="modal-content" novalidate>
@@ -199,7 +200,7 @@
                 <input type="text" class="form-control" name="city" placeholder="Cidade" />
                 <select class="form-control" name="state">
                   <option>Estado...</option>
-                  <c:forEach var="state" items="${states}">
+                  <c:forEach var="state" items="${requestScope.states}">
                     <option value="${state.id}">
                       <c:out value="${state.abrev}" /> - <c:out value="${state.name}" />
                     </option>
