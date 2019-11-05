@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import br.com.beibe.service.ConnectionFactory;
 import br.com.beibe.beans.User;
+import br.com.beibe.utils.Security;
 
 public final class UserDAO extends DAO {
 
@@ -43,6 +44,7 @@ public final class UserDAO extends DAO {
             stmt.setDate(5, new Date(user.getDateBirth().getTime()));
             stmt.setString(6, user.getPhone());
             stmt.setLong(7, roleId);
+            user.setPassword(Security.encryptPassword(user.getPassword()));
             stmt.setString(8, user.getPassword());
             rs = stmt.executeQuery();
             rs.next();
