@@ -6,7 +6,7 @@ Lista de exercícios e trabalhos de senvolvidos para a disciplina de Desenvolvim
 Equipe:
 
 - [André Antunes](https://github.com/andrekantunes)
-- [Aurélio Matsunaga](https://github.com/aureliomatsunaga)
+- ~~ [Aurélio Matsunaga](https://github.com/aureliomatsunaga)~~ *DROPPED*
 - [Cassiano VIdal](https://github.com/kruchelski)
 - [Júlio Müller](https://github.com/juliolmuller)
 - [Wesley Caetano](https://github.com/vvesleyc)
@@ -41,6 +41,16 @@ Incremente a aplicação do exercício 05 implementando alguns design patters, c
 
 - Arquivo de configuração do banco de dados: [`src/java/br/ufpr/tads/web2/dao/db.properties.example`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db.properties.example) (fazer uma cópia e renomeá-la como `db.properties`)
 - Scripts de criação de tabelas e inserção de dados: [`src/java/br/ufpr/tads/web2/dao/db-setup.sql`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db-setup.sql)
+
+## [Exercício 07](./Exercicio07/Exercício%2007%20-%20JSTL_EL.pdf)
+
+- Implementar bibliotecas dJavaScript de máscaras e date-picker;
+- Implementar validações de entrada de dados;
+- Criar e desmembrar entidades **Cidade** e **Estado**;
+- Implementar requisição de cidades via AJAX a partir do estado selecionado;
+- Configuração do banco de dados:
+  - Arquivo de configuração do banco de dados: [`src/java/br/ufpr/tads/web2/dao/db.properties.example`](./Exercicio07/src/java/br/ufpr/tads/web2/dao/db.properties.example (fazer uma cópia e renomeá-la como `db.properties`)
+  - Scripts de criação de tabelas e inserção de dados: [`src/java/br/ufpr/tads/web2/dao/db-setup.sql`](./Exercicio07/src/java/br/ufpr/tads/web2/dao/db-setup.sql)
 
 **Rotas da aplicação:**
 
