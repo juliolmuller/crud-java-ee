@@ -2,7 +2,7 @@ package br.ufpr.tads.web2.beans;
 
 public class Cidade {
 
-    private int id;
+    private Long id;
     private String nome;
     private Estado estado;
 
@@ -12,11 +12,11 @@ public class Cidade {
         return this.nome;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

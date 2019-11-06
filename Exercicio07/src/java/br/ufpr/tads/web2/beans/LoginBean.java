@@ -3,15 +3,17 @@ package br.ufpr.tads.web2.beans;
 
 public class LoginBean {
 
-    private int idUsuario;
+    private Long idUsuario;
     private String loginUsuario;
     private String nomeUsuario;
 
-    public int getIdUsuario() {
+    public LoginBean() {}
+    
+    public Long getIdUsuario() {
         return this.idUsuario;
     }
 
-    public void setIdUsuario(int id) {
+    public void setIdUsuario(Long id) {
         this.idUsuario = id;
     }
 

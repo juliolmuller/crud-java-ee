@@ -39,39 +39,37 @@
 
     <%-- Formulário de cadastro de clientes --%>
     <main  class="wrapper with-menu fade-in-down">
-      <c:if test="${erro != null}">
+      <c:if test="${!empty erros}">
         <div class="container">
           <div class="alert alert-danger w-100 text-center">
-            <c:out value="${erro}" />
+            <c:forEach var="erro" items="${erros}">
+              <c:out value="${erro.mensagem}" /><br/>
+            </c:forEach>
           </div>
         </div>
       </c:if>
       <div class="form-content">
         <h3 class="mt-3">
           <c:choose>
-            <c:when test="${cliente != null && erro == null}">
-              <c:choose>
-                <c:when test="${readOnly == null}">
-                  Alteração do Cliente #<c:out value="${cliente.id}" />
-                </c:when>
-                <c:otherwise>
-                  Cliente #<c:out value="${cliente.id}" />
-                </c:otherwise>
-              </c:choose>
+            <c:when test="${readOnly}">
+              Cliente #<c:out value="${cliente.id}" />
+            </c:when>
+            <c:when test="${alterando}">
+              Alteração do Cliente #<c:out value="${cliente.id}" />
             </c:when>
             <c:otherwise>
               Novo Cliente
             </c:otherwise>
           </c:choose>
         </h3>
-        <form action="${pageContext.request.contextPath}/clientes/${(cliente != null && erro == null) ? "alterar" : "novo"}" method="POST">
+        <form action="${pageContext.request.contextPath}/clientes/${alterando ? "alterar" : "novo"}" method="POST" novalidate>
           <input type="hidden" name="id" value="${cliente.id}" />
           <input type="text" class="fade-in then" placeholder="CPF do Cliente"
             name="cpf"
             value="${cliente.cpf}"
             maxlength="14"
             required
-            ${cliente != null ? "readonly" : "autofocus"}
+            ${alterando || readOnly ? "readonly" : "autofocus"}
           />
           <input type="text" class="fade-in then" placeholder="Nome do Cliente"
             name="nome"
@@ -85,7 +83,7 @@
             value="${cliente.email}"
             maxlength="100"
             required
-            ${cliente != null ? "readonly" : ""}
+            ${alterando || readOnly ? "readonly" : ""}
           />
           <input type="text" class="fade-in then" placeholder="Data de Nascimento"
             name="nasc"

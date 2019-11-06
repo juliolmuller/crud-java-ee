@@ -46,7 +46,10 @@ public class ApiCidadeServlet extends HttpServlet {
 
         // Recuperar dados do banco e montar resposta
         try (PrintWriter out = response.getWriter()) {
-            int estadoId = Integer.parseInt(request.getParameter("estado"));
+            Long estadoId = null;
+            try {
+                estadoId = Long.parseLong(request.getParameter("estado"));
+            } catch (NumberFormatException e) {}
             List<Cidade> cidades = Facade.buscarCidades(estadoId);
             out.print("[");
             for (int i = 0; i < cidades.size(); i++) {

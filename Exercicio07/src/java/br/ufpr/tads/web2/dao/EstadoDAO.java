@@ -21,7 +21,7 @@ public abstract class EstadoDAO {
             );
             while (rs.next()) {
                 Estado estado = new Estado();
-                estado.setId(rs.getInt("id_estado"));
+                estado.setId(rs.getLong("id_estado"));
                 estado.setNome(rs.getString("nome_estado"));
                 estado.setSigla(rs.getString("sigla_estado"));
                 estados.add(estado);

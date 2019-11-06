@@ -3,38 +3,17 @@ package br.ufpr.tads.web2.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.ufpr.tads.web2.beans.Erro;
 import br.ufpr.tads.web2.beans.Usuario;
 import br.ufpr.tads.web2.dao.UsuarioDAO;
 
 @WebServlet(name = "CadastroUsuario", urlPatterns = {"/usuarios", "/api/usuarios"})
 public class ApiUsuarioServlet extends HttpServlet {
-
-    private List<String> validarDados(Usuario usuario, boolean novo) {
-        
-        // Instanciar lista para armazenar mensagens de erro
-        List<String> erros = new ArrayList<>();
-
-        // Validar se todos os parâmetros foram enviados
-        if (!novo && usuario.getId() == 0) {
-            erros.add("Nenhum ID informado.");
-        }
-        if (usuario.getNome() == null || usuario.getNome().equals("")) {
-            erros.add("O campo NOME é obrigatório.");
-        }
-        if (usuario.getLogin() == null || usuario.getLogin().equals("")) {
-            erros.add("O campo LOGIN é obrigatório.");
-        }
-        if (usuario.getSenha() == null || usuario.getSenha().equals("")) {
-            erros.add("O campo SENHA é obrigatório.");
-        }
-        return erros;
-    }
 
     private String usuarioComoJSON(Usuario usuario) {
         StringBuilder sb = new StringBuilder();
@@ -97,7 +76,7 @@ public class ApiUsuarioServlet extends HttpServlet {
         usuario.setSenha(request.getParameter("senha"));
 
         // Validar dados enviados
-        List<String> erros = validarDados(usuario, true);
+        List<Erro> erros = usuario.validar();
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
@@ -121,7 +100,7 @@ public class ApiUsuarioServlet extends HttpServlet {
             out.print("\"status\":\"error\",");
             out.print("\"messages\":[");
             for (int i = 0; i < erros.size(); i++) {
-                out.print("\"" + erros.get(i) + "\"");
+                out.print("\"" + erros.get(i).getMensagem() + "\"");
                 if (i < erros.size() - 1) {
                     out.print(",");
                 }
@@ -144,10 +123,8 @@ public class ApiUsuarioServlet extends HttpServlet {
         // Instanciar usuário e atribuir parâmetros de formulpario
         Usuario usuario = new Usuario();
         try {
-            usuario.setId(Integer.parseInt(request.getParameter("id")));
-        } catch (NumberFormatException e) {
-            usuario.setId(0);
-        }
+            usuario.setId(Long.parseLong(request.getParameter("id")));
+        } catch (NumberFormatException e) {}
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
@@ -186,18 +163,18 @@ public class ApiUsuarioServlet extends HttpServlet {
         response.setContentType("application/json");
 
         // Instanciar usuário e atribuir parâmetros de formulpario
-        Usuario usuario = new Usuario();
-        usuario.setNome(request.getParameter("nome"));
-        usuario.setLogin(request.getParameter("login"));
-        usuario.setSenha(request.getParameter("senha"));
+        Usuario usuario = null;
         try {
-            usuario.setId(Integer.parseInt(request.getParameter("id")));
-        } catch (NumberFormatException e) {
-            usuario.setId(0);
+            usuario = UsuarioDAO.com(Long.parseLong(request.getParameter("id")));
+            usuario.setNome(request.getParameter("nome"));
+            usuario.setSenha(request.getParameter("senha"));
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new ServletException(e);
         }
+        
 
         // Validar dados enviados
-        List<String> erros = validarDados(usuario, false);
+        List<Erro> erros = usuario.validar();
 
         // Montar resposta ao usuário
         try (PrintWriter out = response.getWriter()) {
@@ -221,7 +198,7 @@ public class ApiUsuarioServlet extends HttpServlet {
             out.print("\"status\":\"error\",");
             out.print("\"messages\":[");
             for (int i = 0; i < erros.size(); i++) {
-                out.print("\"" + erros.get(i) + "\"");
+                out.print("\"" + erros.get(i).getMensagem() + "\"");
                 if (i < erros.size() - 1) {
                     out.print(",");
                 }

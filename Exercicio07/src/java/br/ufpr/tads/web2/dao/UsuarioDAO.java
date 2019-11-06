@@ -25,7 +25,7 @@ public abstract class UsuarioDAO {
             );
             while (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setId(rs.getLong("id_usuario"));
                 usuario.setNome(rs.getString("nome_usuario"));
                 usuario.setLogin(rs.getString("login_usuario"));
                 usuario.setSenha(rs.getString("senha_usuario"));
@@ -37,17 +37,17 @@ public abstract class UsuarioDAO {
         }
     }
 
-    public static Usuario com(int id) {
+    public static Usuario com(Long id) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                "SELECT id_usuario, nome_usuario, login_usuario, senha_usuario " +
-                "FROM " + TABELA + " WHERE id = ?;"
+                "SELECT nome_usuario, login_usuario, senha_usuario " +
+                "FROM " + TABELA + " WHERE id_usuario = ?;"
             );
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setId(id);
                 usuario.setNome(rs.getString("nome_usuario"));
                 usuario.setLogin(rs.getString("login_usuario"));
                 usuario.setSenha(rs.getString("senha_usuario"));
@@ -69,7 +69,7 @@ public abstract class UsuarioDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setId(rs.getLong("id_usuario"));
                 usuario.setNome(rs.getString("nome_usuario"));
                 usuario.setLogin(rs.getString("login_usuario"));
                 usuario.setSenha(rs.getString("senha_usuario"));
@@ -92,7 +92,7 @@ public abstract class UsuarioDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id_usuario"));
+                usuario.setId(rs.getLong("id_usuario"));
                 usuario.setNome(rs.getString("nome_usuario"));
                 usuario.setLogin(rs.getString("login_usuario"));
                 usuario.setSenha(rs.getString("senha_usuario"));
@@ -116,7 +116,7 @@ public abstract class UsuarioDAO {
             stmt.setString(3, usuario.getSenha());
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            usuario.setId(rs.getInt("id_usuario"));
+            usuario.setId(rs.getLong("id_usuario"));
             usuario.setNome(rs.getString("nome_usuario"));
             usuario.setLogin(rs.getString("login_usuario"));
             usuario.setSenha(rs.getString("senha_usuario"));
@@ -134,10 +134,10 @@ public abstract class UsuarioDAO {
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getLogin().toUpperCase());
             stmt.setString(3, encriptarSenha(usuario.getSenha()));
-            stmt.setInt(4, usuario.getId());
+            stmt.setLong(4, usuario.getId());
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            usuario.setId(rs.getInt("id_usuario"));
+            usuario.setId(rs.getLong("id_usuario"));
             usuario.setNome(rs.getString("nome_usuario"));
             usuario.setLogin(rs.getString("login_usuario"));
             usuario.setSenha(rs.getString("senha_usuario"));
@@ -151,7 +151,7 @@ public abstract class UsuarioDAO {
             PreparedStatement stmt = conn.prepareStatement(
                 "DELETE FROM " + TABELA + " WHERE id_usuario = ?;"
             );
-            stmt.setInt(1, usuario.getId());
+            stmt.setLong(1, usuario.getId());
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);

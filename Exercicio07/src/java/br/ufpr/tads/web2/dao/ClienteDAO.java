@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import br.ufpr.tads.web2.beans.Cliente;
@@ -28,16 +29,16 @@ public abstract class ClienteDAO {
                 "id_cliente, cpf_cliente, nome_cliente, email_cliente, data_cliente, cep_cliente, " +
                 "rua_cliente, nr_cliente, id_cidade, nome_cidade, id_estado, nome_estado, sigla_estado " +
                 "FROM " + TABELA_CLIENTE + " " +
-                "INNER JOIN " + TABELA_CIDADE + " ON cidade_id = id_cidade " +
-                "INNER JOIN " + TABELA_ESTADO + " ON estado_id = id_estado;"
+                "LEFT JOIN " + TABELA_CIDADE + " ON cidade_id = id_cidade " +
+                "LEFT JOIN " + TABELA_ESTADO + " ON estado_id = id_estado;"
             );
             while (rs.next()) {
                 Estado estado = new Estado();
-                estado.setId(rs.getInt("id_estado"));
+                estado.setId(rs.getLong("id_estado"));
                 estado.setNome(rs.getString("nome_estado"));
                 estado.setSigla(rs.getString("sigla_estado"));
                 Cidade cidade = new Cidade();
-                cidade.setId(rs.getInt("id_cidade"));
+                cidade.setId(rs.getLong("id_cidade"));
                 cidade.setNome(rs.getString("nome_cidade"));
                 cidade.setEstado(estado);
                 Endereco endereco = new Endereco();
@@ -46,7 +47,7 @@ public abstract class ClienteDAO {
                 endereco.setNumero(rs.getInt("nr_cliente"));
                 endereco.setCidade(cidade);
                 Cliente cliente = new Cliente();
-                cliente.setId(rs.getInt("id_cliente"));
+                cliente.setId(rs.getLong("id_cliente"));
                 cliente.setCpf(rs.getString("cpf_cliente"));
                 cliente.setNome(rs.getString("nome_cliente"));
                 cliente.setEmail(rs.getString("email_cliente"));
@@ -63,19 +64,19 @@ public abstract class ClienteDAO {
     private static Cliente com(Object dado, String sql) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            if (dado instanceof Integer) {
-                stmt.setInt(1, (Integer) dado);
+            if (dado instanceof Long) {
+                stmt.setLong(1, (Long) dado);
             } else {
                 stmt.setString(1, (String) dado);
             }
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) return null;
             Estado estado = new Estado();
-            estado.setId(rs.getInt("id_estado"));
+            estado.setId(rs.getLong("id_estado"));
             estado.setNome(rs.getString("nome_estado"));
             estado.setSigla(rs.getString("sigla_estado"));
             Cidade cidade = new Cidade();
-            cidade.setId(rs.getInt("id_cidade"));
+            cidade.setId(rs.getLong("id_cidade"));
             cidade.setNome(rs.getString("nome_cidade"));
             cidade.setEstado(estado);
             Endereco endereco = new Endereco();
@@ -84,7 +85,7 @@ public abstract class ClienteDAO {
             endereco.setNumero(rs.getInt("nr_cliente"));
             endereco.setCidade(cidade);
             Cliente cliente = new Cliente();
-            cliente.setId(rs.getInt("id_cliente"));
+            cliente.setId(rs.getLong("id_cliente"));
             cliente.setCpf(rs.getString("cpf_cliente"));
             cliente.setNome(rs.getString("nome_cliente"));
             cliente.setEmail(rs.getString("email_cliente"));
@@ -96,7 +97,7 @@ public abstract class ClienteDAO {
         }
     }
 
-    public static Cliente comId(int id) {
+    public static Cliente comId(Long id) {
         String sql = "SELECT " +
             "id_cliente, cpf_cliente, nome_cliente, email_cliente, data_cliente, cep_cliente, " +
             "rua_cliente, nr_cliente, id_cidade, nome_cidade, id_estado, nome_estado, sigla_estado " +
@@ -131,7 +132,6 @@ public abstract class ClienteDAO {
 
     public static Cliente inserir(Cliente cliente) {
         try (Connection conn = ConnectionFactory.getConnection()) {
-            conn.setAutoCommit(false);
             PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO " + TABELA_CLIENTE + "(" +
                 "cpf_cliente, nome_cliente, email_cliente, data_cliente, " +
@@ -145,10 +145,14 @@ public abstract class ClienteDAO {
             stmt.setString(5, cliente.getEndereco().getCep());
             stmt.setString(6, cliente.getEndereco().getRua());
             stmt.setInt(7, cliente.getEndereco().getNumero());
-            stmt.setInt(8, cliente.getEndereco().getCidade().getId());
+            try {
+                stmt.setLong(8, cliente.getEndereco().getCidade().getId());
+            } catch (NullPointerException e) {
+                stmt.setNull(8, Types.INTEGER);
+            }
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            int id = rs.getInt("id_cliente");
+            Long id = rs.getLong("id_cliente");
             cliente.setId(id);
             return cliente;
         } catch (SQLException e) {
@@ -171,8 +175,12 @@ public abstract class ClienteDAO {
             stmt.setString(5, cliente.getEndereco().getCep());
             stmt.setString(6, cliente.getEndereco().getRua());
             stmt.setInt(7, cliente.getEndereco().getNumero());
-            stmt.setInt(8, cliente.getEndereco().getCidade().getId());
-            stmt.setInt(10, cliente.getId());
+            try {
+                stmt.setLong(8, cliente.getEndereco().getCidade().getId());
+            } catch (NullPointerException e) {
+                stmt.setNull(8, Types.INTEGER);
+            }
+            stmt.setLong(9, cliente.getId());
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -184,7 +192,7 @@ public abstract class ClienteDAO {
             PreparedStatement stmt = conn.prepareStatement(
                 "DELETE FROM " + TABELA_CLIENTE + " WHERE id_cliente = ?;"
             );
-            stmt.setInt(1, cliente.getId());
+            stmt.setLong(1, cliente.getId());
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);

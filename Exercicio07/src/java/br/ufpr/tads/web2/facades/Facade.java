@@ -18,7 +18,7 @@ public abstract class Facade {
         ClienteDAO.atualizar(cliente);
     }
     
-    public static Cliente buscar(int id) {
+    public static Cliente buscar(Long id) {
         return ClienteDAO.comId(id);
     }
     
@@ -38,11 +38,11 @@ public abstract class Facade {
         return CidadeDAO.listar();
     }
 
-    public static List<Cidade> buscarCidades(int estadoId) {
+    public static List<Cidade> buscarCidades(Long estadoId) {
         return CidadeDAO.listarPor(estadoId);
     }
     
-    public static void remover(int id) {
+    public static void remover(Long id) {
         Cliente cliente = buscar(id);
         remover(cliente);
     }

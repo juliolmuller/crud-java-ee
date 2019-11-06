@@ -26,11 +26,11 @@ public abstract class CidadeDAO {
             );
             while (rs.next()) {
                 Estado estado = new Estado();
-                estado.setId(rs.getInt("id_estado"));
+                estado.setId(rs.getLong("id_estado"));
                 estado.setNome(rs.getString("nome_estado"));
                 estado.setSigla(rs.getString("sigla_estado"));
                 Cidade cidade = new Cidade();
-                cidade.setId(rs.getInt("id_cidade"));
+                cidade.setId(rs.getLong("id_cidade"));
                 cidade.setNome(rs.getString("nome_cidade"));
                 cidade.setEstado(estado);
                 cidades.add(cidade);
@@ -41,7 +41,7 @@ public abstract class CidadeDAO {
         }
     }
 
-    public static List<Cidade> listarPor(int idEstado) {
+    public static List<Cidade> listarPor(Long idEstado) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             List<Cidade> cidades = new ArrayList<>();
             PreparedStatement stmt = conn.prepareStatement(
@@ -50,15 +50,15 @@ public abstract class CidadeDAO {
                 "INNER JOIN " + TABELA_ESTADO + " ON estado_id = id_estado " +
                 "WHERE estado_id = ?;"
             );
-            stmt.setInt(1, idEstado);
+            stmt.setLong(1, idEstado);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Estado estado = new Estado();
-                estado.setId(rs.getInt("id_estado"));
+                estado.setId(rs.getLong("id_estado"));
                 estado.setNome(rs.getString("nome_estado"));
                 estado.setSigla(rs.getString("sigla_estado"));
                 Cidade cidade = new Cidade();
-                cidade.setId(rs.getInt("id_cidade"));
+                cidade.setId(rs.getLong("id_cidade"));
                 cidade.setNome(rs.getString("nome_cidade"));
                 cidade.setEstado(estado);
                 cidades.add(cidade);

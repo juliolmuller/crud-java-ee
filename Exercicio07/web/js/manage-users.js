@@ -50,6 +50,7 @@ function limparForm() {
   $('input[name="login"]').val('');
   $('input[name="senha"]').val('');
   $('input[name="nome"]').focus();
+  $('input[name="login"]').attr('readonly', false);
   $('#btn-ok').html('Cadastrar');
 }
 
@@ -75,6 +76,7 @@ function editar(e) {
   for (let campo in dados) {
     $(`input[name="${campo}"]`).val(dados[campo]);
   }
+  $('input[name="login"]').attr('readonly', true);
   $('input[name="senha"]').val('');
   $('input[name="nome"]').focus();
   $('#btn-ok').html('Atualizar');
@@ -98,6 +100,7 @@ function enviarDados(e) {
   e.preventDefault();
   e.stopPropagation();
   const dados = coletarDados();
+  console.log(window.d = dados);
   if (!dados.id) {
     $.ajax({
       method: 'POST',
