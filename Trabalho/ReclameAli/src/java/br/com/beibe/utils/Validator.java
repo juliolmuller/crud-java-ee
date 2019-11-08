@@ -1,4 +1,4 @@
-package br.ufpr.tads.web2.utils;
+package br.com.beibe.utils;
 
 import java.util.regex.Pattern;
 
@@ -7,16 +7,22 @@ public final class Validator {
     private Validator() {}
 
     public static boolean isEmail(String email) {
+        if (email == null)
+            return false;
         String regex = "^[\\w\\d\\.]+@[\\w\\d\\.]+\\.[A-Za-z]{2,6}";
         return Pattern.compile(regex).matcher(email).matches();
     }
 
     public static boolean isName(String name) {
+        if (email == null)
+            return false;
         String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+";
         return Pattern.compile(regex).matcher(name).matches();
     }
 
     public static boolean isLogin(String login) {
+        if (email == null)
+            return false;
         String regex = "^\\w+";
         return Pattern.compile(regex).matcher(login).matches();
     }
@@ -26,12 +32,10 @@ public final class Validator {
     }
 
     public static boolean isCpf(String cpf) {
-
-        // Checar tamanho da String e se há apenas números
+        if (email == null)
+            return false;
         if (cpf.length() != 11 || Converter.removeNonDigits(cpf).length() != 11)
             return false;
-
-        // Calcular 1º digito verificador (#10)
         int sum = 0;
         for (int i = 0, div = 10; i < 9; i++, div--) {
             int num = (int) (cpf.charAt(i) - 48);
@@ -45,8 +49,6 @@ public final class Validator {
             dig1 = (char) (rem + 48);
         if (dig1 != cpf.charAt(9))
             return false;
-
-        // Calcular 2º digito verificador (#11)
         sum = 0;
         for (int i = 0, div = 11; i < 10; i++, div--) {
             int num = (int) (cpf.charAt(i) - 48);
@@ -60,8 +62,6 @@ public final class Validator {
             dig2 = (char) (rem + 48);
         if (dig2 != cpf.charAt(10))
             return false;
-
-        // Se passou por todas as checagens, retorna TRUE
         return true;
     }
 }
