@@ -1,8 +1,8 @@
 package br.com.beibe.beans;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class Address implements Serializable {
+public class Address implements Bean {
 
     private Long id;
     private String zipCode;
@@ -75,5 +75,10 @@ public class Address implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

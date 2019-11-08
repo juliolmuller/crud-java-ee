@@ -1,8 +1,8 @@
 package br.com.beibe.beans;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class State implements Serializable {
+public class State implements Bean {
 
     private Long id;
     private String name;
@@ -30,5 +30,10 @@ public class State implements Serializable {
 
     public void setAbrev(String abrev) {
         this.abrev = abrev;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

@@ -1,9 +1,9 @@
 package br.com.beibe.beans;
 
 import java.util.Date;
-import java.io.Serializable;
+import java.util.List;
 
-public class TicketMessage implements Serializable {
+public class TicketMessage implements Bean {
 
     private Long id;
     private String message;
@@ -40,5 +40,10 @@ public class TicketMessage implements Serializable {
 
     public void setSendDate(Date date) {
         this.sendDate = date;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

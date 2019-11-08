@@ -2,9 +2,9 @@ package br.com.beibe.beans;
 
 import java.util.Date;
 import java.util.Set;
-import java.io.Serializable;
+import java.util.List;
 
-public class Ticket implements Serializable {
+public class Ticket implements Bean {
 
     private Long id;
     private Date openingDate;
@@ -68,5 +68,10 @@ public class Ticket implements Serializable {
 
     public void setMessages(Set<TicketMessage> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

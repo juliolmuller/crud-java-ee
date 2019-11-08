@@ -1,8 +1,8 @@
 package br.com.beibe.beans;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class Category implements Serializable {
+public class Category implements Bean {
 
     private Long id;
     private String name;
@@ -21,5 +21,10 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

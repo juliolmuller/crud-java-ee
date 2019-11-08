@@ -1,10 +1,10 @@
 package br.com.beibe.beans;
 
-import br.com.beibe.config.AccessRole;
 import java.util.Date;
-import java.io.Serializable;
+import java.util.List;
+import br.com.beibe.config.AccessRole;
 
-public class User implements Serializable {
+public class User implements Bean {
 
     private Long id;
     private String firstName;
@@ -95,5 +95,10 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }

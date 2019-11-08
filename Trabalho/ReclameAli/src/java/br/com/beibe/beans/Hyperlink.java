@@ -1,6 +1,8 @@
 package br.com.beibe.beans;
 
-public class Hyperlink {
+import java.io.Serializable;
+
+public class Hyperlink implements Serializable {
 
     private String label;
     private String url;

@@ -1,8 +1,8 @@
 package br.com.beibe.beans;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class Product implements Serializable {
+public class Product implements Bean {
 
     private Long id;
     private String name;
@@ -66,5 +66,10 @@ public class Product implements Serializable {
 
     public void setEan(String ean) {
         this.ean = ean;
+    }
+
+    @Override
+    public List<ValError> validate() {
+        return null;
     }
 }
