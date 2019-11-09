@@ -26,7 +26,7 @@ public enum AccessRole {
         return getName();
     }
 
-    public AccessRole of(int id) {
+    public static AccessRole of(int id) {
         for (AccessRole a : values()) {
             if (id == a.id)
                 return a;
@@ -34,7 +34,7 @@ public enum AccessRole {
         return null;
     }
 
-    public AccessRole of(String name) {
+    public static AccessRole of(String name) {
         for (AccessRole a : values()) {
             if (name.equals(a.name))
                 return a;
