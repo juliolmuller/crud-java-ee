@@ -20,7 +20,9 @@ public abstract class ConnectionFactory {
         }
     }
 
-    private ConnectionFactory() {}
+    public static Connection getConnection() {
+        return getConnection(true);
+    }
 
     public static Connection getConnection(boolean autoCommit) {
         try {
