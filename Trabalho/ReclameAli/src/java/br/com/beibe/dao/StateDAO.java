@@ -20,7 +20,7 @@ public abstract class StateDAO extends DAO {
         NAME("name"),
         ABREV("abrev");
 
-        private String fieldName;
+        private final String fieldName;
 
         private Fields(String fieldName) {
             this.fieldName = fieldName;
@@ -72,7 +72,7 @@ public abstract class StateDAO extends DAO {
 
     protected static Map<Long, State> getMap(Connection conn) throws SQLException {
         Map<Long, State> states = new HashMap<>();
-        getList(conn).forEach(state -> states.put(state.getId(), state));;
+        getList(conn).forEach(state -> states.put(state.getId(), state));
         return states;
     }
 

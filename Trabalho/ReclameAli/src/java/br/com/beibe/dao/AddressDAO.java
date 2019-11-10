@@ -26,7 +26,7 @@ abstract class AddressDAO extends DAO {
         CITY("city"),
         STATE("state_id");
 
-        private String fieldName;
+        private final String fieldName;
 
         private Fields(String fieldName) {
             this.fieldName = fieldName;
@@ -80,9 +80,16 @@ abstract class AddressDAO extends DAO {
         return addresses;
     }
 
-    protected static Address find(Long id, Connection conn) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + Fields.ID + " = ?"));
-        stmt.setLong(1, id);
+    protected static Address find(Object value, Fields field, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + field + " = ?"));
+        if (value instanceof String)
+            stmt.setString(1, (String) value);
+        else if (value instanceof Long)
+            stmt.setLong(1, (Long) value);
+        else if (value instanceof Integer)
+            stmt.setInt(1, (Integer) value);
+        else
+            throw new SQLException("Type cannot be set to the prepared statement");
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             return extractData(rs, conn);

@@ -31,7 +31,7 @@ public abstract class UserDAO extends DAO {
         ROLE("role_id"),
         PASSWORD("password");
 
-        private String fieldName;
+        private final String fieldName;
 
         private Fields(String fieldName) {
             this.fieldName = fieldName;
@@ -48,7 +48,7 @@ public abstract class UserDAO extends DAO {
     }
 
     private static User extractData(ResultSet rs, Connection conn) throws SQLException {
-        Address address = AddressDAO.find(rs.getLong(Fields.ID.toString()), conn);
+        Address address = AddressDAO.find(rs.getLong(Fields.ID.toString()), AddressDAO.Fields.ID, conn);
         Map<Long, Address> addressMap = new HashMap<>();
         if (address != null)
             addressMap.put(address.getId(), address);
@@ -92,7 +92,7 @@ public abstract class UserDAO extends DAO {
     public static Map<Long, User> getMap() {
         try (Connection conn = ConnectionFactory.getConnection()) {
             Map<Long, User> users = new HashMap<>();
-            getList(conn).forEach(user -> users.put(user.getId(), user));;
+            getList(conn).forEach(user -> users.put(user.getId(), user));
             return users;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -100,16 +100,29 @@ public abstract class UserDAO extends DAO {
     }
 
     public static User find(Long id) {
+        return find(id, Fields.ID);
+    }
+
+    public static User find(Object value, Fields field) {
         try (Connection conn = ConnectionFactory.getConnection()) {
-            return find(id, conn);
+            return find(value, field, conn);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-	protected static User find(Long id, Connection conn) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + Fields.ID + " = ?"));
-        stmt.setLong(1, id);
+	protected static User find(Object value, Fields field, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + field + " = ?"));
+        if (value instanceof String)
+            stmt.setString(1, (String) value);
+        else if (value instanceof Long)
+            stmt.setLong(1, (Long) value);
+        else if (value instanceof Integer)
+            stmt.setInt(1, (Integer) value);
+        else if (value instanceof java.util.Date)
+            stmt.setDate(1, new Date(((java.util.Date) value).getTime()));
+        else
+            throw new SQLException("Type cannot be set to the prepared statement");
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             return extractData(rs, conn);
