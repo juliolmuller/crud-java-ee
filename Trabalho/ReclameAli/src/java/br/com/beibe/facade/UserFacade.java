@@ -1,9 +1,9 @@
 package br.com.beibe.facade;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 import br.com.beibe.beans.User;
+import br.com.beibe.beans.ValError;
 import br.com.beibe.dao.UserDAO;
 
 public final class UserFacade {
@@ -15,12 +15,13 @@ public final class UserFacade {
         return null;
     }
 
-    public static List<String> validate(User user) {
-        // Implementação pendente
-        return new ArrayList<>();
+    public static List<ValError> validate(User user) {
+        return user.validate();
     }
 
-    public static User save(User user) throws SQLException {
-        return UserDAO.insert(user);
+    public static void save(User user) throws SQLException {
+        if (user.getId() == null)
+            UserDAO.insert(user);
+        // FIXME: UserDAO.update(user);
     }
 }
