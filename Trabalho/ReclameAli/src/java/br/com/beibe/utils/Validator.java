@@ -14,14 +14,14 @@ public final class Validator {
     }
 
     public static boolean isName(String name) {
-        if (email == null)
+        if (name == null)
             return false;
         String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+";
         return Pattern.compile(regex).matcher(name).matches();
     }
 
     public static boolean isLogin(String login) {
-        if (email == null)
+        if (login == null)
             return false;
         String regex = "^\\w+";
         return Pattern.compile(regex).matcher(login).matches();
@@ -32,7 +32,7 @@ public final class Validator {
     }
 
     public static boolean isCpf(String cpf) {
-        if (email == null)
+        if (cpf == null)
             return false;
         if (cpf.length() != 11 || Converter.removeNonDigits(cpf).length() != 11)
             return false;
