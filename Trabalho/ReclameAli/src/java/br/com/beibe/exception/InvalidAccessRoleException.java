@@ -1,4 +1,4 @@
-package br.com.beibe.beans.exception;
+package br.com.beibe.exception;
 
 import javax.servlet.ServletException;
 
