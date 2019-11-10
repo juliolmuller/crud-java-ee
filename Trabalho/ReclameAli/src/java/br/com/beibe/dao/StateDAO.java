@@ -1,36 +1,96 @@
 package br.com.beibe.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
-import br.com.beibe.service.ConnectionFactory;
+import java.util.Map;
+import java.util.stream.Stream;
+import java.util.HashMap;
 import br.com.beibe.beans.State;
+import br.com.beibe.service.ConnectionFactory;
 
-public final class StateDAO extends DAO {
+public abstract class StateDAO extends DAO {
 
-    private static final String STATE_TABLE = "states";
-    private static final String[] STATE_COLUMNS = { "id", "name", "abrev" };
+    public static final String TABLE = "states";
+    public static enum Fields {
+        ID("id"),
+        NAME("name"),
+        ABREV("abrev");
 
-    private StateDAO() {}
+        private String fieldName;
 
-    public static List<State> getAll() {
-        try (Connection conn = ConnectionFactory.getConnection(true)) {
-            List<State> states = new ArrayList<>();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(buildSelectQuery(STATE_TABLE, STATE_COLUMNS));
-            while (rs.next()) {
-                State state = new State();
-                state.setId(rs.getLong("id"));
-                state.setName(rs.getString("name"));
-                state.setAbrev(rs.getString("abrev"));
-                states.add(state);
-            }
-            return states;
+        private Fields(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public static String[] toArray() {
+            return Stream.of(values()).map(Fields::name).toArray(String[]::new);
+        }
+
+        @Override
+        public String toString() {
+            return this.fieldName;
+        }
+    }
+
+    private static State extractData(ResultSet rs) throws SQLException {
+        return new State(
+            rs.getLong(Fields.ID.toString()),
+            rs.getString(Fields.NAME.toString()),
+            rs.getString(Fields.ABREV.toString())
+        );
+    }
+
+    public static List<State> getList() {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            return getList(conn);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
+
+    protected static List<State> getList(Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray()));
+        ResultSet rs = stmt.executeQuery();
+        List<State> states = new ArrayList<>();
+        while (rs.next()) {
+            states.add(extractData(rs));
+        }
+        return states;
+    }
+
+    public static Map<Long, State> getMap() {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            return getMap(conn);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    protected static Map<Long, State> getMap(Connection conn) throws SQLException {
+        Map<Long, State> states = new HashMap<>();
+        getList(conn).forEach(state -> states.put(state.getId(), state));;
+        return states;
+    }
+
+    public static State find(Long id) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            return find(id, conn);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+	protected static State find(Long id, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + Fields.ID + " = ?"));
+        stmt.setLong(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return extractData(rs);
+        }
+        return null;
+	}
 }
