@@ -198,7 +198,7 @@ public abstract class User implements Bean {
         // Validar senha
         if (this.password != null) {
             if (this.password.length() < 6 || this.password.length() > 32) {
-                errors.add(new ValError("phone", "A senha deve ter entre 6 e 32 caracteres"));
+                errors.add(new ValError("password1", "A senha deve ter entre 6 e 32 caracteres"));
             }
         }
 
