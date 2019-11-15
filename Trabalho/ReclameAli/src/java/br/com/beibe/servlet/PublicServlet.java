@@ -1,8 +1,6 @@
 package br.com.beibe.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -10,23 +8,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import br.com.beibe.beans.Address;
+import br.com.beibe.beans.Cliente;
 import br.com.beibe.beans.User;
 import br.com.beibe.beans.State;
-import br.com.beibe.config.AccessRole;
+import br.com.beibe.beans.ValError;
 import br.com.beibe.dao.StateDAO;
 import br.com.beibe.facade.UserFacade;
+import br.com.beibe.utils.Converter;
 
-@WebServlet(name = "PublicRoutes", urlPatterns = {"/entrar"})
-public class PublicRoutesServlet extends HttpServlet {
+@WebServlet(name = "PublicServlet", urlPatterns = {"/entrar"})
+public class PublicServlet extends HttpServlet {
 
     @Override
     protected void doGet(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        List<State> states = StateDAO.getAll();
+        List<State> states = StateDAO.getList();
         request.setAttribute("states", states);
         request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
     }
@@ -51,10 +50,10 @@ public class PublicRoutesServlet extends HttpServlet {
                 return;
             case "signup":
                 User newUser = extractUserData(request);
-                List<String> errors = UserFacade.validate(newUser);
+                List<ValError> errors = UserFacade.validate(newUser);
                 if (errors.isEmpty()) {
                     try {
-                        newUser = UserFacade.save(newUser);
+                        UserFacade.save(newUser);
                         configSessionAndForward(newUser, request, response);
                     } catch (SQLException ex) {
                         throw new ServletException(ex);
@@ -69,13 +68,12 @@ public class PublicRoutesServlet extends HttpServlet {
     }
 
     private void configSessionAndForward(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.setAttribute("userCredentials", user);
+        request.getSession().setAttribute("userCredentials", user);
         response.sendRedirect(request.getContextPath() + "/" + user.getRole());
     }
 
     private User extractUserData(HttpServletRequest request) {
-        User user = new User();
+        User user = new Cliente();
         Address address = new Address();
         user.setFirstName(request.getParameter("first_name"));
         user.setLastName(request.getParameter("last_name"));
@@ -84,13 +82,17 @@ public class PublicRoutesServlet extends HttpServlet {
         user.setPhone(request.getParameter("phone"));
         user.setPassword(request.getParameter("password1"));
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            user.setDateBirth(formatter.parse(request.getParameter("date_birth")));
-        } catch (ParseException | NullPointerException ex) {
+            user.setDateBirth(Converter.toLocalDate(request.getParameter("date_birth")));
+        } catch (NullPointerException ex) {
             user.setDateBirth(null);
         }
         address.setZipCode(request.getParameter("zip_code"));
         address.setStreet(request.getParameter("street"));
+        try {
+            address.setNumber(Integer.parseInt(request.getParameter("number")));
+        } catch (NumberFormatException | NullPointerException ex) {
+            address.setNumber(null);
+        }
         address.setComplement(request.getParameter("complement"));
         address.setNeightborhood(request.getParameter("neightborhood"));
         address.setCity(request.getParameter("city"));
@@ -101,17 +103,7 @@ public class PublicRoutesServlet extends HttpServlet {
         } catch (NullPointerException | NumberFormatException ex) {
             address.setState(state);
         }
-        try {
-            String number = request.getParameter("number");
-            if (number == null)
-                address.setNumber(null);
-            else
-                address.setNumber(Integer.parseInt(number));
-        } catch (NumberFormatException ex) {
-            address.setNumber(-1);
-        }
         user.setAddress(address);
-        user.setRole(AccessRole.CLIENTE);
         return user;
     }
 }
