@@ -47,7 +47,7 @@ public abstract class User implements Bean {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
@@ -55,7 +55,7 @@ public abstract class User implements Bean {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public final void setFirstName(String firstName) {
         this.firstName = Converter.nullable(firstName);
     }
 
@@ -63,7 +63,7 @@ public abstract class User implements Bean {
         return this.lastName;
     }
 
-    public void setLastName(String lastName) {
+    public final void setLastName(String lastName) {
         this.lastName = Converter.nullable(lastName);
     }
 
@@ -71,7 +71,7 @@ public abstract class User implements Bean {
         return this.cpf;
     }
 
-    public void setCpf(String cpf) {
+    public final void setCpf(String cpf) {
         this.cpf = Converter.nullable(Converter.removeNonDigits(cpf));
     }
 
@@ -79,7 +79,7 @@ public abstract class User implements Bean {
         return this.dateBirth;
     }
 
-    public void setDateBirth(LocalDate dateBirth) {
+    public final void setDateBirth(LocalDate dateBirth) {
         this.dateBirth = dateBirth;
     }
 
@@ -87,15 +87,18 @@ public abstract class User implements Bean {
         return this.email;
     }
 
-    public void setEmail(String email) {
-        this.email = Converter.nullable(email).toLowerCase();
+    public final void setEmail(String email) {
+        email = Converter.nullable(email);
+        if (email != null)
+            email = email.toLowerCase();
+        this.email = email;
     }
 
     public String getPhone() {
         return this.phone;
     }
 
-    public void setPhone(String phone) {
+    public final void setPhone(String phone) {
         this.phone = Converter.nullable(Converter.removeNonDigits(phone));
     }
 
@@ -107,7 +110,7 @@ public abstract class User implements Bean {
         return this.password;
     }
 
-    public void setPassword(String password) {
+    public final void setPassword(String password) {
         this.password = Converter.nullable(password);
     }
 
