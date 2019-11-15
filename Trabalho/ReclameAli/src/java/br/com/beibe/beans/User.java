@@ -22,10 +22,11 @@ public abstract class User implements Bean {
     private String password;
 
     public static User getInstanceOf(String role) {
-        String className = role.substring(0, 1).toUpperCase() + role.substring(1);
+        String[] className = User.class.getName().split("\\.");
+        className[className.length - 1] = role.substring(0, 1).toUpperCase() + role.substring(1);
         try {
-            return (User) Class.forName(className).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+            return (User) Class.forName(String.join(".", className)).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             return null;
         }
     }
@@ -119,7 +120,8 @@ public abstract class User implements Bean {
     }
 
     public String getRole() {
-        return getClass().getName().toLowerCase();
+        String[] clasName = getClass().getName().split("\\.");
+        return clasName[clasName.length - 1].toLowerCase();
     }
 
     @Override
