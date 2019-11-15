@@ -23,9 +23,10 @@ public abstract class DAO {
 
     protected static String buildInsertQuery(String tableName, String[] columns, boolean returningId) {
         StringBuilder sb = new StringBuilder("INSERT INTO ").append(tableName).append("(");
-        sb.append(String.join(", ", Stream.of(columns).filter(column -> !column.equals("id")).toArray(String[]::new)));
+        String[] columnsNoId = Stream.of(columns).filter(column -> !column.equals("id")).toArray(String[]::new);
+        sb.append(String.join(", ", columnsNoId));
         sb.append(") VALUES(");
-        sb.append(String.join(", ", Stream.of(new String[columns.length]).map(q -> "?").toArray(String[]::new)));
+        sb.append(String.join(", ", Stream.of(new String[columnsNoId.length]).map(q -> "?").toArray(String[]::new)));
         sb.append(")");
         if (returningId)
             sb.append(" RETURNING id");
