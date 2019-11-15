@@ -19,7 +19,7 @@ import br.com.beibe.dao.StateDAO;
 import br.com.beibe.facade.UserFacade;
 import br.com.beibe.utils.Converter;
 
-@WebServlet(name = "PublicServlet", urlPatterns = {"/entrar"})
+@WebServlet(name = "PublicServlet", urlPatterns = {"/entrar", "/sair"})
 public class PublicServlet extends HttpServlet {
 
     @Override
@@ -27,9 +27,14 @@ public class PublicServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        List<State> states = StateDAO.getList();
-        request.setAttribute("states", states);
-        request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
+        if (request.getRequestURI().split("/")[2].equals("sair")) {
+            request.getSession().invalidate();
+            response.sendRedirect(request.getContextPath() + "/entrar");
+        } else {
+            List<State> states = StateDAO.getList();
+            request.setAttribute("states", states);
+            request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
+        }
     }
 
     @Override

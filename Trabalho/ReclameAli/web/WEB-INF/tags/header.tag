@@ -21,7 +21,7 @@
       </ul>
     </div>
     <div class="form-inline">
-      <a href="${pageContext.request.contextPath}/" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
+      <a href="${pageContext.request.contextPath}/sair" class="btn btn-sm btn-outline-danger text-white my-2 my-sm-0">
         <i class="fas fa-door-open"></i>
         Sair
       </a>
