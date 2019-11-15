@@ -1,47 +1,46 @@
 package br.com.beibe.beans;
 
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneId;
-import br.com.beibe.config.AccessRole;
 import br.com.beibe.dao.UserDAO;
 import br.com.beibe.utils.Converter;
 import br.com.beibe.utils.Validator;;
 
-public final class User implements Bean {
+@SuppressWarnings("serial")
+public abstract class User implements Bean {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String cpf;
     private String email;
-    private Date dateBirth;
+    private LocalDate dateBirth;
     private String phone;
     private Address address;
-    private AccessRole role;
     private String password;
+
+    public static User getInstanceOf(String role) {
+        String className = role.substring(0, 1).toUpperCase() + role.substring(1);
+        try {
+            return (User) Class.forName(className).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+            return null;
+        }
+    }
 
     public User() {}
 
-    public User(String firstName, String lastName, String cpf, String email, Date dateBirth, String phone, Address address, AccessRole role, String password) {
+    public User(Long id, String firstName, String lastName, String cpf, String email, LocalDate dateBirth, String phone, Address address, String password) {
+        setId(id);
         setFirstName(firstName);
         setLastName(lastName);
         setCpf(cpf);
         setEmail(email);
         setDateBirth(dateBirth);
         setPhone(phone);
-        setRole(role);
         setPassword(password);
-    }
-
-    public User(Long id, String firstName, String lastName, String cpf, String email, Date dateBirth, String phone, Address address, AccessRole role, String password) {
-        this(firstName, lastName, cpf, email, dateBirth, phone, address, role, password);
-        setId(id);
     }
 
     public Long getId() {
@@ -76,11 +75,11 @@ public final class User implements Bean {
         this.cpf = Converter.nullable(Converter.removeNonDigits(cpf));
     }
 
-    public Date getDateBirth() {
+    public LocalDate getDateBirth() {
         return this.dateBirth;
     }
 
-    public void setDateBirth(Date dateBirth) {
+    public void setDateBirth(LocalDate dateBirth) {
         this.dateBirth = dateBirth;
     }
 
@@ -104,24 +103,20 @@ public final class User implements Bean {
         return this.address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public AccessRole getRole() {
-        return this.role;
-    }
-
-    public void setRole(AccessRole role) {
-        this.role = role;
-    }
-
     public String getPassword() {
         return this.password;
     }
 
     public void setPassword(String password) {
         this.password = Converter.nullable(password);
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getRole() {
+        return getClass().getName().toLowerCase();
     }
 
     @Override
@@ -184,11 +179,7 @@ public final class User implements Bean {
 
         // Validar data de nascimento
         if (this.dateBirth != null) {
-            Instant instant = Instant.ofEpochMilli(this.dateBirth.getTime());
-            LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-            LocalDate localDateBirth = localDateTime.toLocalDate();
-            LocalDate now = LocalDate.now();
-            if (Period.between(localDateBirth, now).getYears() < 18)
+            if (Period.between(this.dateBirth, LocalDate.now()).getYears() < 18)
                 errors.add(new ValError("date_birth", "O usuário deve ser maior de idade (18 anos) para se cadastrar"));
         }
 

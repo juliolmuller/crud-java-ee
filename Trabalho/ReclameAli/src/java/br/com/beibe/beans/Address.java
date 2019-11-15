@@ -2,7 +2,14 @@ package br.com.beibe.beans;
 
 import java.util.List;
 
-public class Address implements Bean {
+import br.com.beibe.dao.StateDAO;
+import br.com.beibe.utils.Converter;
+import br.com.beibe.utils.Validator;
+
+import java.util.ArrayList;
+
+@SuppressWarnings("serial")
+public final class Address implements Bean {
 
     private Long id;
     private String zipCode;
@@ -12,6 +19,19 @@ public class Address implements Bean {
     private String neightborhood;
     private String city;
     private State state;
+
+    public Address() {}
+
+    public Address(Long userId, String zipCode, String street, Integer number, String complement, String neightborhood, String city, State state) {
+        setId(userId);
+        setZipCode(zipCode);
+        setStreet(street);
+        setNumber(number);
+        setComplement(complement);
+        setNeightborhood(neightborhood);
+        setCity(city);
+        setState(state);
+    }
 
     public Long getId() {
         return this.id;
@@ -26,7 +46,7 @@ public class Address implements Bean {
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+        this.zipCode = Converter.nullable(zipCode);
     }
 
     public String getStreet() {
@@ -34,7 +54,7 @@ public class Address implements Bean {
     }
 
     public void setStreet(String street) {
-        this.street = street;
+        this.street = Converter.nullable(street);
     }
 
     public Integer getNumber() {
@@ -50,7 +70,7 @@ public class Address implements Bean {
     }
 
     public void setComplement(String complement) {
-        this.complement = complement;
+        this.complement = Converter.nullable(complement);
     }
 
     public String getNeightborhood() {
@@ -58,7 +78,7 @@ public class Address implements Bean {
     }
 
     public void setNeightborhood(String neightborhood) {
-        this.neightborhood = neightborhood;
+        this.neightborhood = Converter.nullable(neightborhood);
     }
 
     public String getCity() {
@@ -66,7 +86,7 @@ public class Address implements Bean {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = Converter.nullable(city);
     }
 
     public State getState() {
@@ -79,6 +99,50 @@ public class Address implements Bean {
 
     @Override
     public List<ValError> validate() {
-        return null;
+        List<ValError> errors = new ArrayList<>();
+
+        // Validar CEP
+        if (this.zipCode != null) {
+            if (!Validator.isCep(this.zipCode)) {
+                errors.add(new ValError("zip_code", "O CEP fornecido é inválido"));
+            }
+        }
+
+        // Validar rua
+        if (this.street != null) {
+            if (this.street.length() > 255) {
+                errors.add(new ValError("street", "O campo 'RUA' deve ter até 255 caracteres"));
+            }
+        }
+
+        // Validar complemento
+        if (this.complement != null) {
+            if (this.complement.length() > 30) {
+                errors.add(new ValError("complement", "O campo 'COMPLEMENTO' deve ter até 30 caracteres"));
+            }
+        }
+
+        // Validar bairro
+        if (this.neightborhood != null) {
+            if (this.neightborhood.length() > 80) {
+                errors.add(new ValError("neightborhood", "O campo 'BAIRRO' deve ter até 80 caracteres"));
+            }
+        }
+
+        // Validar cidade
+        if (this.city != null) {
+            if (this.city.length() > 80) {
+                errors.add(new ValError("city", "O campo 'CIDADE' deve ter até 80 caracteres"));
+            }
+        }
+
+        // Validar estado
+        if (this.state != null) {
+            if (StateDAO.find(this.state.getId()) == null) {
+                errors.add(new ValError("state", "O estado selecionado é inválido"));
+            }
+        }
+
+        return errors;
     }
 }

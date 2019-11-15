@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 import br.com.beibe.beans.Address;
 import br.com.beibe.beans.User;
-import br.com.beibe.config.AccessRole;
 import br.com.beibe.service.ConnectionFactory;
 import br.com.beibe.utils.Security;
 
@@ -28,7 +27,7 @@ public abstract class UserDAO extends DAO {
         EMAIL("email"),
         DATE_BIRTH("date_birth"),
         PHONE("phone"),
-        ROLE("role_id"),
+        ROLE("role"),
         PASSWORD("password");
 
         private final String fieldName;
@@ -56,18 +55,17 @@ public abstract class UserDAO extends DAO {
     }
 
     private static User extractData(ResultSet rs, Map<Long, Address> addresses) throws SQLException {
-        return new User(
-            rs.getLong(Fields.ID.toString()),
-            rs.getString(Fields.FIRST_NAME.toString()),
-            rs.getString(Fields.LAST_NAME.toString()),
-            rs.getString(Fields.CPF.toString()),
-            rs.getString(Fields.EMAIL.toString()),
-            rs.getDate(Fields.DATE_BIRTH.toString()),
-            rs.getString(Fields.PHONE.toString()),
-            addresses.get(rs.getLong(Fields.ID.toString())),
-            AccessRole.of(rs.getInt(Fields.ROLE.toString())),
-            rs.getString(Fields.PASSWORD.toString())
-        );
+        User user = User.getInstanceOf(rs.getString(Fields.ROLE.toString()));
+        user.setId(rs.getLong(Fields.ID.toString()));
+        user.setFirstName(rs.getString(Fields.FIRST_NAME.toString()));
+        user.setLastName(rs.getString(Fields.LAST_NAME.toString()));
+        user.setCpf(rs.getString(Fields.CPF.toString()));
+        user.setEmail(rs.getString(Fields.EMAIL.toString()));
+        user.setDateBirth(rs.getDate(Fields.DATE_BIRTH.toString()).toLocalDate());
+        user.setPhone(rs.getString(Fields.PHONE.toString()));
+        user.setPassword(rs.getString(Fields.PASSWORD.toString()));
+        user.setAddress(addresses.get(rs.getLong(Fields.ID.toString())));
+        return user;
     }
 
     public static List<User> getList() {
@@ -139,11 +137,11 @@ public abstract class UserDAO extends DAO {
             stmt.setString(3, user.getCpf());
             stmt.setString(4, user.getEmail());
             if (user.getDateBirth() != null)
-                stmt.setDate(5, new Date(user.getDateBirth().getTime()));
+                stmt.setDate(5, Date.valueOf((user.getDateBirth())));
             else
                 stmt.setNull(5, Types.NULL);
             stmt.setString(6, user.getPhone());
-            stmt.setInt(7, user.getRole().getId());
+            stmt.setString(7, user.getRole());
             user.setPassword(Security.encryptPassword(user.getPassword()));
             stmt.setString(8, user.getPassword());
             ResultSet rs = stmt.executeQuery();

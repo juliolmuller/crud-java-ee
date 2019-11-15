@@ -1,9 +1,14 @@
 
--- Tabela de Perfis de Acesso
-CREATE TABLE roles(
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(20) NOT NULL
-);
+-- Excluir esquemas conflitantes
+DROP TABLE IF EXISTS ticket_messages;
+DROP TABLE IF EXISTS tickets;
+DROP TABLE IF EXISTS ticket_status;
+DROP TABLE IF EXISTS ticket_types;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS states;
+DROP TABLE IF EXISTS users;
 
 -- Tebela de Usuários
 CREATE TABLE users(
@@ -14,7 +19,7 @@ CREATE TABLE users(
   date_birth DATE NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   phone VARCHAR(16),
-  role_id INT REFERENCES roles(id),
+  role VARCHAR(32) NOT NULL,
   password VARCHAR(255)
 );
 

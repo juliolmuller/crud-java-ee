@@ -2,7 +2,8 @@ package br.com.beibe.beans;
 
 import java.io.Serializable;
 
-public class Hyperlink implements Serializable {
+@SuppressWarnings("serial")
+public final class Hyperlink implements Serializable {
 
     private String label;
     private String url;

@@ -2,8 +2,10 @@ package br.com.beibe.beans;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
-public class TicketMessage implements Bean {
+@SuppressWarnings("serial")
+public final class TicketMessage implements Bean {
 
     private Long id;
     private String message;
@@ -44,6 +46,7 @@ public class TicketMessage implements Bean {
 
     @Override
     public List<ValError> validate() {
-        return null;
+        List<ValError> errors = new ArrayList<>();
+        return errors;
     }
 }

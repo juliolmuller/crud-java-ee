@@ -28,9 +28,3 @@ INSERT INTO states(abrev, name) VALUES
   ('SP', 'São Paulo'),
   ('SG', 'Sergipe'),
   ('TO', 'Tocantins');
-
--- Popular tabela 'roles'
-INSERT INTO roles(id, name) VALUES
-  (10, 'cliente'),
-  (20, 'funcionario'),
-  (30, 'gerente');

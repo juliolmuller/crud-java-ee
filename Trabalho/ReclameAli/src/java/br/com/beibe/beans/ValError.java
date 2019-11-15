@@ -2,7 +2,8 @@ package br.com.beibe.beans;
 
 import java.io.Serializable;
 
-public class ValError implements Serializable {
+@SuppressWarnings("serial")
+public final class ValError implements Serializable {
 
     private String field;
     private String message;

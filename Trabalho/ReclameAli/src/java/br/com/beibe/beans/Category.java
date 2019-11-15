@@ -1,8 +1,10 @@
 package br.com.beibe.beans;
 
 import java.util.List;
+import java.util.ArrayList;
 
-public class Category implements Bean {
+@SuppressWarnings("serial")
+public final class Category implements Bean {
 
     private Long id;
     private String name;
@@ -25,6 +27,7 @@ public class Category implements Bean {
 
     @Override
     public List<ValError> validate() {
-        return null;
+        List<ValError> errors = new ArrayList<>();
+        return errors;
     }
 }
