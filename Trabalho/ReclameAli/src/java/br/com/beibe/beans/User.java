@@ -140,7 +140,7 @@ public abstract class User implements Bean {
         if (this.dateBirth == null)
             errors.add(new ValError("date_birth", "O campo 'DATA DE NASCIMENTO' é de preenchimento obrigatório"));
         if (this.id == null && this.password == null)
-            errors.add(new ValError("password", "O campo 'SENHA' é de preenchimento obrigatório"));
+            errors.add(new ValError("password1", "O campo 'SENHA' é de preenchimento obrigatório"));
 
         // Validar CPF
         if (this.cpf != null) {
