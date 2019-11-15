@@ -199,8 +199,8 @@
                 </div>
                 <input type="text" class="form-control" name="city" placeholder="Cidade" />
                 <select class="form-control" name="state">
-                  <option>Estado...</option>
-                  <c:forEach var="state" items="${requestScope.states}">
+                  <option>Estado</option>
+                  <c:forEach var="state" items="${states}">
                     <option value="${state.id}">
                       <c:out value="${state.abrev}" /> - <c:out value="${state.name}" />
                     </option>

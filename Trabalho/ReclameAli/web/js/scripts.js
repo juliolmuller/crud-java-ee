@@ -17,7 +17,6 @@ $('#form-signup [name="street"]').mask('S'.repeat(255), { translation: { S: { pa
 $('#form-signup [name="number"]').mask('999990', { reverse: true });
 $('#form-signup [name="complement"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
 $('#form-signup [name="city"]').mask('S'.repeat(80), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
-$('#form-signup [name="state"]').mask('SS', { translation: { pattern: { S: /[A-Z]/ } } });
 
 // Configurar DatePicker para campo de data
 $('#form-signup [name="date_birth"]').datepicker({
