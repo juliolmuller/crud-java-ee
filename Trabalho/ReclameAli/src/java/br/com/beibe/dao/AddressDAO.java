@@ -33,7 +33,7 @@ abstract class AddressDAO extends DAO {
         }
 
         public static String[] toArray() {
-            return Stream.of(values()).map(Fields::name).toArray(String[]::new);
+            return Stream.of(values()).map(Fields::toString).toArray(String[]::new);
         }
 
         @Override

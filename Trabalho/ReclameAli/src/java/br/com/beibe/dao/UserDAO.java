@@ -37,7 +37,7 @@ public abstract class UserDAO extends DAO {
         }
 
         public static String[] toArray() {
-            return Stream.of(values()).map(Fields::name).toArray(String[]::new);
+            return Stream.of(values()).map(Fields::toString).toArray(String[]::new);
         }
 
         @Override
@@ -126,7 +126,7 @@ public abstract class UserDAO extends DAO {
             return extractData(rs, conn);
         }
         return null;
-	}
+    }
 
     public static void insert(User user) throws SQLException {
         Connection conn = ConnectionFactory.getConnection(false);
