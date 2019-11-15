@@ -3,6 +3,9 @@ package br.com.beibe.utils;
 import java.util.Date;
 import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.text.ParseException;
 
 public final class Converter {
@@ -18,28 +21,44 @@ public final class Converter {
     public static Date toDate(String strDate) {
         if (strDate == null)
             return null;
-        Date date;
         String regex = "^(\\d{1,2})/(\\d{1,2})/(\\d{4})";
         if (Pattern.compile(regex).matcher(strDate).matches()) {
-            date = toDate(strDate, "dd/MM/yyyy");
-            if (date != null)
-                return date;
+            return toDate(strDate, "dd/MM/yyyy");
         }
         regex = "^(\\d{4})-(\\d{1,2})-(\\d{1,2})";
         if (Pattern.compile(regex).matcher(strDate).matches()) {
-            date = toDate(strDate, "yyyy-MM-dd");
-            if (date != null)
-                return date;
+            return toDate(strDate, "yyyy-MM-dd");
         }
         return null;
     }
 
     public static Date toDate(String strDate, String format) {
-        if (strDate == null)
-            return null;
         try {
             return new SimpleDateFormat(format).parse(strDate);
-        } catch (ParseException ex) {
+        } catch (ParseException | NullPointerException ex) {
+            return null;
+        }
+    }
+
+    public static LocalDate toLocalDate(String strDate) {
+        if (strDate == null)
+            return null;
+        String regex = "^(\\d{1,2})/(\\d{1,2})/(\\d{4})";
+        if (Pattern.compile(regex).matcher(strDate).matches()) {
+            return toLocalDate(strDate, "dd/MM/yyyy");
+        }
+        regex = "^(\\d{4})-(\\d{1,2})-(\\d{1,2})";
+        if (Pattern.compile(regex).matcher(strDate).matches()) {
+            return toLocalDate(strDate, "yyyy-MM-dd");
+        }
+        return null;
+    }
+
+    public static LocalDate toLocalDate(String strDate, String format) {
+        try {
+            return LocalDate.parse(strDate, DateTimeFormatter.ofPattern(format));
+        } catch (DateTimeParseException | NullPointerException ex) {
+            System.out.println("sim");
             return null;
         }
     }
