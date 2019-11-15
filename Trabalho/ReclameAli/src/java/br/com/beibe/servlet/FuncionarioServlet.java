@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
 
-@WebServlet(name = "FuncionarioRoutes", urlPatterns = {"/funcionario/*"})
-public class FuncionarioRoutesServlet extends HttpServlet {
+@WebServlet(name = "FuncionarioServlet", urlPatterns = {"/funcionario/*"})
+public class FuncionarioServlet extends HttpServlet {
 
     @Override
     protected void doGet(
