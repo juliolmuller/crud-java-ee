@@ -64,7 +64,7 @@ $('#find-zip_code').click(() => {
 // Função para extração dos dados do formulpario
 function extractDataForm(formSelector) {
   const data = {};
-  $(`${formSelector} [name]`).each((i, el) => (data[el.name] = el.value));
+  $(`${formSelector} [name]`).each((i, el) => data[el.name] = el.value);
   return data;
 }
 
@@ -82,10 +82,7 @@ $('#form-signin').submit(e => {
 $('#form-signup').submit(e => {
   e.preventDefault();
   const userData = extractDataForm('#form-signup');
-  userData.cpf = userData.cpf.replace(/([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})\-([0-9]{2})/, '$1$2$3$4');
-  userData.phone = userData.phone.replace(/\(?([0-9]{2})\)?\s?([0-9]{4,5})\-?([0-9]{4})/, '$1$2$3');
-  userData.date_birth = userData.date_birth.replace(/(\d{1,2})\/?(\d{1,2})\/?(\d{4})/, '$3-$2-$1');
-  userData.zip_code = userData.zip_code.replace(/([0-9]{5})\-([0-9]{3})/, '$1$2');
+  userData.terms = !!$('[name="terms"]').attr('checked');
   $.ajax({
     method: 'POST',
     url: e.target.action,
@@ -95,16 +92,19 @@ $('#form-signup').submit(e => {
       baseUrl[4] = 'cliente';
       window.location.href = baseUrl.join('/');
     },
-    error(response) {
+    error({ responseJSON }) {
       console.log('Fail to register: review validation messages and try again');
-      if (response.errors) {
-        for (let err in response.errors) {
-          $(`[name="${err.field}"]`).addClass('is-invalid');
-          $(`#invalid-${err.field}`).text(err.message);
-        }
+      for (let err of responseJSON) {
+        $(`#invalid-${err.field}`).text(err.message);
+        $(`[name="${err.field}"]`).addClass('is-invalid');
       }
     }
   });
+});
+
+// Adicionar evento para checkbox
+$('input[type="checkbox"]').on('change', function() {
+  $(this).attr('checked', !$(this).attr('checked'));
 });
 
 // TODO:s Adicionar recurso de busca de produto

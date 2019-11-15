@@ -1,6 +1,7 @@
 package br.com.beibe.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
 import br.com.beibe.beans.Address;
 import br.com.beibe.beans.Cliente;
 import br.com.beibe.beans.User;
@@ -51,6 +53,10 @@ public class PublicServlet extends HttpServlet {
             case "signup":
                 User newUser = extractUserData(request);
                 List<ValError> errors = UserFacade.validate(newUser);
+                if (!request.getParameter("password2").equals(newUser.getPassword()))
+                    errors.add(new ValError("password2", "As senhas não conferem"));
+                if (!Boolean.parseBoolean(request.getParameter("terms")))
+                    errors.add(new ValError("terms", "Você precisa aceitas os termos de uso da plataforma para continuar"));
                 if (errors.isEmpty()) {
                     try {
                         UserFacade.save(newUser);
@@ -59,8 +65,13 @@ public class PublicServlet extends HttpServlet {
                         throw new ServletException(ex);
                     }
                 } else {
-                    request.setAttribute("dataErrors", errors);
-                    request.getRequestDispatcher("/WEB-INF/jsp/error-json.jsp").forward(request, response);
+                    response.setStatus(422);
+                    response.setCharacterEncoding("UTF-8");
+                    response.setContentType("application/json");
+                    try (PrintWriter out = response.getWriter()) {
+                        Gson json = new Gson();
+                        out.print(json.toJson(errors));
+                    }
                 }
                 return;
         }
