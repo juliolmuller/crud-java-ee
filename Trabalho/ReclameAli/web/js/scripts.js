@@ -1,4 +1,16 @@
 
+// Function to escape HTML
+const escapeHTML = string => {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return string.replace(/[&<>"']/g, m => map[m]);
+}
+
 // Colocar máscara nos formulários
 const phoneMask = value => (value.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009');
 const phoneConfig = {
