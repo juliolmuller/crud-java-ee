@@ -64,4 +64,12 @@ public final class Validator {
             return false;
         return true;
     }
+
+	public static boolean isCep(String cep) {
+        if (cep == null)
+            return false;
+        if (cep.length() != 8 || Converter.removeNonDigits(cep).length() != 8)
+            return false;
+		return true;
+	}
 }
