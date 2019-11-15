@@ -5,7 +5,7 @@
 
 <header class="container-fluid bg-dark fixed-top c-header">
   <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
-    <a class="navbar-brand" href="index.html">
+    <a class="navbar-brand" href="${pageContext.request.contextPath}/">
       <img src="${pageContext.request.contextPath}/img/reclame-ali-white.png" width="30" height="30" class="d-inline-block align-top" alt="Logo do sistema" />
       <span class="text-white-50 h4 c-title">Reclame Ali</span>
     </a>
