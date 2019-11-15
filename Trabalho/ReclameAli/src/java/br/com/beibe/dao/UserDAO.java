@@ -109,7 +109,7 @@ public abstract class UserDAO extends DAO {
         }
     }
 
-	protected static User find(Object value, Fields field, Connection conn) throws SQLException {
+    protected static User find(Object value, Fields field, Connection conn) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + field + " = ?"));
         if (value instanceof String)
             stmt.setString(1, (String) value);
@@ -126,6 +126,21 @@ public abstract class UserDAO extends DAO {
             return extractData(rs, conn);
         }
         return null;
+    }
+        
+    public static User authenticate(String login, String password) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + Fields.EMAIL + " = ? AND " + Fields.PASSWORD + " = ?"));
+            stmt.setString(1, login);
+            stmt.setString(2, Security.encryptPassword(password));
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return extractData(rs, conn);
+            }
+            return null;
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 
     public static void insert(User user) throws SQLException {

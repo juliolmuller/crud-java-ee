@@ -11,8 +11,7 @@ public final class UserFacade {
     private UserFacade() {}
 
     public static User authenticate(String login, String password) {
-        // Implementação pendente
-        return null;
+        return UserDAO.authenticate(login, password);
     }
 
     public static List<ValError> validate(User user) {

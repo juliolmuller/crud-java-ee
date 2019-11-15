@@ -47,7 +47,7 @@ public class PublicServlet extends HttpServlet {
                     configSessionAndForward(user, request, response);
                 } else {
                     request.setAttribute("authError", true);
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
                 }
                 return;
             case "signup":
