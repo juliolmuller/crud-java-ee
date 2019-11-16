@@ -1,12 +1,10 @@
 package br.com.beibe.beans;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import br.com.beibe.dao.StateDAO;
 import br.com.beibe.utils.Converter;
 import br.com.beibe.utils.Validator;
-
-import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public final class Address implements Bean {
