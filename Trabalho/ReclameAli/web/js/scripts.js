@@ -1,6 +1,6 @@
 
 // Function to escape HTML
-const escapeHTML = string => {
+function escapeHTML(string) {
   const map = {
     '&': '&amp;',
     '<': '&lt;',
@@ -169,3 +169,27 @@ $('a[title="Excluir"]').click(function(e) {
       .remove();
   }
 });
+
+// TODO: criação de categoria
+function createCategory() {
+  $('#category-form').modal('show');
+}
+
+// TODO: edição de categoria
+function editCategory(id) {
+  $('#category-form').modal('show');
+  // Copiar dados para formulário...
+}
+
+// TODO: atualização de categoria
+function updateCategory() {
+  const category = extractDataForm('#category-form');
+  // atualizar...
+}
+
+// TODO: exclusão de categoria
+function deleteCategory(id) {
+  if (confirm(`Tem certeza de que deseja excluir a categoria #${id}?`)) {
+    // excluir...
+  }
+}
