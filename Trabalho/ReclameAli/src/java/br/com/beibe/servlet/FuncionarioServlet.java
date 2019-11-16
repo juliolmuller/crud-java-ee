@@ -1,5 +1,6 @@
 package br.com.beibe.servlet;
 
+import br.com.beibe.beans.Category;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
+import br.com.beibe.facade.CategoryFacade;
 
 @WebServlet(name = "FuncionarioServlet", urlPatterns = {"/funcionario/*"})
 public class FuncionarioServlet extends HttpServlet {
@@ -130,6 +132,8 @@ public class FuncionarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        List<Category> categories = CategoryFacade.listAll();
+        request.setAttribute("categories", categories);
         request.getRequestDispatcher("/WEB-INF/jsp/categories-index.jsp").forward(request, response);
     }
 

@@ -9,6 +9,13 @@ public final class Category implements Bean {
     private Long id;
     private String name;
 
+    public Category() {}
+
+    public Category(Long id, String name) {
+        setId(id);
+        setName(name);
+    }
+
     public Long getId() {
         return this.id;
     }
