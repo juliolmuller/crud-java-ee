@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fontawesome.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/datepicker.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/toastr.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
   </head>
   <body>

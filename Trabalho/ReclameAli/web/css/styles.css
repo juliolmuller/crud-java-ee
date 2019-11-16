@@ -122,3 +122,7 @@ input[type="number"] {
   font-weight: normal;
   font-style: italic;
 }
+
+.toast-top-right {
+  margin-top: 50px;
+}
