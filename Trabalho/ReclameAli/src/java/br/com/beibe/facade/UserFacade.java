@@ -6,9 +6,7 @@ import br.com.beibe.beans.User;
 import br.com.beibe.beans.ValError;
 import br.com.beibe.dao.UserDAO;
 
-public final class UserFacade {
-
-    private UserFacade() {}
+public abstract class UserFacade {
 
     public static User authenticate(String login, String password) {
         return UserDAO.authenticate(login, password);
