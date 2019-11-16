@@ -134,7 +134,7 @@ public class FuncionarioServlet extends HttpServlet {
     ) throws ServletException, IOException {
         List<Category> categories = CategoryFacade.listAll();
         request.setAttribute("categories", categories);
-        request.getRequestDispatcher("/WEB-INF/jsp/categories-index.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/categories.jsp").forward(request, response);
     }
 
     public void displayCategoriesForm(

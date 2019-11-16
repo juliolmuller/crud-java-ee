@@ -1,5 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/WEB-INF/jsp/error-page.jsp" %>
 
 <t:baseLayout>
@@ -36,12 +37,12 @@
         <tbody>
           <c:choose>
             <c:when test="${empty categories}">
-            <p class="h5">Nenhuma categoria cadastrada.</p>
+              <tr><td colspan="3" class="h4 py-4">Nenhuma categoria cadastrada.</td></tr>
             </c:when>
             <c:otherwise>
               <c:forEach var="category" items="${categories}">
                 <tr>
-                  <th scope="row" class="text-center"><c:out value="${category.id}" /></th>
+                  <th scope="row" class="text-center"><fmt:formatNumber type="number" value="${category.id}" pattern="000"/></th>
                   <td><c:out value="${category.name}" /></td>
                   <td class="text-right">
                     <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editCategory(<c:out value="${category.id}" />)"><i class="fas fa-edit"></i></button>
@@ -53,6 +54,40 @@
           </c:choose>
         </tbody>
       </table>
+    </div>
+
+    <%-- Formulário para criação de categoria --%>
+    <div id="category-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <form id="category-form" class="modal-content" novalidate>
+          <div class="modal-header">
+            <h2 id="category-form-title" class="modal-title"></h2>
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id" value="" />
+            <div class="form-group">
+              <label for="category-name">Nome da categoria:</label>
+              <textarea id="category-name" class="form-control" name="name" rows="3" maxlength="255" oninput="charCounter(event, '#char-counter', 255)"></textarea>
+              <small id="char-counter" class="form-text text-muted text-right">
+                Caracteres digitados: 0/255
+              </small>
+            </div>
+          </div>
+          <div class="modal-footer c-sign-buttons">
+            <button type="button" class="btn btn-lg btn-light" data-dismiss="modal">
+              <i class="far fa-times-circle"></i>
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-lg btn-primary">
+              <i class="far fa-save"></i>
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </main>
 

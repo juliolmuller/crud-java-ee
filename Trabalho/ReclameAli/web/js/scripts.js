@@ -8,7 +8,7 @@ function escapeHTML(string) {
     '"': '&quot;',
     "'": '&#039;'
   };
-  return string.replace(/[&<>"']/g, m => map[m]);
+  return String(string).replace(/[&<>"']/g, m => map[m]);
 }
 
 // Colocar máscara nos formulários
@@ -78,6 +78,11 @@ function extractDataForm(formSelector) {
   const data = {};
   $(`${formSelector} [name]`).each((i, el) => data[el.name] = el.value);
   return data;
+}
+
+// Limpar formulário
+function cleanForm(formSelector) {
+  $(`${formSelector} [name]`).each((i, el) => el.value = '');
 }
 
 // VErificar se formulário de signin está preenchido
@@ -159,6 +164,11 @@ $('#filtro-atendimentos').change(function() {
   }
 });
 
+// Contador de caracteres
+function charCounter(e, selector, max) {
+  $(selector).text(`Caracteres digitados: ${e.target.value.length}/${max}`);
+}
+
 // TODO: processar exclusão
 $('a[title="Excluir"]').click(function(e) {
   e.preventDefault();
@@ -170,26 +180,48 @@ $('a[title="Excluir"]').click(function(e) {
   }
 });
 
-// TODO: criação de categoria
-function createCategory() {
-  $('#category-form').modal('show');
-}
-
-// TODO: edição de categoria
-function editCategory(id) {
-  $('#category-form').modal('show');
-  // Copiar dados para formulário...
-}
-
-// TODO: atualização de categoria
-function updateCategory() {
-  const category = extractDataForm('#category-form');
-  // atualizar...
-}
-
 // TODO: exclusão de categoria
 function deleteCategory(id) {
   if (confirm(`Tem certeza de que deseja excluir a categoria #${id}?`)) {
     // excluir...
   }
 }
+
+// TODO: criação de categoria
+function createCategory() {
+  $('#category-form-title').text('Nova Categoria');
+  $('#category-modal').modal('show');
+  cleanForm('#category-form');
+  $('#category-name').focus();
+}
+
+// TODO: edição de categoria
+function editCategory(id) {
+  $('#category-form-title').text(`Editando Categoria #${id}`);
+  $('#category-modal').modal('show');
+  $('#category-name').focus();
+  // Copiar dados para formulário...
+}
+
+// Montar linha da tabela de categoria
+function categoryRow(category = {}) {
+  const escapedId = escapeHTML(category.id);
+  return `
+    <tr>
+      <th scope="row" class="text-center">${escapedId.padStart(3, '0')}</th>
+      <td>${escapeHTML(category.name)}</td>
+      <td class="text-right">
+        <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editCategory(${escapedId})"><i class="fas fa-edit"></i></button>
+        <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteCategory(${escapedId})"><i class="fas fa-trash-alt"></i></button>
+      </td>
+    </tr>
+  `;
+}
+
+// TODO: submissão de formulário de categoria
+$('#category-form').submit(e => {
+  e.preventDefault();
+  const category = extractDataForm('#category-form');
+  // atualizar...
+  $('#category-modal').modal('hide');
+});
