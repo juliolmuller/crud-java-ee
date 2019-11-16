@@ -46,7 +46,7 @@ public final class Address implements Bean {
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = Converter.nullable(zipCode);
+        this.zipCode = Converter.removeNonDigits(zipCode);
     }
 
     public String getStreet() {
