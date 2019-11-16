@@ -1,4 +1,6 @@
 
+-- SGBD: PosgreSQL v11
+
 -- Excluir esquemas conflitantes
 DROP TABLE IF EXISTS ticket_messages;
 DROP TABLE IF EXISTS tickets;
@@ -7,8 +9,8 @@ DROP TABLE IF EXISTS ticket_types;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS addresses;
-DROP TABLE IF EXISTS states;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS states;
 
 -- Tebela de Usuários
 CREATE TABLE users(
