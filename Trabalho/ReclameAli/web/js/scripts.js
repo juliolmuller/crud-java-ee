@@ -93,6 +93,8 @@ $('#form-signin').submit(e => {
 // Enviar dados de signup via AJAX
 $('#form-signup').submit(e => {
   e.preventDefault();
+  $('#form-signup .is-invalid').removeClass('is-invalid');
+  $('#form-signup [type="submit"]').attr('disabled', true);
   const userData = extractDataForm('#form-signup');
   userData.terms = !!$('[name="terms"]').attr('checked');
   $.ajax({
@@ -110,6 +112,9 @@ $('#form-signup').submit(e => {
         $(`#invalid-${err.field}`).text(err.message);
         $(`[name="${err.field}"]`).addClass('is-invalid');
       }
+    },
+    complete() {
+      $('#form-signup [type="submit"]').removeAttr('disabled');
     }
   });
 });
