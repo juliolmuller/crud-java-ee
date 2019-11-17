@@ -1,6 +1,5 @@
 package br.com.beibe.servlet;
 
-import br.com.beibe.beans.Category;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
 import br.com.beibe.facade.CategoryFacade;
+import br.com.beibe.facade.ProductFacade;
 
 @WebServlet(name = "FuncionarioServlet", urlPatterns = {"/funcionario/*"})
 public class FuncionarioServlet extends HttpServlet {
@@ -41,21 +41,9 @@ public class FuncionarioServlet extends HttpServlet {
                 setHeaderLinks(request, 2);
                 displayCategories(request, response);
                 return;
-            case "/categorias/nova":
-            case "/categorias/visualizar":
-            case "/categorias/editar":
-                setHeaderLinks(request, 2);
-                displayCategoriesForm(request, response);
-                return;
             case "/produtos":
                 setHeaderLinks(request, 3);
                 displayProducts(request, response);
-                return;
-            case "/produtos/novo":
-            case "/produtos/visualizar":
-            case "/produtos/editar":
-                setHeaderLinks(request, 3);
-                displayProductsForm(request, response);
                 return;
             default:
                 System.out.println("Funcionario 404: (GET) " + uri);
@@ -114,30 +102,17 @@ public class FuncionarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        List<Category> categories = CategoryFacade.listAll();
-        request.setAttribute("categories", categories);
+        request.setAttribute("categories", CategoryFacade.listAll());
         request.getRequestDispatcher("/WEB-INF/jsp/categories.jsp").forward(request, response);
-    }
-
-    public void displayCategoriesForm(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/categories-form.jsp").forward(request, response);
     }
 
     public void displayProducts(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/products-index.jsp").forward(request, response);
-    }
-
-    public void displayProductsForm(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/products-form.jsp").forward(request, response);
+        request.setAttribute("categories", CategoryFacade.listAll());
+        request.setAttribute("products", ProductFacade.listAll());
+        request.getRequestDispatcher("/WEB-INF/jsp/products.jsp").forward(request, response);
     }
 
     public void processExistingTicket(
