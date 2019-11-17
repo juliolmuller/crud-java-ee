@@ -3,7 +3,6 @@ package br.com.beibe.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,18 +56,14 @@ public class PublicServlet extends HttpServlet {
                 return;
             case "signup":
                 User newUser = extractUserData(request);
-                List<ValError> errors = UserFacade.validate(newUser);
+                List<ValError> errors = newUser.validate();
                 if (!request.getParameter("password2").equals(newUser.getPassword()))
                     errors.add(new ValError("password2", "As senhas não conferem"));
                 if (!Boolean.parseBoolean(request.getParameter("terms")))
                     errors.add(new ValError("terms", "Você precisa aceitas os termos de uso da plataforma para continuar"));
                 if (errors.isEmpty()) {
-                    try {
-                        UserFacade.save(newUser);
-                        configSessionAndForward(newUser, request, response);
-                    } catch (SQLException ex) {
-                        throw new ServletException(ex);
-                    }
+                    UserFacade.save(newUser);
+                    configSessionAndForward(newUser, request, response);
                 } else {
                     response.setStatus(422);
                     response.setCharacterEncoding("UTF-8");
