@@ -39,12 +39,6 @@ public class GerenteServlet extends HttpServlet {
                 setHeaderLinks(request, 2);
                 displayUsers(request, response);
                 return;
-            case "/colaboradores/novo":
-            case "/colaboradores/visualizar":
-            case "/colaboradores/editar":
-                setHeaderLinks(request, 2);
-                displayUsersForm(request, response);
-                return;
             case "/relatorios":
                 setHeaderLinks(request, 3);
                 generateReport(request, response);
@@ -62,15 +56,6 @@ public class GerenteServlet extends HttpServlet {
     ) throws ServletException, IOException {
         String uri = request.getRequestURI().substring(request.getContextPath().length());
         switch (uri) {
-            case "/colaboradores/novo":
-                processNewUser(request, response);
-                return;
-            case "/colaboradores/editar":
-                processExistingUser(request, response);
-                return;
-            case "/colaboradores/excluir":
-                deleteUser(request, response);
-                return;
             default:
                 System.out.println("Gerente 404: (POST) " + uri);
                 response.sendError(404);
