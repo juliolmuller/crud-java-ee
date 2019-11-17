@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import br.com.beibe.beans.Address;
-import br.com.beibe.beans.Funcionario;
-import br.com.beibe.beans.Gerente;
 import br.com.beibe.beans.State;
 import br.com.beibe.beans.User;
 import br.com.beibe.beans.ValError;

@@ -107,7 +107,7 @@ public class ApiProductsServlet extends HttpServlet {
         } finally {
             product.setCategory(category);
         }
-        
+
         return product;
     }
 }

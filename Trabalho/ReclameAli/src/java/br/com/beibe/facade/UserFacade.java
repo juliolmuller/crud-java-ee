@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ArrayList;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.beans.User;
-import br.com.beibe.beans.ValError;
 import br.com.beibe.dao.UserDAO;
 
 public abstract class UserFacade {

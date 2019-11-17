@@ -112,14 +112,7 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/users-index.jsp").forward(request, response);
-    }
-
-    public void displayUsersForm(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/users.jsp").forward(request, response);
     }
 
     public void generateReport(
@@ -127,26 +120,5 @@ public class GerenteServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/gerente");
-    }
-
-    public void processNewUser(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
-    }
-
-    public void processExistingUser(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
-    }
-
-    public void deleteUser(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/gerente/colaboradores");
     }
 }
