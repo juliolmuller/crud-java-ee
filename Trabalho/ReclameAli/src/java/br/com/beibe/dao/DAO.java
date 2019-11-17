@@ -40,9 +40,9 @@ public abstract class DAO {
         return sb.toString();
     }
 
-    protected static String buildDeleteQuery(String tableName, String idColumn) {
+    protected static String buildDeleteQuery(String tableName, String column) {
         StringBuilder sb = new StringBuilder("DELETE FROM ").append(tableName);
-        sb.append(" WHERE ").append(idColumn).append(" = ?");
+        sb.append(" WHERE ").append(column).append(" = ?");
         return sb.toString();
     }
 }

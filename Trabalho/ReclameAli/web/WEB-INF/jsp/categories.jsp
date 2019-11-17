@@ -26,7 +26,7 @@
 
     <%-- Tabela com atendimentos em aberto --%>
     <div class="mt-5">
-      <table class="table table-hover">
+      <table id="category-table" class="table table-hover">
         <thead class="c-thead">
           <tr class="text-center">
             <th scope="col">#</th>
@@ -46,7 +46,7 @@
                   <td><c:out value="${category.name}" /></td>
                   <td class="text-right">
                     <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editCategory(<c:out value="${category.id}" />)"><i class="fas fa-edit"></i></button>
-                    <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteCategory(<c:out value="${category.id}" />)"><i class="fas fa-trash-alt"></i></button>
+                    <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteCategory(<c:out value="${category.id}" />, event)"><i class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>
               </c:forEach>
@@ -59,7 +59,7 @@
     <%-- Formulário para criação de categoria --%>
     <div id="category-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
-        <form id="category-form" class="modal-content" novalidate>
+        <form action="${pageContext.request.contextPath}/api/categories" id="category-form" class="modal-content" novalidate>
           <div class="modal-header">
             <h2 id="category-form-title" class="modal-title"></h2>
             <button type="button" class="close" data-dismiss="modal">

@@ -1,4 +1,9 @@
 
+// Configurar toastr
+toastr.options.showMethod = 'slideDown';
+toastr.options.hideEasing = 'swing';
+toastr.options.timeOut = 10000;
+
 // Function to escape HTML
 function escapeHTML(string) {
   const map = {
@@ -112,7 +117,7 @@ $('#form-signup').submit(e => {
       window.location.href = baseUrl.join('/');
     },
     error({ responseJSON }) {
-      console.log('Fail to register: review validation messages and try again');
+      console.error('Fail to register: review validation messages and try again');
       for (let err of responseJSON) {
         $(`#invalid-${err.field}`).text(err.message);
         $(`[name="${err.field}"]`).addClass('is-invalid');
@@ -169,38 +174,61 @@ function charCounter(e, selector, max) {
   $(selector).text(`Caracteres digitados: ${e.target.value.length}/${max}`);
 }
 
-// TODO: processar exclusão
-$('a[title="Excluir"]').click(function(e) {
-  e.preventDefault();
-  if (confirm('Tem certeza que quer excluir este item?')) {
-    $(this)
-      .parent()
-      .parent()
-      .remove();
-  }
-});
+const CATEGORY_TABLE = '#category-table';
+const CATEGORY_FORM = '#category-form';
+const CATEGORY_MODAL = '#category-modal';
 
-// TODO: exclusão de categoria
-function deleteCategory(id) {
+// Excluir categoria
+function deleteCategory(id, e) {
   if (confirm(`Tem certeza de que deseja excluir a categoria #${id}?`)) {
-    // excluir...
+    const idStr = String(id).padStart(3, '0');
+    $.ajax({
+      method: 'POST',
+      url: `${$(CATEGORY_FORM).attr('action')}?action=delete`,
+      data: { id },
+      success(response) {
+        toastr.success(response.message);
+        $(e.target).closest('tr').remove();
+      },
+      error(error) {
+        const { status, responseJSON } = error;
+        if (status == 422) {
+          toastr.error(responseJSON.message);
+        } else {
+          console.error(error);
+        }
+      }
+    });
   }
 }
 
-// TODO: criação de categoria
+// Abrir modal/form para criação de categoria
 function createCategory() {
-  $('#category-form-title').text('Nova Categoria');
-  $('#category-modal').modal('show');
-  cleanForm('#category-form');
+  $(`${CATEGORY_FORM}-title`).text('Nova Categoria');
+  $(CATEGORY_MODAL).modal('show');
+  cleanForm(CATEGORY_FORM);
   $('#category-name').focus();
 }
 
-// TODO: edição de categoria
+// Abrir modal/form para edição de categoria
 function editCategory(id) {
-  $('#category-form-title').text(`Editando Categoria #${id}`);
-  $('#category-modal').modal('show');
-  $('#category-name').focus();
-  // Copiar dados para formulário...
+  const idStr = String(id).padStart(3, '0');
+  $(`${CATEGORY_FORM}-title`).text(`Editando Categoria #${idStr}`);
+  $(CATEGORY_MODAL).modal('show');
+  $.ajax({
+    method: 'GET',
+    url: `${$(CATEGORY_FORM).attr('action')}?id=${id}`,
+    success(response) {
+      cleanForm(CATEGORY_FORM);
+      $(`${CATEGORY_FORM} [name="id"]`).val(response.id);
+      $(`${CATEGORY_FORM} [name="name"]`).val(response.name).focus();
+    },
+    error(error) {
+      console.error(error);
+      $(CATEGORY_MODAL).modal('hide');
+      toastr.error(`Falha ao tentar recuperar os dados da categoria #${idStr}`);
+    }
+  });
 }
 
 // Montar linha da tabela de categoria
@@ -212,7 +240,7 @@ function categoryRow(category = {}) {
       <td>${escapeHTML(category.name)}</td>
       <td class="text-right">
         <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editCategory(${escapedId})"><i class="fas fa-edit"></i></button>
-        <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteCategory(${escapedId})"><i class="fas fa-trash-alt"></i></button>
+        <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteCategory(${escapedId}, event)"><i class="fas fa-trash-alt"></i></button>
       </td>
     </tr>
   `;
@@ -222,6 +250,27 @@ function categoryRow(category = {}) {
 $('#category-form').submit(e => {
   e.preventDefault();
   const category = extractDataForm('#category-form');
-  // atualizar...
-  $('#category-modal').modal('hide');
+  $.ajax({
+    method: 'POST',
+    url: `${$(CATEGORY_FORM).attr('action')}?action=${!category.id ? 'new' : 'update'}`,
+    data: category,
+    success(response) {
+      if (!category.id) {
+        toastr.success('Categoria criada com sucesso');
+        $(`${CATEGORY_TABLE} tbody`).append(categoryRow(response));
+      } else {
+        toastr.success('Categoria atualizada com sucesso');
+        $(`${CATEGORY_TABLE} tbody tr`).filter((i, el) => Number($(el).children().first().text()) == category.id).replaceWith(categoryRow(response));
+      }
+      $(CATEGORY_MODAL).modal('hide');
+    },
+    error(error) {
+      const { status, responseJSON } = error;
+      if (status == 422) {
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(error);
+      }
+    }
+  });
 });

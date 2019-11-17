@@ -101,4 +101,33 @@ public abstract class CategoryDAO extends DAO {
         }
         return null;
     }
+    
+    
+
+    public static void insert(Category category) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(buildInsertQuery(TABLE, Fields.toArray(), true));
+            stmt.setString(1, category.getName());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next())
+                category.setId(rs.getLong(Fields.ID.toString()));
+        }
+    }
+
+    public static void update(Category category) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, Fields.toArray(), Fields.ID.toString()));
+            stmt.setString(1, category.getName());
+            stmt.setLong(2, category.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public static void delete(Long id) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(buildDeleteQuery(TABLE, Fields.ID.toString()));
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }
