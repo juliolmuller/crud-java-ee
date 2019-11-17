@@ -35,7 +35,8 @@ public abstract class DAO {
 
     protected static String buildUpdateQuery(String tableName, String[] columns, String idColumn) {
         StringBuilder sb = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
-        sb.append(String.join(", ", Stream.of(String.join(", ", Stream.of(columns).filter(column -> !column.equals(idColumn)).toArray(String[]::new))).map(column -> column + " = ?").toArray(String[]::new)));
+        String[] columnsNoId = Stream.of(columns).filter(column -> !column.equals(idColumn)).toArray(String[]::new);
+        sb.append(String.join(" = ?, ", columnsNoId)).append(" = ?");
         sb.append(" WHERE ").append(idColumn).append(" = ?");
         return sb.toString();
     }
