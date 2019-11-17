@@ -54,11 +54,11 @@ CREATE TABLE categories(
 CREATE TABLE products(
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
-  description VARCHAR(255) NOT NULL,
-  weight FLOAT DEFAULT 0,
-  category_id INT NOT NULL REFERENCES categories(id),
-  utc_code CHAR(12) NOT NULL,
-  ean_code CHAR(13)
+  description VARCHAR(255),
+  weight FLOAT,
+  utc_code CHAR(12) NOT NULL UNIQUE,
+  ean_code CHAR(13) UNIQUE,
+  category_id INT NOT NULL REFERENCES categories(id)
 );
 
 -- Tabelas de atributos de Atendimentos
