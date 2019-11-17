@@ -73,24 +73,6 @@ public class FuncionarioServlet extends HttpServlet {
             case "/atendimentos/acompanhar":
                 processExistingTicket(request, response);
                 return;
-            case "/categorias/nova":
-                processNewCategory(request, response);
-                return;
-            case "/categorias/editar":
-                processExistingCategory(request, response);
-                return;
-            case "/categorias/excluir":
-                deleteCategory(request, response);
-                return;
-            case "/produtos/novo":
-                processNewProduct(request, response);
-                return;
-            case "/produtos/editar":
-                processExistingProduct(request, response);
-                return;
-            case "/produtos/excluir":
-                deleteProduct(request, response);
-                return;
             default:
                 System.out.println("Funcionario 404: (POST) " + uri);
                 response.sendError(404);
@@ -163,47 +145,5 @@ public class FuncionarioServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/funcionario/atendimentos");
-    }
-
-    public void processNewCategory(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/categorias");
-    }
-
-    public void processExistingCategory(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/categorias");
-    }
-
-    public void deleteCategory(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/categorias");
-    }
-
-    public void processNewProduct(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/produtos");
-    }
-
-    public void processExistingProduct(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/produtos");
-    }
-
-    public void deleteProduct(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/funcionario/produtos");
     }
 }
