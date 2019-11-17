@@ -75,6 +75,10 @@ public abstract class CategoryDAO extends DAO {
         return find(id, Fields.ID);
     }
 
+	protected static Category find(Long id, Connection conn) throws SQLException {
+        return find(id, Fields.ID, conn);
+	}
+
     public static Category find(Object value, Fields field) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             return find(value, field, conn);
@@ -101,8 +105,6 @@ public abstract class CategoryDAO extends DAO {
         }
         return null;
     }
-
-
 
     public static void insert(Category category) throws SQLException {
         try (Connection conn = ConnectionFactory.getConnection()) {
