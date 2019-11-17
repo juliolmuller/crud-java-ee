@@ -112,4 +112,27 @@ abstract class AddressDAO extends DAO {
             stmt.setNull(8, Types.NULL);
         stmt.executeUpdate();
     }
+
+    protected static void update(Address address, Connection conn) throws SQLException {
+        String[] columnsNoId = Stream.of(Fields.toArray()).filter(column -> !column.equals(Fields.ID.toString())).toArray(String[]::new);
+        PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, columnsNoId, Fields.ID.toString()));
+        stmt.setString(1, address.getZipCode());
+        stmt.setString(2, address.getStreet());
+        stmt.setInt(3, address.getNumber());
+        stmt.setString(4, address.getComplement());
+        stmt.setString(5, address.getNeightborhood());
+        stmt.setString(6, address.getCity());
+        if (address.getState() != null)
+            stmt.setLong(7, address.getState().getId());
+        else
+            stmt.setNull(7, Types.NULL);
+        stmt.setLong(8, address.getId());
+        stmt.executeUpdate();
+    }
+
+    protected static void delete(Long id, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(buildDeleteQuery(TABLE, Fields.ID.toString()));
+        stmt.setLong(1, id);
+        stmt.executeUpdate();
+    }
 }

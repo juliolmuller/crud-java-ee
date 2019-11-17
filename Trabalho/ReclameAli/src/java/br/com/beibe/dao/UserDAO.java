@@ -127,7 +127,7 @@ public abstract class UserDAO extends DAO {
         }
         return null;
     }
-        
+
     public static User authenticate(String login, String password) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(),  "WHERE " + Fields.EMAIL + " = ? AND " + Fields.PASSWORD + " = ?"));
@@ -166,6 +166,62 @@ public abstract class UserDAO extends DAO {
                 user.setAddress(new Address());
             user.getAddress().setId(user.getId());
             AddressDAO.insert(user.getAddress(), conn);
+            conn.commit();
+        } catch (SQLException ex) {
+            conn.rollback();
+            throw ex;
+        } finally {
+            conn.close();
+        }
+    }
+
+    public static void update(User user) throws SQLException {
+        Connection conn = ConnectionFactory.getConnection(false);
+        try {
+            String[] columnsNoPswd = Stream.of(Fields.toArray()).filter(column -> !column.equals(Fields.PASSWORD.toString())).toArray(String[]::new);
+            PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, columnsNoPswd, Fields.ID.toString()));
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getCpf());
+            stmt.setString(4, user.getEmail());
+            if (user.getDateBirth() != null)
+                stmt.setDate(5, Date.valueOf((user.getDateBirth())));
+            else
+                stmt.setNull(5, Types.NULL);
+            stmt.setString(6, user.getPhone());
+            stmt.setString(7, user.getRole());
+            stmt.setLong(8, user.getId());
+            stmt.executeUpdate();
+            if (user.getAddress() == null)
+                user.setAddress(new Address());
+            user.getAddress().setId(user.getId());
+            AddressDAO.update(user.getAddress(), conn);
+            conn.commit();
+        } catch (SQLException ex) {
+            conn.rollback();
+            throw ex;
+        } finally {
+            conn.close();
+        }
+    }
+
+    public static void updatePassword(User user) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, new String[] { Fields.PASSWORD.toString() }, Fields.ID.toString()));
+            user.setPassword(Security.encryptPassword(user.getPassword()));
+            stmt.setString(1, user.getPassword());
+            stmt.setLong(2, user.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public static void delete(Long id) throws SQLException {
+        Connection conn = ConnectionFactory.getConnection(false);
+        try {
+            AddressDAO.delete(id, conn);
+            PreparedStatement stmt = conn.prepareStatement(buildDeleteQuery(TABLE, Fields.ID.toString()));
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
             conn.rollback();
