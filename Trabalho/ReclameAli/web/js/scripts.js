@@ -34,6 +34,9 @@ $('#form-signup [name="street"]').mask('S'.repeat(255), { translation: { S: { pa
 $('#form-signup [name="number"]').mask('999990', { reverse: true });
 $('#form-signup [name="complement"]').mask('S'.repeat(30), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ\.\,\d ]/ } } });
 $('#form-signup [name="city"]').mask('S'.repeat(80), { translation: { S: { pattern: /[A-Za-zÀ-ÖØ-öø-ÿ ]/ } } });
+$('#product-form [name="weight"]').mask('999990', { reverse: true });
+$('#product-form [name="utc_code"]').mask('0000.0000.0000', { reverse: true });
+$('#product-form [name="ean_code"]').mask('0.000.000.000.000', { reverse: true });
 
 // Configurar DatePicker para campo de data
 $('#form-signup [name="date_birth"]').datepicker({
@@ -174,6 +177,7 @@ function charCounter(e, selector, max) {
   $(selector).text(`Caracteres digitados: ${e.target.value.length}/${max}`);
 }
 
+// Constantes do módulo de categorias
 const CATEGORY_TABLE = '#category-table';
 const CATEGORY_FORM = '#category-form';
 const CATEGORY_MODAL = '#category-modal';
@@ -246,10 +250,10 @@ function categoryRow(category = {}) {
   `;
 }
 
-// TODO: submissão de formulário de categoria
-$('#category-form').submit(e => {
+// Configurar evento de submissão de formulário de categoria
+$(CATEGORY_FORM).submit(e => {
   e.preventDefault();
-  const category = extractDataForm('#category-form');
+  const category = extractDataForm(CATEGORY_FORM);
   $.ajax({
     method: 'POST',
     url: `${$(CATEGORY_FORM).attr('action')}?action=${!category.id ? 'new' : 'update'}`,
@@ -263,6 +267,117 @@ $('#category-form').submit(e => {
         $(`${CATEGORY_TABLE} tbody tr`).filter((i, el) => Number($(el).children().first().text()) == category.id).replaceWith(categoryRow(response));
       }
       $(CATEGORY_MODAL).modal('hide');
+    },
+    error(error) {
+      const { status, responseJSON } = error;
+      if (status == 422) {
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(error);
+      }
+    }
+  });
+});
+
+// Constantes do módulo de produtos
+const PRODUCT_TABLE = '#product-table';
+const PRODUCT_FORM = '#product-form';
+const PRODUCT_MODAL = '#product-modal';
+
+// Excluir produto
+function deleteProduct(id, e) {
+  if (confirm(`Tem certeza de que deseja excluir o produto #${id}?`)) {
+    $.ajax({
+      method: 'POST',
+      url: `${$(PRODUCT_FORM).attr('action')}?action=delete`,
+      data: { id },
+      success(response) {
+        toastr.success(response.message);
+        $(e.target).closest('tr').remove();
+      },
+      error(error) {
+        const { status, responseJSON } = error;
+        if (status == 422) {
+          toastr.error(responseJSON.message);
+        } else {
+          console.error(error);
+        }
+      }
+    });
+  }
+}
+
+// Abrir modal/form para criação de produto
+function createProduct() {
+  $(`${PRODUCT_FORM}-title`).text('Novo Produto');
+  $(PRODUCT_MODAL).modal('show');
+  cleanForm(PRODUCT_FORM);
+  $('#category-name').focus();
+}
+
+// Abrir modal/form para edição de categoria
+function editProduct(id) {
+  const idStr = String(id).padStart(6, '0');
+  $(`${PRODUCT_FORM}-title`).text(`Editando Produto #${idStr}`);
+  $(PRODUCT_MODAL).modal('show');
+  $.ajax({
+    method: 'GET',
+    url: `${$(PRODUCT_FORM).attr('action')}?id=${id}`,
+    success(response) {
+      cleanForm(PRODUCT_FORM);
+      $(`${PRODUCT_FORM} [name="id"]`).val(response.id);
+      $(`${PRODUCT_FORM} [name="name"]`).val(response.name).focus();
+      $(`${PRODUCT_FORM} [name="weight"]`).val(response.weight);
+      $(`${PRODUCT_FORM} [name="category"]`).val(response.category.id);
+      $(`${PRODUCT_FORM} [name="utc_code"]`).val(response.utc);
+      $(`${PRODUCT_FORM} [name="ean_code"]`).val(response.ean);
+      $(`${PRODUCT_FORM} [name="description"]`).val(response.description);
+    },
+    error(error) {
+      console.error(error);
+      $(PRODUCT_MODAL).modal('hide');
+      toastr.error(`Falha ao tentar recuperar os dados do produto #${idStr}`);
+    }
+  });
+}
+
+// Montar linha da tabela de produtos
+function productRow(product = {}) {
+  const escapedId = escapeHTML(product.id);
+  const escapedWeight = String(Number(escapeHTML(product.weight)).toFixed(1)).replace('.', ',');
+  const escapedUtc = escapeHTML(product.utc).replace(/(\d{4})(\d{4})(\d{4})/, '$1.$2.$3');
+  return `
+    <tr>
+      <th scope="row" class="text-center">${escapedId.padStart(6, '0')}</th>
+      <td class="text-left">${escapeHTML(product.name)}</td>
+      <td class="text-right">${escapedWeight}</td>
+      <td class="text-center">${escapeHTML(product.category.name)}</td>
+      <td class="text-center">${escapedUtc}</td>
+      <td class="text-right">
+        <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editProduct(${escapedId})"><i class="fas fa-edit"></i></button>
+        <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteProduct(${escapedId}, event)"><i class="fas fa-trash-alt"></i></button>
+      </td>
+    </tr>
+  `;
+}
+
+// Configurar evento de submissão de formulário de produto
+$(PRODUCT_FORM).submit(e => {
+  e.preventDefault();
+  const product = extractDataForm(PRODUCT_FORM);
+  $.ajax({
+    method: 'POST',
+    url: `${$(PRODUCT_FORM).attr('action')}?action=${!product.id ? 'new' : 'update'}`,
+    data: product,
+    success(response) {
+      if (!product.id) {
+        toastr.success('Produto criado com sucesso');
+        $(`${PRODUCT_TABLE} tbody`).append(productRow(response));
+      } else {
+        toastr.success('Produto atualizado com sucesso');
+        $(`${PRODUCT_TABLE} tbody tr`).filter((i, el) => Number($(el).children().first().text()) == product.id).replaceWith(productRow(response));
+      }
+      $(PRODUCT_MODAL).modal('hide');
     },
     error(error) {
       const { status, responseJSON } = error;

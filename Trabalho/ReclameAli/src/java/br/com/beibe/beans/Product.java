@@ -94,7 +94,7 @@ public final class Product implements Bean {
             errors.add(new ValError("name", "O campo 'NOME' é de preenchimento obrigatório"));
         if (this.utc == null)
             errors.add(new ValError("utc_code", "O campo 'CÓDIGO UTC' é de preenchimento obrigatório"));
-        if (this.category == null)
+        if (this.category == null || this.category.getId() == null)
             errors.add(new ValError("category", "O campo 'CATEGORIA' é obrigatório"));
 
         // Validar nome do produto
@@ -128,7 +128,7 @@ public final class Product implements Bean {
 
         // Validar código EAN
         if (this.ean != null) {
-            if (this.ean.length() != 12)
+            if (this.ean.length() != 13)
                 errors.add(new ValError("ean_code", "O código EAN deve ser uma sequência de 13 digitos"));
             else {
                 Product product = ProductDAO.find(this.ean, ProductDAO.Fields.EAN);
@@ -138,14 +138,10 @@ public final class Product implements Bean {
         }
 
         // Validar categoria
-        if (this.category != null) {
-            if (this.category.getId() == null)
-                errors.add(new ValError("ean_code", "O código EAN deve ser uma sequência de 13 digitos"));
-            else {
-                this.category = CategoryDAO.find(this.category.getId());
-                if (this.category == null)
-                    errors.add(new ValError("category", "A categoria selecionada não existe"));
-            }
+        if (this.category != null && this.category.getId() != null) {
+            this.category = CategoryDAO.find(this.category.getId());
+            if (this.category == null)
+                errors.add(new ValError("category", "A categoria selecionada não existe"));
         }
 
         return errors;

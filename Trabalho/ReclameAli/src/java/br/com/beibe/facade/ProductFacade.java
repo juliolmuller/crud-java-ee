@@ -21,7 +21,8 @@ public abstract class ProductFacade {
         try {
             if (product.getId() == null)
                 ProductDAO.insert(product);
-            ProductDAO.update(product);
+            else
+                ProductDAO.update(product);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
