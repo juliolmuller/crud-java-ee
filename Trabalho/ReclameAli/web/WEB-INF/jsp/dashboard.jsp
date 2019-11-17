@@ -10,7 +10,7 @@
   <%-- Corpo da página --%>
   <main class="container c-main">
     <h2 class="mb-4">
-      Bem-vindo(a), <strong>[nome do cliente]</strong>
+      Bem-vindo(a), <strong><c:out value="${userCredentials.firstName}" /></strong>
     </h2>
     <div class="row">
       <div class="card-deck">
