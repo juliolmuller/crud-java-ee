@@ -21,7 +21,8 @@ public abstract class CategoryFacade {
         try {
             if (category.getId() == null)
                 CategoryDAO.insert(category);
-            CategoryDAO.update(category);
+            else
+                CategoryDAO.update(category);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
