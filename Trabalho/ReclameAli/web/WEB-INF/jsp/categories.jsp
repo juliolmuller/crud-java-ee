@@ -24,7 +24,7 @@
       </button>
     </div>
 
-    <%-- Tabela com atendimentos em aberto --%>
+    <%-- Tabela com categorias --%>
     <div class="mt-5">
       <table id="category-table" class="table table-hover">
         <thead class="c-thead">
@@ -56,7 +56,7 @@
       </table>
     </div>
 
-    <%-- Formulário para criação de categoria --%>
+    <%-- Formulário para manipulação de categoria --%>
     <div id="category-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <form action="${pageContext.request.contextPath}/api/categories" id="category-form" class="modal-content" novalidate>

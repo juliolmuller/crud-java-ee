@@ -25,7 +25,7 @@
       </button>
     </div>
 
-    <%-- Tabela com atendimentos em aberto --%>
+    <%-- Tabela com produtos --%>
     <div class="mt-5">
       <table id="product-table" class="table table-hover">
         <thead class="c-thead">
@@ -83,7 +83,7 @@
       </table>
     </div>
 
-    <%-- Formulário para criação de produtos --%>
+    <%-- Formulário para manipulação de produtos --%>
     <div id="product-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <form action="${pageContext.request.contextPath}/api/products" id="product-form" class="modal-content" novalidate>
