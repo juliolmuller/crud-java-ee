@@ -101,8 +101,8 @@ public abstract class CategoryDAO extends DAO {
         }
         return null;
     }
-    
-    
+
+
 
     public static void insert(Category category) throws SQLException {
         try (Connection conn = ConnectionFactory.getConnection()) {

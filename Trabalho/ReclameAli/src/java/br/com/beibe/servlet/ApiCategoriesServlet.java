@@ -2,6 +2,7 @@ package br.com.beibe.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +13,13 @@ import com.google.gson.Gson;
 import br.com.beibe.beans.Category;
 import br.com.beibe.beans.ValError;
 import br.com.beibe.facade.CategoryFacade;
-import java.sql.SQLException;
 
 @WebServlet(name = "CategoriesAPI", urlPatterns = {"/api/categories"})
 public class ApiCategoriesServlet extends HttpServlet {
 
     @Override
     protected void doGet(
-        HttpServletRequest request, 
+        HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
         Category category;
@@ -35,7 +35,7 @@ public class ApiCategoriesServlet extends HttpServlet {
             Gson json = new Gson();
             if (category != null) {
                 out.print(json.toJson(category));
-            } else {    
+            } else {
                 List<Category> categories = CategoryFacade.listAll();
                 out.print(json.toJson(categories));
             }
@@ -44,7 +44,7 @@ public class ApiCategoriesServlet extends HttpServlet {
 
     @Override
     protected void doPost(
-        HttpServletRequest request, 
+        HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -83,7 +83,7 @@ public class ApiCategoriesServlet extends HttpServlet {
         }
         response.sendError(404);
     }
-    
+
     private Category extractData(HttpServletRequest request) {
         Category category = new Category();
         try {
