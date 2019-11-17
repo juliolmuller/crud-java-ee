@@ -115,8 +115,8 @@ public class PublicServlet extends HttpServlet {
         State state = new State();
         try {
             state.setId(Long.parseLong(request.getParameter("state")));
-            address.setState(state);
         } catch (NullPointerException | NumberFormatException ex) {
+        } finally {
             address.setState(state);
         }
         user.setAddress(address);
