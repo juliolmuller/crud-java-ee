@@ -1,5 +1,6 @@
 package br.com.beibe.beans;
 
+import br.com.beibe.utils.Converter;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -29,12 +30,20 @@ public final class Category implements Bean {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = Converter.nullable(name);
     }
 
     @Override
     public List<ValError> validate() {
         List<ValError> errors = new ArrayList<>();
+        
+        // Validar nome da categoria
+        if (this.name == null) {
+            errors.add(new ValError("name", "O campo 'NOME' é de preenchimento obrigatório"));
+        } else if (this.name.length() > 255) {
+            errors.add(new ValError("name", "O campo 'NOME' deve ter no máximo 255 caracteres"));
+        }
+        
         return errors;
     }
 }
