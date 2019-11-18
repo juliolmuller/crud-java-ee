@@ -53,7 +53,7 @@
                     <c:out value="${product.name}" />
                   </td>
                   <td class="text-right">
-                    <fmt:setLocale value = "pt_BR"/>
+                    <fmt:setLocale value="pt_BR"/>
                     <fmt:formatNumber type="number" value="${product.weight}" minFractionDigits="1" maxFractionDigits="1"/>g
                   </td>
                   <td class="text-center">
