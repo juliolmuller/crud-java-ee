@@ -126,3 +126,7 @@ input[type="number"] {
 .toast-top-right {
   margin-top: 50px;
 }
+
+label {
+  font-weight: bold;
+}
