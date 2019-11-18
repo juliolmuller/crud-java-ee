@@ -19,7 +19,7 @@ public abstract class User implements Bean {
     private LocalDate dateBirth;
     private String phone;
     private Address address;
-    private String password;
+    private transient String password;
 
     public static User getInstanceOf(String role) {
         String[] className = User.class.getName().split("\\.");
