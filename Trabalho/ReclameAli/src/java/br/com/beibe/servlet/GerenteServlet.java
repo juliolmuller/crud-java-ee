@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
+import br.com.beibe.dao.StateDAO;
 import br.com.beibe.facade.UserFacade;
 
 @WebServlet(name = "GerenteServlet", urlPatterns = {"/gerente/*"})
@@ -99,6 +100,7 @@ public class GerenteServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         request.setAttribute("users", UserFacade.listEmployees());
+        request.setAttribute("states", StateDAO.getList());
         request.getRequestDispatcher("/WEB-INF/jsp/users.jsp").forward(request, response);
     }
 
