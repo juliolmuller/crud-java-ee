@@ -69,6 +69,12 @@ public final class Converter {
         return nullable(cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4"));
     }
 
+    public static String toPhone(String phoneNumber) {
+        if (phoneNumber == null)
+            return null;
+        return nullable(phoneNumber.replaceAll("(\\d{2})(\\d{4,5})(\\d{4})", "($1) $2-$3"));
+    }
+
     public static String nullable(String str) {
         if (str == null)
             return null;
