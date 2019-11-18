@@ -5,6 +5,11 @@
 <div id="${type}-user-modal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog ${type != 'password' ? 'modal-lg' : null}" role="document">
     <form action="${pageContext.request.contextPath}/api/users" id="${type}-user-form" class="modal-content" novalidate>
+      <style>
+        #${type}-user-modal label {
+          font-weight: bold;
+        }
+      </style>
       <div class="modal-header">
         <h2 class="modal-title">
           <c:if test="${type == 'new'}">
@@ -24,6 +29,19 @@
       <div class="modal-body">
         <input type="hidden" name="id" value="" />
         <c:if test="${type == 'new' || type == 'edit'}">
+          <div class="form-group row">
+            <label for="user-role" class="col-sm-4 col-form-label">Tipo de cadastro:</label>
+            <div id="user-role" class="col-sm-8 mt-2">
+              <div class="form-check form-check-inline">
+                <input type="radio" id="user-role-funcionario" class="form-check-input" name="role" value="funcionario">
+                <label for="user-role-funcionario" class="form-check-label">Funcionário</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="radio" id="user-role-gerente" class="form-check-input" name="role" value="gerente">
+                <label for="user-role-gerente" class="form-check-label">Gerente</label>
+              </div>
+            </div>
+          </div>
           <div class="form-group row">
             <label for="user-first_name" class="col-sm-4 col-form-label">Nome:</label>
             <div class="col-sm-8">
