@@ -66,7 +66,8 @@
                     </c:if>
                   </td>
                   <td class="text-right">
-                    <button type="button" class="btn btn-sm btn-info" title="Editar" onclick="editUser(<c:out value="${user.id}" />)"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-info" title="Editar dados" onclick="editUser(<c:out value="${user.id}" />)"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-warning" title="Alterar senha" onclick="editPassword(<c:out value="${user.id}" />)"><i class="fas fa-unlock-alt"></i></button>
                     <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="deleteUser(<c:out value="${user.id}" />, event)"><i class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>
@@ -76,6 +77,11 @@
         </tbody>
       </table>
     </div>
+
+    <%-- Formulários de manipulação de usuárois --%>
+    <t:userForm type="new" />
+    <t:userForm type="edit" />
+    <t:userForm type="password" />
   </main>
 
   <%-- Rodapé da página --%>
