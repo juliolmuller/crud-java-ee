@@ -51,6 +51,7 @@ public class ApiUsersServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         String action = request.getParameter("action");
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
