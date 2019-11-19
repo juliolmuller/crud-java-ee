@@ -41,7 +41,7 @@
         <tbody>
           <c:choose>
             <c:when test="${empty users}">
-              <tr><td colspan="3" class="h4 py-4">Nenhum colaborador cadastrado.</td></tr>
+              <tr><td colspan="6" class="h4 py-4">Nenhum colaborador cadastrado.</td></tr>
             </c:when>
             <c:otherwise>
               <c:forEach var="user" items="${users}">
@@ -270,7 +270,7 @@
                 </div>
                 <input type="text" id="user-city" class="form-control" name="city" placeholder="Cidade" />
                 <select id="user-state" class="form-control" name="state">
-                  <option>Estado</option>
+                  <option value="">Estado</option>
                   <c:forEach var="state" items="${states}">
                     <option value="${state.id}">
                       <c:out value="${state.abrev}" /> - <c:out value="${state.name}" />
@@ -279,7 +279,7 @@
                 </select>
               </div>
             </div>
-            <div>
+            <div id="password-creation">
               <div class="form-group row">
                 <label for="user-password1" class="col-sm-4 col-form-label">Senha de acesso:</label>
                 <div class="input-group col-sm-8">
