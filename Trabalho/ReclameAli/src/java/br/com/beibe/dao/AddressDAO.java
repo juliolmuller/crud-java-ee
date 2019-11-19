@@ -106,7 +106,7 @@ abstract class AddressDAO extends DAO {
         stmt.setString(5, address.getComplement());
         stmt.setString(6, address.getNeightborhood());
         stmt.setString(7, address.getCity());
-        if (address.getState() != null)
+        if (address.getState() != null && address.getState().getId() != null)
             stmt.setLong(8, address.getState().getId());
         else
             stmt.setNull(8, Types.NULL);

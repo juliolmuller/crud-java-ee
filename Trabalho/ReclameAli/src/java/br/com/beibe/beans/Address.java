@@ -135,7 +135,7 @@ public final class Address implements Bean {
         }
 
         // Validar estado
-        if (this.state != null) {
+        if (this.state != null && this.state.getId() != null) {
             if (StateDAO.find(this.state.getId()) == null) {
                 errors.add(new ValError("state", "O estado selecionado é inválido"));
             }
