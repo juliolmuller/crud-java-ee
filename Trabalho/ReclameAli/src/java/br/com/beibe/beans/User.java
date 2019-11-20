@@ -23,6 +23,8 @@ public abstract class User implements Bean {
     private String role = getRole();
 
     public static User getInstanceOf(String role) {
+        if (role == null)
+            return null;
         String[] className = User.class.getName().split("\\.");
         className[className.length - 1] = role.substring(0, 1).toUpperCase() + role.substring(1);
         try {
@@ -140,7 +142,7 @@ public abstract class User implements Bean {
             errors.add(new ValError("email", "O campo 'EMAIL' é de preenchimento obrigatório"));
         if (this.dateBirth == null)
             errors.add(new ValError("date_birth", "O campo 'DATA DE NASCIMENTO' é de preenchimento obrigatório"));
-        if (this.id == null && this.password == null)
+        if (this.password == null)
             errors.add(new ValError("password1", "O campo 'SENHA' é de preenchimento obrigatório"));
 
         // Validar CPF

@@ -99,6 +99,18 @@ public final class Address implements Bean {
     public List<ValError> validate() {
         List<ValError> errors = new ArrayList<>();
 
+        // Validar atributos requeridos
+        if (this.zipCode == null)
+            errors.add(new ValError("zip_code", "O campo 'CEP' é de preenchimento obrigatório"));
+        if (this.street == null)
+            errors.add(new ValError("street", "O campo 'RUA' é de preenchimento obrigatório"));
+        if (this.number == null)
+            errors.add(new ValError("number", "O campo 'NÚMERO' é de preenchimento obrigatório"));
+        if (this.city == null)
+            errors.add(new ValError("city", "O campo 'CIDADE' é de preenchimento obrigatório"));
+        if (this.state == null)
+            errors.add(new ValError("state", "O campo 'ESTADO' é de preenchimento obrigatório"));
+
         // Validar CEP
         if (this.zipCode != null) {
             if (!Validator.isCep(this.zipCode)) {
