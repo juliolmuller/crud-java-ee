@@ -14,6 +14,7 @@ import br.com.beibe.beans.Address;
 import br.com.beibe.beans.State;
 import br.com.beibe.beans.User;
 import br.com.beibe.beans.ValError;
+import br.com.beibe.dao.UserDAO;
 import br.com.beibe.facade.UserFacade;
 import br.com.beibe.utils.Converter;
 
@@ -54,65 +55,95 @@ public class ApiUsersServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        try (PrintWriter out = response.getWriter()) {
-            Gson json = new Gson();
-            String role = request.getParameter("role");
-            User user = User.getInstanceOf(role);
-            List<ValError> errors;
-            if (user == null) {
-                errors = new ArrayList<>();
-                errors.add(new ValError("role", "Perfil de acesso '" + role + "' não existe"));
-                response.setStatus(422);
-                out.print(json.toJson(errors));
-                return;
-            }
-            extractData(request, user);
-            errors = user.validate();
+        Gson json = new Gson();
+        List<ValError> errors = new ArrayList<>();
+        PrintWriter out = response.getWriter();
+        try {
+            User user; Long id;
+            String role = Converter.nullable(request.getParameter("role"));
             switch (action) {
                 case "delete":
+                    id = Long.parseLong(request.getParameter("id"));
+                    user = UserDAO.find(id);
                     User currentUser = (User) request.getSession().getAttribute("userCredentials");
-                    if (user.getId() == null) {
-                        response.setStatus(422);
-                        out.print(json.toJson(new ValError("error", "Nenhum ID informado para exclusão")));
-                    } else if (currentUser.getId().equals(user.getId())) {
+                    if (currentUser.getId().equals(user.getId())) {
                         response.setStatus(422);
                         out.print(json.toJson(new ValError("error", "Você não pode excluir seu próprio perfil")));
                     } else if (!UserFacade.listTickets(user).isEmpty()) {
                         response.setStatus(422);
-                        out.print(json.toJson(new ValError("error", "Há produtos associados a essa categoria")));
+                        out.print(json.toJson(new ValError("error", "Há atendimentos associados a esse usuário")));
                     } else if (!UserFacade.delete(user)) {
                         response.setStatus(422);
-                        out.print(json.toJson(new ValError("error", "Falha ao excluir categoria")));
+                        out.print(json.toJson(new ValError("error", "Falha ao excluir usuário")));
                     } else
-                        out.print(json.toJson(new ValError("success", "Categoria excluída com sucesso")));
-                    return;
-                case "new":
-                    if (!request.getParameter("password2").equals(user.getPassword()))
-                        errors.add(new ValError("password2", "As senhas não conferem"));
-                    if (errors.isEmpty()) {
-                        UserFacade.save(user);
-                        out.print(json.toJson(user));
-                    } else {
-                        response.setStatus(422);
-                        out.print(json.toJson(errors));
-                    }
+                        out.print(json.toJson(new ValError("success", "Usuário excluído com sucesso")));
                     return;
                 case "update":
-                    errors.removeIf(error -> error.getField().equals("password1"));
-                    if (errors.isEmpty()) {
-                        UserFacade.save(user);
-                        out.print(json.toJson(user));
-                    } else {
+                    id = Long.parseLong(request.getParameter("id"));
+                    user = User.getInstanceOf(role);
+                    if (user == null) {
                         response.setStatus(422);
+                        errors.add(new ValError("error", "Perfil de acesso não selecionado"));
                         out.print(json.toJson(errors));
+                    } else {
+                        User original = UserFacade.find(id);
+                        user.setCpf(original.getCpf());
+                        user.setId(id);
+                        extractData(request, user);
+                        errors = user.validate();
+                        errors.removeIf(error -> error.getField().equals("cpf") || error.getField().equals("password1"));
+                        if (errors.isEmpty()) {
+                            UserFacade.save(user);
+                            out.print(json.toJson(user));
+                        } else {
+                            response.setStatus(422);
+                            out.print(json.toJson(errors));
+                        }
+                    }
+                    return;
+                case "new":
+                    user = User.getInstanceOf(role);
+                    if (user == null) {
+                        response.setStatus(422);
+                        errors.add(new ValError("error", "Perfil de acesso não selecionado"));
+                        out.print(json.toJson(errors));
+                    } else {
+                        extractData(request, user);
+                        errors = user.validate();
+                        if (user.getPassword() == null || !user.getPassword().equals(request.getParameter("password2")))
+                            errors.add(new ValError("password2", "As senhas não conferem"));
+                        if (errors.isEmpty()) {
+                            UserFacade.save(user);
+                            out.print(json.toJson(user));
+                        } else {
+                            response.setStatus(422);
+                            out.print(json.toJson(errors));
+                        }
                     }
                     return;
                 case "password":
+                    id = Long.parseLong(request.getParameter("id"));
+                    user = UserFacade.find(id);
+                    if (user == null) {
+                        response.setStatus(422);
+                        errors.add(new ValError("error", "Usuário não encontrado para atualização"));
+                        out.print(json.toJson(errors));
+                        return;
+                    }
+                    user = UserFacade.authenticate(user.getEmail(), request.getParameter("password"));
+                    if (user == null) {
+                        response.setStatus(422);
+                        errors.add(new ValError("error", "Senha atual não confere"));
+                        out.print(json.toJson(errors));
+                        return;
+                    }
+                    user.setPassword(request.getParameter("password1"));
+                    errors = user.validate();
                     errors.removeIf(error -> !error.getField().equals("password1"));
-                    if (!request.getParameter("password2").equals(user.getPassword()))
+                    if (user.getPassword() != null && !user.getPassword().equals(request.getParameter("password2")))
                         errors.add(new ValError("password2", "As senhas não conferem"));
                     if (errors.isEmpty()) {
-                        UserFacade.save(user);
+                        UserFacade.updatePassword(user);
                         out.print(json.toJson(user));
                     } else {
                         response.setStatus(422);
@@ -120,6 +151,12 @@ public class ApiUsersServlet extends HttpServlet {
                     }
                     return;
             }
+        } catch (NumberFormatException ex) {
+            response.setStatus(422);
+            out.print(json.toJson(new ValError("error", "ID de usuário não informada")));
+            return;
+        } finally {
+            out.close();
         }
         response.sendError(404);
     }
@@ -128,7 +165,8 @@ public class ApiUsersServlet extends HttpServlet {
         Address address = new Address();
         user.setFirstName(request.getParameter("first_name"));
         user.setLastName(request.getParameter("last_name"));
-        user.setCpf(request.getParameter("cpf"));
+        if (user.getId() == null)
+            user.setCpf(request.getParameter("cpf"));
         user.setEmail(request.getParameter("email"));
         user.setPhone(request.getParameter("phone"));
         user.setPassword(request.getParameter("password1"));

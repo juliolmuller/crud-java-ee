@@ -196,6 +196,7 @@ function createCategory() {
 // Abrir modal/form para edição de categoria
 function editCategory(id) {
   const idStr = String(id).padStart(3, '0');
+  cleanForm(CATEGORY_FORM);
   $(`${CATEGORY_FORM}-title`).text(`Editando Categoria #${idStr}`);
   $(CATEGORY_MODAL).modal('show');
   $.ajax({
@@ -203,7 +204,6 @@ function editCategory(id) {
     url: `${$(CATEGORY_FORM).attr('action')}?id=${id}`,
     success(response) {
       const category = escapeHTML(response);
-      cleanForm(CATEGORY_FORM);
       $(`${CATEGORY_FORM} [name="id"]`).val(category.id);
       $(`${CATEGORY_FORM} [name="name"]`).val(category.name).focus();
     },
@@ -298,6 +298,7 @@ function createProduct() {
 // Abrir modal/form para edição de produto
 function editProduct(id) {
   const idStr = String(id).padStart(6, '0');
+  cleanForm(PRODUCT_FORM);
   $(`${PRODUCT_FORM}-title`).text(`Editando Produto #${idStr}`);
   $(PRODUCT_MODAL).modal('show');
   $.ajax({
@@ -305,7 +306,6 @@ function editProduct(id) {
     url: `${$(PRODUCT_FORM).attr('action')}?id=${id}`,
     success(response) {
       const product = escapeHTML(response);
-      cleanForm(PRODUCT_FORM);
       $(`${PRODUCT_FORM} [name="id"]`).val(product.id);
       $(`${PRODUCT_FORM} [name="name"]`).val(product.name).focus();
       $(`${PRODUCT_FORM} [name="weight"]`).val(product.weight);
@@ -420,6 +420,7 @@ function createUser() {
 
 // Abrir modal/form para edição de dados cadastrais
 function editUser(id) {
+  cleanForm(USER_FORM);
   $('#password-creation').hide();
   $(`${USER_FORM} [name="cpf"]`).prop('readonly', true);
   $(`${USER_FORM}-title`).text(`Editar Colaborador (usuário #${id})`);
@@ -430,7 +431,6 @@ function editUser(id) {
     success(response) {
       const user = escapeHTML(response);
       formatUserData(user);
-      cleanForm(USER_FORM);
       $(`${USER_FORM} [name="id"]`).val(user.id);
       $(`${USER_FORM} [name="role"][value="${user.role}"]`).prop("checked", true);
       $(`${USER_FORM} [name="first_name"]`).val(user.firstName).focus();
@@ -475,21 +475,22 @@ function userRow(user = {}) {
   `;
 }
 
-// Configurar evento de submissão de formulário de produto
+// Configurar evento de submissão de formulário de usuário
 $(USER_FORM).submit(e => {
   e.preventDefault();
-  const product = extractDataForm(USER_FORM);
+  const user = extractDataForm(USER_FORM);
+  user.role = $(`${USER_FORM} [name="role"]:checked`).val();
   $.ajax({
     method: 'POST',
-    url: `${$(USER_FORM).attr('action')}?action=${!product.id ? 'new' : 'update'}`,
-    data: product,
+    url: `${$(USER_FORM).attr('action')}?action=${!user.id ? 'new' : 'update'}`,
+    data: user,
     success(response) {
-      if (!product.id) {
+      if (!user.id) {
         toastr.success('Usuário criado com sucesso');
-        $(`${USER_TABLE} tbody`).append(productRow(response));
+        $(`${USER_TABLE} tbody`).append(userRow(response));
       } else {
         toastr.success('Usuário atualizado com sucesso');
-        $(`${USER_TABLE} tbody tr`).filter((i, el) => Number($(el).children().first().text()) == product.id).replaceWith(productRow(response));
+        $(`${USER_TABLE} tbody tr`).filter((i, el) => $(el).children().first().text().trim() == user.cpf).replaceWith(userRow(response));
       }
       $(USER_MODAL).modal('hide');
     },
@@ -504,6 +505,41 @@ $(USER_FORM).submit(e => {
   });
 });
 
+// Abrir modal/form para alteração de senha
+function editPassword(id) {
+  cleanForm(PSWD_FORM);
+  $(`${PSWD_FORM}-title`).text(`Editar Senha (usuário #${id})`);
+  $(`${PSWD_FORM} [name="id"]`).val(id);
+  $(`${PSWD_FORM} [name="password"]`).focus();
+  $(PSWD_MODAL).modal('show');
+}
+
+// Configurar evento de submissão de formulário de alteração de senha
+$(PSWD_FORM).submit(e => {
+  e.preventDefault();
+  const user = extractDataForm(PSWD_FORM);
+  user.role = $(`${PSWD_FORM} [name="role"]:checked`).val();
+  $.ajax({
+    method: 'POST',
+    url: $(PSWD_FORM).attr('action'),
+    data: user,
+    success(response) {
+      toastr.success('Senha alterada com sucesso');
+      $(PSWD_MODAL).modal('hide');
+    },
+    error(error) {
+      let { status, responseJSON } = error;
+      console.log(responseJSON)
+      if (status == 422) {
+        if (!(responseJSON instanceof Array))
+          responseJSON = [responseJSON];
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(error);
+      }
+    }
+  });
+});
 
 
 

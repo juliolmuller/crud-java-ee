@@ -80,7 +80,7 @@
 
     <%-- Formulário de alteração de senha --%>
     <div id="password-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog ${type != 'password' ? 'modal-lg' : null}" role="document">
+      <div class="modal-dialog" role="document">
         <form action="${pageContext.request.contextPath}/api/users?action=password" id="password-form" class="modal-content" novalidate>
           <div class="modal-header">
             <h2 class="modal-title"></h2>
@@ -99,7 +99,7 @@
                       <i class="fas fa-unlock-alt"></i>
                     </span>
                   </div>
-                  <input type="password" id="user-password" class="form-control" name="password" />
+                  <input type="password" id="user-password" class="form-control" name="password" placeholder="Informe a sua senha atual" />
                 </div>
               </div>
               <div class="col-12 form-group">
@@ -110,7 +110,7 @@
                       <i class="fas fa-unlock-alt"></i>
                     </span>
                   </div>
-                  <input type="password" id="user-password1" class="form-control" name="password1" />
+                  <input type="password" id="user-password1" class="form-control" name="password1" placeholder="Nova senha (entre 6 e 32 caracteres)" />
                 </div>
               </div>
               <div class="col-12 form-group">
@@ -121,7 +121,7 @@
                       <i class="fas fa-unlock-alt"></i>
                     </span>
                   </div>
-                  <input type="password" id="user-password2" class="form-control" name="password2" />
+                  <input type="password" id="user-password2" class="form-control" name="password2" placeholder="Repita a nova senha" />
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@
 
     <%-- Formulário de criação/edição de senha --%>
     <div id="user-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog ${type != 'password' ? 'modal-lg' : null}" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <form action="${pageContext.request.contextPath}/api/users" id="user-form" class="modal-content" novalidate>
           <div class="modal-header">
             <h2 class="modal-title"></h2>
