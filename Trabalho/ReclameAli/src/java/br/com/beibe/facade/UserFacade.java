@@ -34,7 +34,7 @@ public abstract class UserFacade {
         }
     }
     
-    public static void UpdatePassword(User user) {
+    public static void updatePassword(User user) {
         try {
             UserDAO.updatePassword(user);
         } catch (SQLException ex) {
