@@ -1,13 +1,19 @@
 package br.com.beibe.beans;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public final class TicketType implements Bean {
+public final class TicketType implements Serializable {
 
     private Long id;
     private String name;
+
+    public TicketType() {}
+
+    public TicketType(Long id, String name) {
+        setId(id);
+        setName(name);
+    }
 
     public Long getId() {
         return this.id;
@@ -23,11 +29,5 @@ public final class TicketType implements Bean {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public List<ValError> validate() {
-        List<ValError> errors = new ArrayList<>();
-        return errors;
     }
 }
