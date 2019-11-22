@@ -75,7 +75,7 @@ CREATE TABLE ticket_status(
 CREATE TABLE tickets(
   id SERIAL PRIMARY KEY,
   opening_date TIMESTAMP NOT NULL,
-  closing_time TIMESTAMP,
+  closing_date TIMESTAMP,
   created_by INT NOT NULL REFERENCES users(id),
   type_id INT NOT NULL REFERENCES ticket_types(id),
   status_id INT NOT NULL REFERENCES ticket_status(id),
