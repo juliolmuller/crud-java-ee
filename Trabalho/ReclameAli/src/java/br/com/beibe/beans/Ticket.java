@@ -103,6 +103,19 @@ public final class Ticket implements Bean {
     @Override
     public List<ValError> validate() {
         List<ValError> errors = new ArrayList<>();
+
+        // Validar atributos obrigatórios
+        if (this.type == null)
+            errors.add(new ValError("type", "Selecione um tipo de atendimento"));
+        if (this.product == null)
+            errors.add(new ValError("product", "Selecione um produto"));
+        if (this.messages == null)
+            errors.add(new ValError("message", "Você deve escrever uma mensagem"));
+
+        // VAlidar mensagem
+        if (this.messages != null)
+            this.messages.forEach(msg -> msg.validate().forEach(error -> errors.add(error)));
+        
         return errors;
     }
 }

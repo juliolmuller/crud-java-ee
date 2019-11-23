@@ -1,8 +1,9 @@
 package br.com.beibe.beans;
 
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ArrayList;
+import br.com.beibe.utils.Converter;
 
 @SuppressWarnings("serial")
 public final class TicketMessage implements Bean, Comparable<TicketMessage> {
@@ -36,7 +37,7 @@ public final class TicketMessage implements Bean, Comparable<TicketMessage> {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = Converter.nullable(message);
     }
 
     public User getSender() {
@@ -66,6 +67,14 @@ public final class TicketMessage implements Bean, Comparable<TicketMessage> {
     @Override
     public List<ValError> validate() {
         List<ValError> errors = new ArrayList<>();
+
+        // Validar mensagem
+        if (this.message == null) {
+            errors.add(new ValError("message", "O campo 'MENSAGEM' é de preenchimento obrigatório"));
+        } else if (this.message.length() > 255) {
+            errors.add(new ValError("message", "O campo 'MENSAGEM' deve ter no máximo 255 caracteres"));
+        }
+
         return errors;
     }
 
