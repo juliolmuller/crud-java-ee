@@ -20,7 +20,7 @@ public abstract class TicketMessageDAO extends DAO {
     public static enum Fields {
         ID("id"),
         MESSAGE("message"),
-        SENDER("sender"),
+        SENDER("user_id"),
         TICKET("ticket_id"),
         SEND_DATE("send_date");
 
