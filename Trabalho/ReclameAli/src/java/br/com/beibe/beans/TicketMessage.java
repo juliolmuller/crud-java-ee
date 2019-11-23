@@ -1,16 +1,27 @@
 package br.com.beibe.beans;
 
-import java.util.Date;
 import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public final class TicketMessage implements Bean {
+public final class TicketMessage implements Bean, Comparable<TicketMessage> {
 
     private Long id;
     private String message;
     private User sender;
-    private Date sendDate;
+    private Long ticketId;
+    private LocalDateTime sendDate;
+
+    public TicketMessage() {}
+
+    public TicketMessage(Long id, String message, User sender, Long ticket, LocalDateTime dateTime) {
+        setId(id);
+        setMessage(message);
+        setSender(sender);
+        setTicket(ticket);
+        setSendDate(dateTime);
+    }
 
     public Long getId() {
         return this.id;
@@ -36,17 +47,30 @@ public final class TicketMessage implements Bean {
         this.sender = sender;
     }
 
-    public Date getSendDate() {
+    public Long getTicket() {
+        return this.ticketId;
+    }
+
+    public void setTicket(Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public LocalDateTime getSendDate() {
         return this.sendDate;
     }
 
-    public void setSendDate(Date date) {
-        this.sendDate = date;
+    public void setSendDate(LocalDateTime dateTime) {
+        this.sendDate = dateTime;
     }
 
     @Override
     public List<ValError> validate() {
         List<ValError> errors = new ArrayList<>();
         return errors;
+    }
+
+    @Override
+    public int compareTo(TicketMessage tm) {
+        return this.sendDate.compareTo(tm.sendDate);
     }
 }
