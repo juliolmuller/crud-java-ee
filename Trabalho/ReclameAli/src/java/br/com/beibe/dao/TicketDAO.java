@@ -20,7 +20,7 @@ import br.com.beibe.service.ConnectionFactory;
 
 public abstract class TicketDAO extends DAO {
 
-    public static final String TABLE = "users";
+    public static final String TABLE = "tickets";
     public static enum Fields {
         ID("id"),
         OPENING("opening_date"),
