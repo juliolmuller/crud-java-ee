@@ -1,20 +1,40 @@
 package br.com.beibe.beans;
 
-import java.util.Date;
-import java.util.Set;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 @SuppressWarnings("serial")
 public final class Ticket implements Bean {
 
     private Long id;
-    private Date openingDate;
-    private Date closingDate;
+    private LocalDateTime openingDate;
+    private LocalDateTime closingDate;
     private TicketStatus status;
     private TicketType type;
-    private User oepnBy;
+    private User openBy;
+    private Product product;
     private Set<TicketMessage> messages;
+
+    public Ticket() {}
+
+    public Ticket(Long id, LocalDateTime openingDate, LocalDateTime closingDate, TicketStatus status, TicketType type, User openBy, Product product, Set<TicketMessage> messages) {
+        setId(id);
+        setOpeningDate(openingDate);
+        setClosingDate(closingDate);
+        setStatus(status);
+        setType(type);
+        setOpenBy(openBy);
+        setProduct(product);
+        setMessages(messages);
+    }
+
+    public Ticket(Long id, LocalDateTime openingDate, LocalDateTime closingDate, TicketStatus status, TicketType type, User openBy, Product product, TicketMessage message) {
+        this(id, openingDate, closingDate, status, type, openBy, product, new TreeSet<>());
+        this.messages.add(message);
+    }
 
     public Long getId() {
         return this.id;
@@ -24,20 +44,20 @@ public final class Ticket implements Bean {
         this.id = id;
     }
 
-    public Date getOpeningDate() {
+    public LocalDateTime getOpeningDate() {
         return this.openingDate;
     }
 
-    public void setOpeningDate(Date openingDate) {
-        this.openingDate = openingDate;
+    public void setOpeningDate(LocalDateTime date) {
+        this.openingDate = date;
     }
 
-    public Date getClosingDate() {
+    public LocalDateTime getClosingDate() {
         return this.closingDate;
     }
 
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
+    public void setClosingDate(LocalDateTime date) {
+        this.closingDate = date;
     }
 
     public TicketStatus getStatus() {
@@ -56,12 +76,20 @@ public final class Ticket implements Bean {
         this.type = type;
     }
 
-    public User getOepnBy() {
-        return this.oepnBy;
+    public User getOpenBy() {
+        return this.openBy;
     }
 
-    public void setOepnBy(User oepnBy) {
-        this.oepnBy = oepnBy;
+    public void setOpenBy(User openBy) {
+        this.openBy = openBy;
+    }
+
+    public Product getProduct() {
+        return this.product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Set<TicketMessage> getMessages() {

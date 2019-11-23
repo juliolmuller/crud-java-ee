@@ -88,6 +88,10 @@ public abstract class ProductDAO extends DAO {
         return find(id, Fields.ID);
     }
 
+    public static Product find(Long id, Connection conn) throws SQLException {
+        return find(id, Fields.ID, conn);
+    }
+
     public static Product find(Object value, Fields field) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             return find(value, field, conn);

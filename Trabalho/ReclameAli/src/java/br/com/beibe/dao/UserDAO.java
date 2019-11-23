@@ -101,6 +101,10 @@ public abstract class UserDAO extends DAO {
         return find(id, Fields.ID);
     }
 
+	protected static User find(Long id, Connection conn) throws SQLException {
+        return find(id, Fields.ID, conn);
+	}
+
     public static User find(Object value, Fields field) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             return find(value, field, conn);
