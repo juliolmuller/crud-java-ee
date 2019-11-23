@@ -155,8 +155,7 @@ public abstract class TicketDAO extends DAO {
     }
 
     public static void update(Ticket ticket) throws SQLException {
-        Connection conn = ConnectionFactory.getConnection(false);
-        try {
+        try (Connection conn = ConnectionFactory.getConnection()) {
             String[] mutable = { Fields.STATUS.toString(), Fields.TYPE.toString(), Fields.CLOSING.toString() };
             PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, mutable, Fields.ID.toString()));
             stmt.setLong(1, ticket.getStatus().getId());
@@ -167,26 +166,7 @@ public abstract class TicketDAO extends DAO {
                 stmt.setNull(3, Types.NULL);
             stmt.setLong(4, ticket.getId());
             stmt.executeUpdate();
-            List<TicketMessage> messages = TicketMessageDAO.getList(conn);
-            messages.removeIf(msg -> msg.getId() == ticket.getId());
-            Set<TicketMessage> messagesSet = new TreeSet<>(messages);
-            messagesSet.forEach(message -> {
-                ticket.getMessages().forEach(msg -> {
-                    if (message.compareTo(msg) != 0) {
-                        try {
-                            TicketMessageDAO.insert(msg, conn);
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-                });
-            });
             conn.commit();
-        } catch (SQLException ex) {
-            conn.rollback();
-            throw ex;
-        } finally {
-            conn.close();
         }
     }
 }

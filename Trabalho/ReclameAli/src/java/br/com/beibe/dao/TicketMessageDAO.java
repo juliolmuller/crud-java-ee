@@ -108,7 +108,7 @@ public abstract class TicketMessageDAO extends DAO {
         return null;
     }
 
-    protected static void insert(TicketMessage message) throws SQLException {
+    public static void insert(TicketMessage message) throws SQLException {
         try (Connection conn = ConnectionFactory.getConnection()) {
             insert(message, conn);
         }
@@ -121,7 +121,7 @@ public abstract class TicketMessageDAO extends DAO {
         stmt.setLong(3, message.getTicket());
         stmt.setTimestamp(4, Timestamp.valueOf(message.getSendDate()));
         ResultSet rs = stmt.executeQuery();
-        if (rs.next())
-            message.setId(rs.getLong(Fields.ID.toString()));
+        rs.next();
+        message.setId(rs.getLong(Fields.ID.toString()));
     }
 }
