@@ -10,8 +10,9 @@ import br.com.beibe.dao.TicketDAO;
 
 public abstract class TicketFacade {
 
-    public static List<Ticket> listAll() {
-        return TicketDAO.getList();
+    public static Set<Ticket> listAll() {
+        List<Ticket> tickets = TicketDAO.getList();
+        return new TreeSet<>(tickets);
     }
 
     public static Set<Ticket> listMine(User user) {

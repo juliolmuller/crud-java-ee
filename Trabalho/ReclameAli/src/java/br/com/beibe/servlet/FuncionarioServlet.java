@@ -3,6 +3,7 @@ package br.com.beibe.servlet;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
 import br.com.beibe.beans.Ticket;
-import br.com.beibe.beans.User;
 import br.com.beibe.facade.CategoryFacade;
 import br.com.beibe.facade.ProductFacade;
 import br.com.beibe.facade.TicketFacade;
@@ -87,8 +87,7 @@ public class FuncionarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("userCredentials");
-        List<Ticket> tickets = TicketFacade.listMine(user);
+        Set<Ticket> tickets = TicketFacade.listAll();
         request.setAttribute("tickets", tickets);
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
     }
