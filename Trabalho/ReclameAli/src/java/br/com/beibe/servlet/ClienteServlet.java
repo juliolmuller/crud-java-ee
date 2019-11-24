@@ -115,8 +115,11 @@ public class ClienteServlet extends HttpServlet {
         try {
             long id = Long.parseLong(request.getParameter("id"));
             Ticket ticket = TicketFacade.find(id);
+            User user = (User) request.getSession().getAttribute("userCredentials");
             if (ticket == null)
                 request.setAttribute("error", "ID #" + id + " não encontrado");
+            else if (!ticket.getOpenBy().equals(user))
+                request.setAttribute("error", "acesso não autorizado ao atendimento #" + id);
             else
                 request.setAttribute("ticket", ticket);
         } catch (NullPointerException | NumberFormatException ex) {
