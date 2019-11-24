@@ -60,7 +60,24 @@ public abstract class TicketMessageDAO extends DAO {
     }
 
     protected static List<TicketMessage> getList(Connection conn) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray()));
+        return getList(null, null, conn);
+    }
+
+    protected static List<TicketMessage> getList(Fields field, Object value, Connection conn) throws SQLException {
+        String where = "";
+        if (field != null && value != null)
+            where = "WHERE " + field.toString() + " = ?";
+        PreparedStatement stmt = conn.prepareStatement(buildSelectQuery(TABLE, Fields.toArray(), where));
+        if (field != null && value != null) {
+            if (value instanceof String)
+                stmt.setString(1, (String) value);
+            else if (value instanceof Long)
+                stmt.setLong(1, (Long) value);
+            else if (value instanceof Integer)
+                stmt.setInt(1, (Integer) value);
+            else
+                throw new SQLException("Type cannot be set to the prepared statement");
+        }
         ResultSet rs = stmt.executeQuery();
         List<TicketMessage> messages = new ArrayList<>();
         while (rs.next()) {

@@ -17,6 +17,7 @@ import br.com.beibe.beans.Ticket;
 import br.com.beibe.beans.TicketMessage;
 import br.com.beibe.beans.TicketStatus;
 import br.com.beibe.service.ConnectionFactory;
+import java.time.LocalDateTime;
 
 public abstract class TicketDAO extends DAO {
 
@@ -48,13 +49,14 @@ public abstract class TicketDAO extends DAO {
 
     private static Ticket extractData(ResultSet rs, Connection conn) throws SQLException {
         long id = rs.getLong(Fields.ID.toString());
-        List<TicketMessage> messages = TicketMessageDAO.getList(conn);
-        messages.removeIf(msg -> msg.getId() == id);
+        List<TicketMessage> messages = TicketMessageDAO.getList(TicketMessageDAO.Fields.TICKET, id, conn);
         Set<TicketMessage> messagesSet = new TreeSet<>(messages);
+        Timestamp ts = rs.getTimestamp(Fields.CLOSING.toString());
+        LocalDateTime ldt = ts != null ? ts.toLocalDateTime() : null;
         return new Ticket(
             id,
             rs.getTimestamp(Fields.OPENING.toString()).toLocalDateTime(),
-            rs.getTimestamp(Fields.CLOSING.toString()).toLocalDateTime(),
+            ldt,
             TicketStatus.ofId(rs.getInt(Fields.STATUS.toString())),
             TicketTypeDAO.find(rs.getLong(Fields.TYPE.toString()), conn),
             UserDAO.find(rs.getLong(Fields.USER.toString()), conn),
