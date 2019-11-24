@@ -41,7 +41,7 @@
         <tbody>
           <c:choose>
             <c:when test="${empty products}">
-              <tr><td colspan="3" class="h4 py-4">Nenhum producto cadastrado.</td></tr>
+              <tr><td colspan="6" class="h4 py-4">Nenhum producto cadastrado.</td></tr>
             </c:when>
             <c:otherwise>
               <c:forEach var="product" items="${products}">
