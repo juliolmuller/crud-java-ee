@@ -28,7 +28,7 @@
     </div>
 
     <%-- Filtro de visualização de atendimentos --%>
-    <div class="mt-3">
+    <div class="mt-1">
       <div class="d-flex">
         <div class="form-inline ml-auto my-3">
           <div class="form-group">

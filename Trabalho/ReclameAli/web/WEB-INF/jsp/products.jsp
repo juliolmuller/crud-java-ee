@@ -26,7 +26,7 @@
     </div>
 
     <%-- Tabela com produtos --%>
-    <div class="mt-5">
+    <div class="mt-3">
       <table id="product-table" class="table table-hover">
         <thead class="c-thead">
           <tr class="text-center">
