@@ -8,6 +8,5 @@
 <%
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
     request.setAttribute("date", value.format(formatter));
-    System.out.print(request.getAttribute("date"));
 %>
 <c:out value="${date}" />
