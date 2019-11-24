@@ -92,6 +92,16 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        try {
+            long id = Long.parseLong(request.getParameter("id"));
+            Ticket ticket = TicketFacade.find(id);
+            if (ticket == null)
+                request.setAttribute("error", "ID #" + id + " não encontrado");
+            else
+                request.setAttribute("ticket", ticket);
+        } catch (NullPointerException | NumberFormatException ex) {
+            request.setAttribute("error", "nenhum ID fornecido");
+        }
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
     }
 
