@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
-public final class Ticket implements Bean {
+public final class Ticket implements Bean, Comparable<Ticket> {
 
     private Long id;
     private LocalDateTime openingDate;
@@ -117,5 +117,10 @@ public final class Ticket implements Bean {
             this.messages.forEach(msg -> msg.validate().forEach(error -> errors.add(error)));
         
         return errors;
+    }
+
+    @Override
+    public int compareTo(Ticket tm) {
+        return this.openingDate.compareTo(tm.openingDate);
     }
 }

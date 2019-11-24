@@ -3,6 +3,7 @@ package br.com.beibe.servlet;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -95,7 +96,7 @@ public class ClienteServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("userCredentials");
-        List<Ticket> tickets = TicketFacade.listMine(user);
+        Set<Ticket> tickets = TicketFacade.listMine(user);
         request.setAttribute("tickets", tickets);
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
     }

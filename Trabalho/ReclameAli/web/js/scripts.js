@@ -541,6 +541,57 @@ $(PSWD_FORM).submit(e => {
   });
 });
 
+// Adicionar evento para linhas de tabelas
+$('.c-clickable').click(function() {
+  window.location = $(this).data('href');
+});
+
+// Ação para filtragem de atendimentos
+function filterTickets() {
+  const val = $(this).val();
+  const none = $('tbody tr:first-child');
+  const rows = $('.c-clickable');
+  const open = $('td span.badge-warning').parents('tr');
+  const closed = $('td span.badge-success').parents('tr');
+  $(none).hide();
+  $(rows).hide();
+  if (!$(rows).length) {
+    $(none).show();
+  } else {
+    switch (val) {
+      case 'open':
+        $(open).show();
+        break;
+      case 'closed':
+        $(closed).show();
+        break;
+      default:
+        $(rows).show();
+    }
+  }
+}
+
+// Ação para ordenação de atendimentos
+function sortTickets() {
+  $('tbody').each(function() {
+    const arr = $.makeArray($('tr', this).detach());
+    arr.reverse();
+    $(this).append(arr);
+  });
+}
+
+// Adicionar evento para filtro e ordenação de atendimentos
+$('#ticket-filter').on('input', filterTickets);
+$('#ticket-sorter').on('input', sortTickets);
+
+// Filtrar atendimentos por "abertos" inicialmente
+$('#ticket-filter option:nth-child(2)').prop('selected', true);
+if ('createEvent' in document) {
+  const e = document.createEvent('HTMLEvents');
+  e.initEvent("input", false, true);
+  window['ticket-filter'].dispatchEvent(e);
+} else
+  window['ticket-filter'].fireEvent('oninput');
 
 
 
@@ -551,33 +602,4 @@ $(PSWD_FORM).submit(e => {
 $('#find-product').click(() => {
   const produto = $('#product-code').val();
   $('#product-details').show();
-});
-
-// Adicionar evento para linhas de tabelas
-$('.c-clickable').click(function() {
-  window.location = $(this).data('href');
-});
-
-// TODO: Adicionar evento para filtro de tabelas
-$('#filtro-atendimentos').change(function() {
-  $('tr').show();
-  switch ($(this).val()) {
-    case 'abertos':
-      $('td span.badge-success')
-        .parent()
-        .parent()
-        .hide();
-      break;
-    case 'vencidos':
-      $('tbody tr').hide();
-      $('tr.table-danger').show();
-      break;
-    case 'fechados':
-      $('tbody tr').hide();
-      $('td span.badge-success')
-        .parent()
-        .parent()
-        .show();
-      break;
-  }
 });

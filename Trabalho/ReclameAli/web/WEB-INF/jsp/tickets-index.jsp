@@ -28,16 +28,28 @@
     <%-- Filtro de visualização de atendimentos --%>
     <div class="mt-3">
       <div class="d-flex">
-        <div class="form-inline ml-auto my-2">
-          <label for="filtro-atendimentos">
-            <i class="fas fa-filter"></i>
-            <span class="mx-2">Filtrar por</span>
-          </label>
-          <select id="ticket-filter" class="form-control">
-            <option value="0">Todos</option>
-            <option value="Aberto">Abertos</option>
-            <option value="Fechado">Fechados</option>
-          </select>
+        <div class="form-inline ml-auto my-3">
+          <div class="form-group">
+            <label for="ticket-filter">
+              <i class="fas fa-filter"></i>
+              <span class="mx-2">Filtrar por</span>
+            </label>
+            <select id="ticket-filter" class="form-control">
+              <option value="0">Todos</option>
+              <option value="open">Abertos</option>
+              <option value="closed">Fechados</option>
+            </select>
+          </div>
+          <div class="form-group ml-4">
+            <label for="ticket-sorter">
+              <i class="fas fa-sort-amount-down-alt"></i>
+              <span class="mx-2">Ordenar</span>
+            </label>
+            <select id="ticket-sorter" class="form-control">
+              <option value="asc">do mais antigo para o mais novo</option>
+              <option value="desc">do mais novo para o mais antigo</option>
+            </select>
+          </div>
         </div>
       </div>
 
