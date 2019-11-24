@@ -19,10 +19,12 @@
       </div>
 
       <%-- Botão para criação de novo atendimento --%>
-      <a href="${baseUri}/atendimentos/novo" class="btn btn-primary mt-1">
-        <i class="fa fa-plus"></i>
-        Novo Atendimento
-      </a>
+      <c:if test="${userCredentials.role == 'cliente'}">
+        <a href="${baseUri}/atendimentos/novo" class="btn btn-primary mt-1">
+          <i class="fa fa-plus"></i>
+          Novo Atendimento
+        </a>
+      </c:if>
     </div>
 
     <%-- Filtro de visualização de atendimentos --%>
