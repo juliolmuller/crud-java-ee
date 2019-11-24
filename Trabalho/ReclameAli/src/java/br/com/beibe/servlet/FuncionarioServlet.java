@@ -1,16 +1,19 @@
 package br.com.beibe.servlet;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
+import br.com.beibe.beans.Ticket;
+import br.com.beibe.beans.User;
 import br.com.beibe.facade.CategoryFacade;
 import br.com.beibe.facade.ProductFacade;
+import br.com.beibe.facade.TicketFacade;
 
 @WebServlet(name = "FuncionarioServlet", urlPatterns = {"/funcionario/*"})
 public class FuncionarioServlet extends HttpServlet {
@@ -45,10 +48,8 @@ public class FuncionarioServlet extends HttpServlet {
                 setHeaderLinks(request, 3);
                 displayProducts(request, response);
                 return;
-            default:
-                System.out.println("Funcionario 404: (GET) " + uri);
-                response.sendError(404);
         }
+        response.sendError(404);
     }
 
     @Override
@@ -61,10 +62,8 @@ public class FuncionarioServlet extends HttpServlet {
             case "/atendimentos/acompanhar":
                 processExistingTicket(request, response);
                 return;
-            default:
-                System.out.println("Funcionario 404: (POST) " + uri);
-                response.sendError(404);
         }
+        response.sendError(404);
     }
 
     private void setHeaderLinks(HttpServletRequest request, int activePage) {
@@ -88,6 +87,9 @@ public class FuncionarioServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("userCredentials");
+        List<Ticket> tickets = TicketFacade.listMine(user);
+        request.setAttribute("tickets", tickets);
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
     }
 

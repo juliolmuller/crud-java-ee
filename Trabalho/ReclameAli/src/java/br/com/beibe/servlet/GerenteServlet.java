@@ -1,15 +1,18 @@
 package br.com.beibe.servlet;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.Hyperlink;
+import br.com.beibe.beans.Ticket;
+import br.com.beibe.beans.User;
 import br.com.beibe.dao.StateDAO;
+import br.com.beibe.facade.TicketFacade;
 import br.com.beibe.facade.UserFacade;
 
 @WebServlet(name = "GerenteServlet", urlPatterns = {"/gerente/*"})
@@ -45,10 +48,8 @@ public class GerenteServlet extends HttpServlet {
                 setHeaderLinks(request, 3);
                 generateReport(request, response);
                 return;
-            default:
-                System.out.println("Gerente 404: (GET) " + uri);
-                response.sendError(404);
         }
+        response.sendError(404);
     }
 
     @Override
@@ -57,11 +58,8 @@ public class GerenteServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         String uri = request.getRequestURI().substring(request.getContextPath().length());
-        switch (uri) {
-            default:
-                System.out.println("Gerente 404: (POST) " + uri);
-                response.sendError(404);
-        }
+        switch (uri) {}
+        response.sendError(404);
     }
 
     private void setHeaderLinks(HttpServletRequest request, int activePage) {
@@ -85,6 +83,9 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("userCredentials");
+        List<Ticket> tickets = TicketFacade.listMine(user);
+        request.setAttribute("tickets", tickets);
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-index.jsp").forward(request, response);
     }
 

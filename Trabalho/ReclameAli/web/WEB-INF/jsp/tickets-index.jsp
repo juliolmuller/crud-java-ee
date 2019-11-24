@@ -1,5 +1,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/WEB-INF/jsp/error-page.jsp" %>
 
 <t:baseLayout>
@@ -9,65 +11,78 @@
 
   <%-- Corpo da página --%>
   <main class="container c-main">
-    <h2 class="mb-4">
-      Meus Atendimentos
-    </h2>
+    <div class="d-flex flex-wrap justify-content-between align-items-start">
+      <div>
+        <h1 class="mb-4">
+          Atendimentos
+        </h1>
+      </div>
 
-    <%-- Botão para abertura de novo atendimento --%>
-    <a href="${baseUri}/atendimentos/novo" class="btn btn-lg btn-primary">
-      <i class="fa fa-plus"></i>
-      Solicitar Atendimento
-    </a>
+      <%-- Botão para criação de novo atendimento --%>
+      <a href="${baseUri}/atendimentos/novo" class="btn btn-primary mt-1">
+        <i class="fa fa-plus"></i>
+        Novo Atendimento
+      </a>
+    </div>
 
-    <%-- Tabela com atendimentos em aberto --%>
-    <div class="mt-5">
-      <h3 class="mb-3 h4">Atendimentos em aberto</h3>
-      <table class="table table-hover">
+    <%-- Filtro de visualização de atendimentos --%>
+    <div class="mt-3">
+      <div class="d-flex">
+        <div class="form-inline ml-auto my-2">
+          <label for="filtro-atendimentos">
+            <i class="fas fa-filter"></i>
+            <span class="mx-2">Filtrar por</span>
+          </label>
+          <select id="ticket-filter" class="form-control">
+            <option value="0">Todos</option>
+            <option value="Aberto">Abertos</option>
+            <option value="Fechado">Fechados</option>
+          </select>
+        </div>
+      </div>
+
+      <%-- Tabela com atendimentos do cliente --%>
+      <table id="ticket-table" class="table table-hover">
         <thead class="c-thead">
           <tr class="text-center">
             <th scope="col">#</th>
             <th scope="col">Produto</th>
-            <th scope="col">Categoria</th>
+            <th scope="col">Tipo</th>
             <th scope="col">Data de Criação</th>
             <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="c-clickable text-center" data-href="${baseUri}/atendimentos/editar">
-            <th scope="row">100123</th>
-            <td>Shampoo Ass-Hair (para cachos ruivos)</td>
-            <td>Produto não recebido</td>
-            <td>15-set-2019</td>
-            <td><span class="badge badge-sm badge-info c-status">Recebido</span></td>
-          </tr>
-          <tr class="c-clickable text-center" data-href="${baseUri}/atendimentos/editar">
-            <th scope="row">100123</th>
-            <td>Sabonete SOAP (aroma lavanda)</td>
-            <td>Produto com defeito</td>
-            <td>8-set-2019</td>
-            <td><span class="badge badge-sm badge-danger c-status">Contestado</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <%-- Tabela com atendimentos encerrados --%>
-    <div class="mt-5">
-      <h3 class="h4">Atendimentos encerrados</h3>
-      <table class="table table-hover">
-        <thead class="c-thead">
-          <tr>
-            <th scope="col" class="text-center">#</th>
-            <th scope="col">Produto</th>
-            <th scope="col" class="text-center">Categoria</th>
-            <th scope="col" class="text-center">Data de Criação</th>
-            <th scope="col" class="text-center">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th colspan="5" class="py-3 h5 text-center">Nenhum atendimento encerrado</th>
-          </tr>
+          <tr style="display:none;"><td colspan="6" class="h4 py-4">Nenhum atendimento.</td></tr>
+          <c:forEach var="ticket" items="${tickets}">
+            <c:url var="details" value="/${userCredentials.role}/atendimentos/acompanhar">
+              <c:param name="id" value="${ticket.id}" />
+            </c:url>
+            <tr class="c-clickable" style="display:none;" data-href="${details}">
+              <th scope="row" class="text-center">
+                <fmt:formatNumber type="number" value="${ticket.id}" pattern="000000"/>
+              </th>
+              <td class="text-left">
+                <c:out value="${ticket.product.name}" />
+              </td>
+              <td class="text-center">
+                <c:out value="${ticket.type.name}" />
+              </td>
+              <td class="text-center">
+                <t:printLocalDateTime value="${ticket.openingDate}" pattern="dd-MMM-yyyy HH:mm" />
+              </td>
+              <td class="text-center">
+                <c:choose>
+                  <c:when test="${ticket.status == 'OPEN'}">
+                    <span class="badge badge-sm badge-warning c-status">Aberto</span>
+                  </c:when>
+                  <c:when test="${ticket.status == 'CLOSED'}">
+                    <span class="badge badge-sm badge-success c-status">Fechado</span>
+                  </c:when>
+                </c:choose>
+              </td>
+            </tr>
+          </c:forEach>
         </tbody>
       </table>
     </div>
