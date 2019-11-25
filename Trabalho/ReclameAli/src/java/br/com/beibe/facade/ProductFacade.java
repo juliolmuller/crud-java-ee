@@ -2,10 +2,10 @@ package br.com.beibe.facade;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 import br.com.beibe.beans.Product;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.dao.ProductDAO;
+import br.com.beibe.dao.TicketDAO;
 
 public abstract class ProductFacade {
 
@@ -38,6 +38,8 @@ public abstract class ProductFacade {
     }
 
     public static List<Ticket> listTickets(Product product) {
-        return new ArrayList<>(); // TODO: implement TicketDAO
+        List<Ticket> tickets = TicketDAO.getList();
+        tickets.removeIf(ticket -> !ticket.getProduct().getId().equals(product.getId()));
+        return tickets;
     }
 }

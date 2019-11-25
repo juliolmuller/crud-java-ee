@@ -2,9 +2,9 @@ package br.com.beibe.facade;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.beans.User;
+import br.com.beibe.dao.TicketDAO;
 import br.com.beibe.dao.UserDAO;
 
 public abstract class UserFacade {
@@ -33,7 +33,7 @@ public abstract class UserFacade {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static void updatePassword(User user) {
         try {
             UserDAO.updatePassword(user);
@@ -52,6 +52,8 @@ public abstract class UserFacade {
     }
 
     public static List<Ticket> listTickets(User user) {
-        return new ArrayList<>(); // TODO: implement TicketDAO
+        List<Ticket> tickets = TicketDAO.getList();
+        tickets.removeIf(ticket -> !ticket.getProduct().getId().equals(user.getId()));
+        return tickets;
     }
 }
