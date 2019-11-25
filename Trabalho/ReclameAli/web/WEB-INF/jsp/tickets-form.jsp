@@ -136,21 +136,23 @@
                     </c:forEach>
                   </div>
                 </div>
-                <div class="col-10 col-md-8 offset-2 offset-md-4 mt-2">
-                  <form action="${pageContext.request.contextPath}/api/tickets?action=message&id=${ticket.id}" id="ticket-message-form">
-                    <div class="input-group">
-                      <textarea id="new-ticket-message" class="form-control border-secondary" rows="3" name="message" placeholder="Nova mensagem..." maxlength="255" oninput="charCounter(event, '#char-counter', 255)"></textarea>
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" id="message-sender" disabled onclick="sendMessage()">
-                          <i class="fas fa-paper-plane"></i>
-                        </button>
+                <c:if test="${ticket.closingDate == null}">
+                  <div class="col-10 col-md-8 offset-2 offset-md-4 mt-2">
+                    <form action="${pageContext.request.contextPath}/api/tickets?action=message&id=${ticket.id}" id="ticket-message-form">
+                      <div class="input-group">
+                        <textarea id="new-ticket-message" class="form-control border-secondary" rows="3" name="message" placeholder="Nova mensagem..." maxlength="255" oninput="charCounter(event, '#char-counter', 255)"></textarea>
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-primary" id="message-sender" disabled onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <small id="char-counter" class="form-text text-muted text-right">
-                      Caracteres digitados: 0/255
-                    </small>
-                  </form>
-                </div>
+                      <small id="char-counter" class="form-text text-muted text-right">
+                        Caracteres digitados: 0/255
+                      </small>
+                    </form>
+                  </div>
+                </c:if>
               </div>
             </div>
           </div>
