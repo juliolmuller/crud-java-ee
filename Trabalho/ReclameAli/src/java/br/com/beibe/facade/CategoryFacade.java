@@ -38,6 +38,8 @@ public abstract class CategoryFacade {
     }
 
     public static List<Product> listProducts(Category category) {
-        return ProductDAO.getList();
+        List<Product> products = ProductDAO.getList();
+        products.removeIf(product -> !product.getCategory().getId().equals(category.getId()));
+        return products;
     }
 }
