@@ -30,11 +30,18 @@
         <p class="mb-3 h5 text-center">
           Forneça suas credenciais de acesso:
         </p>
-        <c:if test="${authError != null}">
-          <div class="alert alert-danger border-danger c-alert" role="alert">
-            Credenciais inválidas. Tente novamente!
-          </div>
-        </c:if>
+        <c:choose>
+          <c:when test="${authError == true}">
+            <div class="alert alert-danger border-danger c-alert" role="alert">
+              Credenciais inválidas. Tente novamente!
+            </div>
+          </c:when>
+          <c:when test="${accessDenied == true}">
+            <div class="alert alert-warning border-warning c-alert" role="alert">
+              Área restrita! Você precisa logar como ${roleRequired}
+            </div>
+          </c:when>
+        </c:choose>
         <div class="form-group">
           <label for="signin-login">Endereço de email:</label>
           <div class="input-group mb-3">
