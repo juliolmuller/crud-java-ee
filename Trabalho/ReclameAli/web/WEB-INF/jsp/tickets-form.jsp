@@ -1,5 +1,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/WEB-INF/jsp/error-page.jsp" %>
 
 <t:baseLayout>
@@ -9,114 +11,152 @@
 
   <%-- Corpo da página --%>
   <main class="container c-main">
-    <h2 class="mb-4">
-      Atendimento #[ID do atendimento]
-    </h2>
+    <c:choose>
+      <c:when test="${error != null}">
+        <div class="alert alert-danger text-center font-weight-bold" role="alert">
+          Acesso indevido aos detalhes de atendimentos (<c:out value="${error}" />)
+        </div>
+        <p class="text-center">
+          <i class="fas fa-sm fa-arrow-left"></i>
+          <a href="${baseUri}/atendimentos">
+            Voltar para atendimentos
+          </a>
+        </p>
+      </c:when>
+      <c:otherwise>
+        <div>
+          <div class="d-flex flex-wrap justify-content-between align-items-start">
+            <div class="d-inline">
+              <h2 class="mb-4">
+                Atendimento #<fmt:formatNumber type="number" value="${ticket.id}" pattern="000000"/>
+              </h2>
+            </div>
 
-    <%-- Dados do atendimento --%>
-    <form action="atendimentos.html" method="POST">
-      <button type="submit" class="btn btn-primary float-right w-25">
-        <i class="far fa-save"></i>
-        Salvar Alterações
-      </button>
-      <div class="form-group row">
-        <label for="atendimento-id" class="col-2 col-form-label">Atendimento:</label>
-        <div class="col-10">
-          <input type="text" id="atendimento-id" class="form-control-plaintext" readonly value="#100123" />
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="atendimento-cliente" class="col-2 col-form-label">Cliente:</label>
-        <div class="col-10">
-          <input type="text" id="atendimento-cliente" class="form-control-plaintext" readonly value="#666 (Josnei)" />
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="atendimento-produto" class="col-2 col-form-label">Produto:</label>
-        <div class="col-10">
-          <input type="text" id="atendimento-produto" class="form-control-plaintext" readonly value="#50004 (Batom Cacatua Raivosa)" />
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="atendimento-tipo" class="col-2 col-form-label">Tipo do atendimento:</label>
-        <div class="col-6">
-          <select id="atendimento-tipo" class="form-control" name="tipo">
-            <option>Selecione...</option>
-            <option value="1">Financeiro</option>
-            <option value="2">Produto não recebido</option>
-            <option value="3" selected>Produto com defeito</option>
-            <option value="4">Saúde</option>
-            <option value="5">Sugesões de melhoria</option>
-            <option value="0">Outros</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="atendimento-status" class="col-2 col-form-label">Status:</label>
-        <div class="col-6">
-          <select id="atendimento-status" class="form-control" name="status">
-            <option value="1">Recebido</option>
-            <option value="2">Sob Análise</option>
-            <option value="3" selected>Contestado</option>
-            <option value="4">Encerrado</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="atendimento-msg">Histórico de mensagens:</label>
-        <div class="row">
-          <div class="col-10 col-md-8">
-            <div class="rounded bg-secondary c-mensagem">
-              <p>Prezados,</p>
-              <p>Comprei uma caixa de batons super divos, super maravilhosos. A encomenda chegou dentro do prazo e tals,
-                mas  aparentemente, o lote que vocês me mandaram está vencido. Comi um e senti um sabor horrível, nada a ver com
-                chocolate. Imaginei que poderia ser apenas uma unidade com algum problema, mas comi outro e o gosto estava igualmente
-                nojento!</p>
-              <p>Por favor, ajudem me a resolver essa situação, pois sinto que estou no prejuízo. Minhas lumbrigas estão
-                passando vontade!</p>
-              <p>PS: amei a nova embalagem do baton! Muito top!</p>
-              <div class="text-right c-mensagem-time">
-                Enviada em 31-set-2019, às 12:34
-              </div>
-            </div>
-          </div>
-          <div class="col-10 col-md-8 offset-2 offset-md-4">
-            <div class="rounded bg-primary c-mensagem">
-              <p>Obrigado pelo contato. Nossos colaboradores entrarão em contato em breve.</p>
-              <div class="text-right c-mensagem-time">
-                Enviada em 31-set-2019, às 12:35
-              </div>
-            </div>
-          </div>
-          <div class="col-10 col-md-8 offset-2 offset-md-4">
-            <div class="rounded bg-primary c-mensagem">
-              <p>Prezado cliente,</p>
-              <p>Analisamos sua reclamação juntamente com toda nossa equipe técnica e, pelo que tudo indica,
-                o senhor parece ter se enganado quanto ao produto denominado "batom". Aparentemente, o
-                produto que o senhor deseja é o "Baton", um chocolate da marca Garoto, do ramo alimentíceo.</p>
-              <p>A Embuste é do ramo de cosméticos (higiene e beleza) e, portanto, seus produtos, especialmente o
-                tal batom que o senhor adquiriu, possui outra conotação. Por isso, sugerimos que consulte algum
-                dicionário da língua portuguesa ou pesquise no Google mais informações sobre o produto, uma vez
-                que esse portal trata apenas de assuntos sérios.</p>
-              <p>Desde já, agrademos a compreensão.</p>
-              <div class="text-right c-mensagem-time">
-                Enviada em 1-out-2019, às 15:49
-              </div>
-            </div>
-          </div>
-          <div class="col-10 col-md-8 offset-2 offset-md-4">
-            <div class="input-group">
-              <textarea id="atendimento-msg" class="form-control" rows="2" name="desc" placeholder="Nova mensagem..."></textarea>
-              <div class="input-group-append">
-                <button type="button" class="btn btn-primary" id="enviar-msg">
-                  <i class="fas fa-paper-plane"></i>
+            <%-- Botão para criação de novo atendimento --%>
+            <c:choose>
+              <c:when test="${userCredentials.role == 'cliente' || ticket.closingDate != null}">
+                <a href="${baseUri}/atendimentos" class="btn btn-default mt-1">
+                  <i class="fas fa-arrow-left"></i>
+                  Voltar
+                </a>
+              </c:when>
+              <c:otherwise>
+                <button type="button" class="btn btn-outline-primary mt-1" onclick="closeTicket()">
+                  <i class="fas fa-check"></i>
+                  Encerrar Atendimento
                 </button>
+              </c:otherwise>
+            </c:choose>
+          </div>
+
+          <%-- Dados do atendimento --%>
+          <div class="mt-3">
+            <c:set var="id" value="${fn:escapeXml(ticket.id)}" />
+            <input type="hidden" name="${id}" />
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group row">
+                  <label for="ticket-id" class="col-6"># do atendimento:</label>
+                  <div class="col-6">
+                    <fmt:formatNumber type="number" value="${id}" pattern="000000"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="ticket-opening_date" class="col-6">Enviado em:</label>
+                  <div class="col-6">
+                    <span id="ticket-opening_date">
+                      <t:printLocalDateTime value="${ticket.openingDate}" pattern="dd-MMM-yyyy HH:mm" />
+                    </span>
+                  </div>
+                </div>
+                <c:if test="${ticket.closingDate != null}">
+                  <div class="form-group row">
+                    <label for="ticket-closing_date" class="col-6">Fechado em:</label>
+                    <div class="col-6">
+                      <span id="ticket-closing_date">
+                        <t:printLocalDateTime value="${ticket.closingDate}" pattern="dd-MMM-yyyy HH:mm" />
+                      </span>
+                    </div>
+                  </div>
+                </c:if>
+              </div>
+              <div class="col-6">
+                <div class="form-group row">
+                  <label for="ticket-type" class="col-6">Tipo de atendimento:</label>
+                  <div class="col-6">
+                    <span id="ticket-type">
+                      <c:out value="${ticket.type.name}" />
+                    </span>
+                  </div>
+                </div>
+                <c:if test="${userCredentials.role != 'cliente'}">
+                  <div class="form-group row">
+                    <label for="ticket-customer" class="col-6">Cliente:</label>
+                    <div class="col-6">
+                      <span id="ticket-customer">
+                        <fmt:formatNumber var="customerId" type="number" value="${ticket.openBy.id}" pattern="0000"/>
+                        <c:out value="#${customerId} - ${ticket.openBy.firstName} ${fn:substring(ticket.openBy.lastName, 0, 1)}." />
+                      </span>
+                    </div>
+                  </div>
+                </c:if>
+                <div class="form-group row">
+                  <label for="ticket-product" class="col-6">Produto:</label>
+                  <div class="col-6">
+                    <span id="ticket-product">
+                      <fmt:formatNumber var="productId" type="number" value="${ticket.product.id}" pattern="000000"/>
+                      <c:out value="#${productId} - ${ticket.product.name}" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ticket-messages" class="col-3">Histórico de mensagens:</label>
+              <div class="col-9">
+                <div class="border border-secondary rounded mx-2 p-2">
+                  <div id="ticket-messages" class="row">
+                    <c:forEach var="msg" items="${ticket.messages}">
+                      <div class="c-message col-10 col-md-8 ${userCredentials == msg.sender ? 'ml' : 'mr'}-auto">
+                        <div class="c-message-body rounded bg-${userCredentials == msg.sender ? 'primary' : 'secondary'}">
+                          <div class="c-message-sender">
+                            <c:if test="${msg.sender.role != 'cliente'}">
+                              <i class="fas fa-user-check"></i>
+                            </c:if>
+                            <c:out value="${msg.sender.firstName} ${fn:substring(msg.sender.lastName, 0, 1)}." />
+                          </div>
+                          <p><c:out value="${msg.message}" /></p>
+                          <div class="text-right c-message-time">
+                            Enviada em
+                            <t:printLocalDateTime value="${msg.sendDate}" pattern="dd-MMM-yyyy" />,
+                            às <t:printLocalDateTime value="${msg.sendDate}" pattern="HH:mm" />
+                          </div>
+                        </div>
+                      </div>
+                    </c:forEach>
+                  </div>
+                </div>
+                <div class="col-10 col-md-8 offset-2 offset-md-4 mt-2">
+                  <form action="${pageContext.request.contextPath}/api/tickets?action=message&id=${ticket.id}" id="ticket-message-form">
+                    <div class="input-group">
+                      <textarea id="new-ticket-message" class="form-control border-secondary" rows="3" name="message" placeholder="Nova mensagem..." maxlength="255" oninput="charCounter(event, '#char-counter', 255)"></textarea>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" id="message-sender" disabled onclick="sendMessage()">
+                          <i class="fas fa-paper-plane"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <small id="char-counter" class="form-text text-muted text-right">
+                      Caracteres digitados: 0/255
+                    </small>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </c:otherwise>
+    </c:choose>
   </main>
 
   <%-- Rodapé da página --%>

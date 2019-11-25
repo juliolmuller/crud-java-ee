@@ -153,7 +153,9 @@ $('input[type="checkbox"]').on('change', function() {
 
 // Contador de caracteres
 function charCounter(e, selector, max) {
-  $(selector).text(`Caracteres digitados: ${e.target.value.length}/${max}`);
+  const count = e.target.value.length;
+  $(selector).text(`Caracteres digitados: ${count}/${max}`);
+  $('#message-sender').prop('disabled', count === 0);
 }
 
 // Constantes do módulo de categorias
@@ -586,14 +588,63 @@ $('#ticket-sorter').on('input', sortTickets);
 
 // Filtrar atendimentos por "abertos" inicialmente
 $('#ticket-filter option:nth-child(2)').prop('selected', true);
-if ('createEvent' in document) {
-  const e = document.createEvent('HTMLEvents');
-  e.initEvent("input", false, true);
-  window['ticket-filter'].dispatchEvent(e);
-} else
-  window['ticket-filter'].fireEvent('oninput');
+if (window['ticket-filter']) {
+  if ('createEvent' in document) {
+    const e = document.createEvent('HTMLEvents');
+    e.initEvent('input', false, true);
+    window['ticket-filter'].dispatchEvent(e);
+  } else
+    window['ticket-filter'].fireEvent('oninput');
+}
 
+function buildMessage(msgObj) {
+  const dateOptions = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  const date = (new Date(`${msgObj.sendDate.date.year}-${msgObj.sendDate.date.month}-${msgObj.sendDate.date.day} ${msgObj.sendDate.time.hour}:${msgObj.sendDate.time.minute}:${msgObj.sendDate.time.second}`)).toLocaleDateString('pt-BR', dateOptions).replace(/ de /g, "-");
+  return `
+    <div class="c-message col-10 col-md-8 ml-auto">
+      <div class="c-message-body rounded bg-primary">
+        <div class="c-message-sender">
+          ${msgObj.sender.role != 'cliente' ? '<i class="fas fa-user-check"></i>' : ''}
+          ${escapeHTML(msgObj.sender.firstName)} ${escapeHTML(msgObj.sender.lastName)[0]}.
+        </div>
+        <p>${escapeHTML(msgObj.message)}</p>
+        <div class="text-right c-message-time">
+          Enviada em ${date}
+        </div>
+      </div>
+    </div>
+  `;
+}
 
+// Rolar a caixa de conversa para baixo
+$('#ticket-messages').animate({ scrollTop: $('#ticket-messages').prop('scrollHeight') }, 1000);
+
+// Definir ação de envio de mensagens
+function sendMessage() {
+  $.ajax({
+    method: 'POST',
+    url: $('#ticket-message-form').prop('action'),
+    data: { message: $('#new-ticket-message').val() },
+    success(response) {
+      cleanForm('#ticket-message-form');
+      charCounter({ target: { value: '' } }, '#char-counter', 255);
+      $('#ticket-messages').append(buildMessage(response));
+      $('#ticket-messages').animate({ scrollTop: $('#ticket-messages').prop('scrollHeight') }, 800);
+      toastr.success('Mensagem recebida');
+    },
+    error(error) {
+      let { status, responseJSON } = error;
+      console.log(responseJSON)
+      if (status == 422) {
+        if (!(responseJSON instanceof Array))
+          responseJSON = [responseJSON];
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(error);
+      }
+    }
+  });
+}
 
 
 
@@ -603,3 +654,5 @@ $('#find-product').click(() => {
   const produto = $('#product-code').val();
   $('#product-details').show();
 });
+
+function closeTicket() {}

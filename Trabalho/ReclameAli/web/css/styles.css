@@ -101,22 +101,36 @@ input[type="number"] {
   cursor: pointer;
 }
 
-.form-control-plaintext {
-  font-weight: bold;
+#ticket-messages {
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
 }
 
-.c-mensagem {
-  margin-bottom: 1rem;
+.c-message {
+  margin: 0 0 8px;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.c-message-body {
   padding: 8px 12px 4px 14px;
   color: #fff;
-  font-weight: bold;
 }
 
-.c-mensagem p {
-  margin: 0;
+.c-message-sender {
+  font-size: small;
+  font-weight: bolder;
+  font-style: italic;
 }
 
-.c-mensagem-time {
+.c-message p {
+  display: inline-block;
+  margin: 4px 1px;
+}
+
+.c-message-time {
   color: #ddd;
   font-size: small;
   font-weight: normal;
