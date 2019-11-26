@@ -68,7 +68,7 @@ public class GerenteServlet extends HttpServlet {
         headerLinks.add(new Hyperlink("Home", "/"));
         headerLinks.add(new Hyperlink("Atendimentos", "/atendimentos"));
         headerLinks.add(new Hyperlink("Colaboradores", "/colaboradores"));
-        headerLinks.add(new Hyperlink("Relatórios", "/relatorios"));
+        headerLinks.add(new Hyperlink("Relatórios", "/relatorios.jsp"));
         headerLinks.get(activePage).setActive(true);
         request.setAttribute("headerLinks", headerLinks);
     }
@@ -153,6 +153,6 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/gerente");
+        response.sendRedirect("/relatorios.jsp");
     }
 }
