@@ -14,8 +14,7 @@ import br.com.beibe.beans.User;
 
 @WebFilter(filterName = "FuncionarioFilter", urlPatterns = {
     "/funcionario/*",
-    "/api/categories/*",
-    "/api/products/*"
+    "/api/categories/*"
 })
 public class FuncionarioFilter implements Filter {
 

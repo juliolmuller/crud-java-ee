@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import br.com.beibe.beans.Category;
 import br.com.beibe.beans.Product;
+import br.com.beibe.beans.User;
 import br.com.beibe.beans.ValError;
 import br.com.beibe.facade.ProductFacade;
 
@@ -47,6 +48,14 @@ public class ApiProductsServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("userCredentials");
+        if (!user.getRole().equals("funcionario")) {
+            request.setAttribute("accessDenied", true);
+            request.setAttribute("roleRequired", roleRequired);
+            request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
+            response.setStatus(403);
+            return;
+        }
         String action = request.getParameter("action");
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");

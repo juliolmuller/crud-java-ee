@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.User;
 
 @WebFilter(filterName = "CommonFilter", urlPatterns = {
-    "/api/tickets/*"
+    "/api/tickets/*",
+    "/api/products/*"
 })
 public class CommonFilter implements Filter {
 
