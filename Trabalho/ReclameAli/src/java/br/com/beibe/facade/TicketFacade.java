@@ -12,6 +12,8 @@ import br.com.beibe.beans.User;
 import br.com.beibe.dao.TicketDAO;
 import br.com.beibe.dao.TicketMessageDAO;
 import br.com.beibe.dao.TicketTypeDAO;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public abstract class TicketFacade {
 
@@ -20,9 +22,28 @@ public abstract class TicketFacade {
         return new TreeSet<>(tickets);
     }
 
+    public static Set<Ticket> listOpen() {
+        List<Ticket> tickets = TicketDAO.getList();
+        tickets.removeIf(ticket -> ticket.getStatus().equals(TicketStatus.CLOSED));
+        return new TreeSet<>(tickets);
+    }
+
+    public static Set<Ticket> listOpenFrom(long days) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Ticket> tickets = TicketDAO.getList();
+        tickets.removeIf(ticket -> ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getOpeningDate().until(now, ChronoUnit.DAYS) < days);
+        return new TreeSet<>(tickets);
+    }
+
     public static Set<Ticket> listMine(User user) {
         List<Ticket> tickets = TicketDAO.getList();
         tickets.removeIf(ticket -> !user.equals(ticket.getOpenBy()));
+        return new TreeSet<>(tickets);
+    }
+
+    public static Set<Ticket> listMyOpen(User user) {
+        List<Ticket> tickets = TicketDAO.getList();
+        tickets.removeIf(ticket -> !user.equals(ticket.getOpenBy()) || ticket.getStatus().equals(TicketStatus.CLOSED));
         return new TreeSet<>(tickets);
     }
 

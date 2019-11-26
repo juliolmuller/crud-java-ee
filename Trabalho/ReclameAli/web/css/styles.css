@@ -144,3 +144,15 @@ input[type="number"] {
 label {
   font-weight: bold;
 }
+
+.c-card {
+  height: 220px;
+  width: 220px;
+  display: flex;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.c-card-body {
+  margin: auto;
+}

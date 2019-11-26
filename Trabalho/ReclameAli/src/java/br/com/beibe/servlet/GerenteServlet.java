@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.com.beibe.beans.FeedItem;
 import br.com.beibe.beans.Hyperlink;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.dao.StateDAO;
@@ -76,6 +77,40 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        List<FeedItem> feed = new ArrayList<>();
+        Integer ticketsCount = TicketFacade.listOpen().size();
+        String ticketsCountStr = ticketsCount.toString();
+        feed.add(new FeedItem(
+            null,
+            ticketsCountStr,
+            "atendimento(s) em aberto",
+            "/atendimentos"
+        ));
+        final long DAYS = 10;
+        ticketsCount = TicketFacade.listOpenFrom(DAYS).size();
+        ticketsCountStr = ticketsCount.toString();
+        feed.add(new FeedItem(
+            null,
+            ticketsCountStr,
+            "aberto há mais de " + DAYS + " dias",
+            "/atendimentos",
+            "danger"
+        ));
+        feed.add(new FeedItem(
+            "<i class=\"fas fa-user-plus\"></i>",
+            null,
+            "Administrar Colaboradores",
+            "/colaboradores",
+            "primary"
+        ));
+        feed.add(new FeedItem(
+            "<i class=\"fas fa-newspaper\"></i>",
+            null,
+            "Emitir Relatórios",
+            "/relatorios",
+            "success"
+        ));
+        request.setAttribute("feed", feed);
         request.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp").forward(request, response);
     }
 

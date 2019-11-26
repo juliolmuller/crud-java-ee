@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import br.com.beibe.beans.FeedItem;
 import br.com.beibe.beans.Hyperlink;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.beans.User;
@@ -88,6 +89,23 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        List<FeedItem> feed = new ArrayList<>();
+        Integer ticketsCount = TicketFacade.listMyOpen((User) request.getSession().getAttribute("userCredentials")).size();
+        String ticketsCountStr = ticketsCount.toString();
+        feed.add(new FeedItem(
+            null,
+            ticketsCountStr,
+            "atendimento(s) em aberto",
+            "/atendimentos"
+        ));
+        feed.add(new FeedItem(
+            "<i class=\"fas fa-plus\"></i>",
+            null,
+            "Solicitar Atendimento",
+            "/atendimentos/novo",
+            "primary"
+        ));
+        request.setAttribute("feed", feed);
         request.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp").forward(request, response);
     }
 
