@@ -333,7 +333,7 @@ function productRow(product = {}) {
     <tr>
       <th scope="row" class="text-center">${escapedId.padStart(6, '0')}</th>
       <td class="text-left">${escapeHTML(product.name)}</td>
-      <td class="text-right">${escapedWeight}</td>
+      <td class="text-right">${escapedWeight}g</td>
       <td class="text-center">${escapeHTML(product.category.name)}</td>
       <td class="text-center">${escapedUtc}</td>
       <td class="text-right">
@@ -634,7 +634,6 @@ function sendMessage() {
     },
     error(error) {
       let { status, responseJSON } = error;
-      console.log(responseJSON)
       if (status == 422) {
         if (!(responseJSON instanceof Array))
           responseJSON = [responseJSON];
@@ -646,13 +645,56 @@ function sendMessage() {
   });
 }
 
+// Procurar produto
+function findProduct() {
+  $('#product-details').hide();
+  const url = $('#prodAPI').val();
+  const productCode = $('#product-barcode').val();
+  $.ajax({
+    method: 'GET',
+    url: `${url}?code=${productCode}`,
+    success(product) {
+      $('#product-id').val(product.id);
+      $('#product-name').val(product.name);
+      $('#product-category').val(product.category.name);
+      $('#product-utc').val(product.utc);
+      $('#product-ean').val(product.ean);
+      $('#product-details').show();
+    },
+    error(res) {
+      toastr.error('Produto não encontrado');
+    }
+  });
+};
 
-
-
-// TODO:s Adicionar recurso de busca de produto
-$('#find-product').click(() => {
-  const produto = $('#product-code').val();
-  $('#product-details').show();
+$('#ticket-new-form').submit(e => {
+  e.preventDefault();
+  const url = $('#ticket-new-form').prop('action');
+  const data = {
+    product: $('[name="product"]').val(),
+    type: $('[name="type"]').val(),
+    message: $('[name="message"]').val()
+  };
+  $.ajax({
+    method: 'POST',
+    url, data,
+    contentType: 'application/json',
+    success() {
+      let baseUrl = window.location.href.split('/');
+      baseUrl.pop();
+      window.location.href = baseUrl.join('/');
+    },
+    error(error) {
+      let { status, responseJSON } = error;
+      if (status == 422) {
+        if (!(responseJSON instanceof Array))
+          responseJSON = [responseJSON];
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(this);
+      }
+    }
+  });
 });
 
 function closeTicket() {}

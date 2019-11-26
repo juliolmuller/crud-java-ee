@@ -1,9 +1,11 @@
 package br.com.beibe.servlet;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.com.beibe.beans.FeedItem;
 import br.com.beibe.beans.Hyperlink;
+import br.com.beibe.beans.Product;
 import br.com.beibe.beans.Ticket;
+import br.com.beibe.beans.TicketMessage;
+import br.com.beibe.beans.TicketStatus;
+import br.com.beibe.beans.TicketType;
 import br.com.beibe.beans.User;
+import br.com.beibe.dao.ProductDAO;
+import br.com.beibe.dao.TicketTypeDAO;
 import br.com.beibe.facade.TicketFacade;
 
 @WebServlet(name = "ClienteServlet", urlPatterns = {"/cliente/*"})
@@ -44,14 +52,6 @@ public class ClienteServlet extends HttpServlet {
                 setHeaderLinks(request, 1);
                 displayExistingTicketForm(request, response);
                 return;
-            case "/dados-pessoais":
-                setHeaderLinks(request, 2);
-                displayCustomerData(request, response);
-                return;
-            case "/dados-pessoais/editar":
-                setHeaderLinks(request, 2);
-                displayCustomerDataForm(request, response);
-                return;
         }
         response.sendError(404);
     }
@@ -66,12 +66,6 @@ public class ClienteServlet extends HttpServlet {
             case "/atendimentos/novo":
                 processNewTicket(request, response);
                 return;
-            case "/atendimentos/acompanhar":
-                processExistingTicket(request, response);
-                return;
-            case "/dados-pessoais/editar":
-                processExistingCustomer(request, response);
-                return;
         }
         response.sendError(404);
     }
@@ -80,7 +74,6 @@ public class ClienteServlet extends HttpServlet {
         List<Hyperlink> headerLinks = new ArrayList<>();
         headerLinks.add(new Hyperlink("Home", "/"));
         headerLinks.add(new Hyperlink("Meus Atendimentos", "/atendimentos"));
-        headerLinks.add(new Hyperlink("Meus Dados", "/dados-pessoais"));
         headerLinks.get(activePage).setActive(true);
         request.setAttribute("headerLinks", headerLinks);
     }
@@ -123,6 +116,7 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
+        request.setAttribute("types", TicketFacade.listTypes());
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-new.jsp").forward(request, response);
     }
 
@@ -146,38 +140,37 @@ public class ClienteServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/tickets-form.jsp").forward(request, response);
     }
 
-    public void displayCustomerData(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
-    }
-
-    public void displayCustomerDataForm(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/users-form.jsp").forward(request, response);
-    }
-
     public void processNewTicket(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
+        response.sendError(403);
+        Set<TicketMessage> messages = new TreeSet<>();
+        messages.add(extractMessageData(request));
+        long typeId = Long.parseLong(request.getParameter("type"));
+        TicketType type = TicketTypeDAO.find(typeId);
+        long productId = Long.parseLong(request.getParameter("product"));
+        Product product = ProductDAO.find(productId);
+        Ticket ticket = new Ticket(
+            null,
+            LocalDateTime.now(),
+            null,
+            TicketStatus.OPEN,
+            type,
+            (User) request.getSession().getAttribute("userCredentials"),
+            product,
+            messages
+        );
+        TicketFacade.save(ticket);
+        response.setStatus(200);
     }
-
-    public void processExistingTicket(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/atendimentos");
-    }
-
-    public void processExistingCustomer(
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/cliente/dados-pessoais");
+    
+    private TicketMessage extractMessageData(HttpServletRequest request) {
+        TicketMessage message = new TicketMessage();
+        message.setMessage(request.getParameter("message"));
+        message.setSendDate(LocalDateTime.now());
+        message.setSender((User) request.getSession().getAttribute("userCredentials"));
+        message.setTicket(Long.parseLong(request.getParameter("id")));
+        return message;
     }
 }

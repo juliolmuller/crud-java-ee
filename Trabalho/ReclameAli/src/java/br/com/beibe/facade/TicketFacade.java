@@ -77,4 +77,8 @@ public abstract class TicketFacade {
             throw new RuntimeException(ex);
         }
     }
+
+    public static List<TicketType> listTypes() {
+        return TicketTypeDAO.getList();
+    }
 }

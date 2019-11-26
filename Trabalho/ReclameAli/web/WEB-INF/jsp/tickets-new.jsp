@@ -9,82 +9,85 @@
 
   <!-- Corpo da página -->
   <main class="container c-main">
-    <h2 class="mb-4">
+    <h1 class="mb-4">
       Novo Atendimento
-    </h2>
+    </h1>
 
     <%-- Formulário para abertura de atendimento --%>
-    <form action="${baseUri}/atendimentos/novo" method="POST">
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="codigo-produto">Código de barras do produto:</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-barcode"></i>
-                </span>
+    <div class="mt-5">
+      <form action="${baseUri}/atendimentos/novo" method="POST" id="ticket-new-form">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <input type="hidden" id="prodAPI" value="${pageContext.request.contextPath}/api/products">
+            <div class="form-group">
+              <label for="product-barcode">Código de barras do produto:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-barcode"></i>
+                  </span>
+                </div>
+                <input type="number" id="product-barcode" class="form-control" placeholder="12 ou 13 digitos" />
+                <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button" onclick="findProduct()">
+                    Buscar Produto
+                  </button>
+                </div>
               </div>
-              <input type="number" id="codigo-produto" class="form-control" placeholder="Exemplo: 789000000" />
-              <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" id="buscar-produto">
-                  Buscar Produto
-                </button>
+            </div>
+          </div>
+          <div id="product-details" class="col-12 col-md-6" style="display:none">
+            <input type="hidden" id="product-id" name="product" value="" />
+            <div class="form-group">
+              <label for="product-name">Nome do produto:</label>
+              <input type="text" id="product-name" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+              <label for="product-category">Categoria:</label>
+              <input type="text" id="product-category" class="form-control" readonly />
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="product-utc">Código UTC:</label>
+                  <input type="number" id="product-utc" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="product-ean">Código EAN:</label>
+                  <input type="number" id="product-ean" class="form-control" readonly />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="detalhes-produto" class="col-12 col-md-6" style="display:none">
-          <input type="hidden" name="produto_id" />
-          <div class="form-group">
-            <label for="produto-nome">Nome do produto:</label>
-            <input type="text" id="produto-nome" class="form-control" value="Sabonete SOAP (aroma lavanda)" disabled />
-          </div>
-          <div class="form-group">
-            <label for="produto-categoria">Categoria:</label>
-            <input type="text" id="produto-categoria" class="form-control" value="Sabonetes" disabled />
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label for="produto-utc">Código UTC:</label>
-                <input type="number" id="produto-utc" class="form-control" value="788792912250" disabled />
-              </div>
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <div class="form-group">
+              <label for="ticket-type">Tipo do atendimento:</label>
+              <select id="ticket-type" class="form-control" name="type">
+                <option value="" disabled selected>Selecione...</option>
+                <c:forEach var="type" items="${types}">
+                  <option value="${type.id}"><c:out value="${type.name}" /></option>
+                </c:forEach>
+              </select>
             </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label for="produto-ean">Código EAN:</label>
-                <input type="number" id="produto-ean" class="form-control" value="3127888483996" disabled />
-              </div>
+            <div class="form-group">
+              <label for="ticket-message">Descrição:</label>
+              <textarea id="ticket-message" class="form-control" rows="5" name="message" maxlength="255" oninput="charCounter(event, '#char-counter', 255)"></textarea>
+              <small id="char-counter" class="form-text text-muted text-right">
+                Caracteres digitados: 0/255
+              </small>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-8">
-          <div class="form-group">
-            <label for="atendimento-tipo">Motivo do atendimento:</label>
-            <select id="atendimento-tipo" class="form-control" name="atendimento_tipo">
-              <option>Selecione...</option>
-              <option value="1">Financeiro</option>
-              <option value="2">Produto não recebido</option>
-              <option value="3">Produto com defeito</option>
-              <option value="4">Saúde</option>
-              <option value="5">Sugesões de melhoria</option>
-              <option value="0">Outros</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="atendimento-desc">Descrição:</label>
-            <textarea id="atendimento-desc" class="form-control" rows="5" name="desc"></textarea>
-          </div>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-lg btn-primary w-25">
-        <i class="fas fa-paper-plane"></i>
-        Enviar
-      </button>
-    </form>
+        <button type="submit" class="btn btn-lg btn-primary w-25">
+          <i class="fas fa-paper-plane"></i>
+          Enviar
+        </button>
+      </form>
+    </div>
   </main>
 
   <%-- Rodapé da página --%>

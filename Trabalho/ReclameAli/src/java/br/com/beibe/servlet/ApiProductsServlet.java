@@ -38,7 +38,17 @@ public class ApiProductsServlet extends HttpServlet {
                 out.print(json.toJson(product));
             } else {
                 List<Product> products = ProductFacade.listAll();
-                out.print(json.toJson(products));
+                String code = request.getParameter("code");
+                if (code != null) {
+                    products.removeIf(prod -> !(prod.getUtc().equals(code) && !prod.getEan().equals(code)));
+                    if (products.isEmpty()) {
+                        response.setStatus(422);
+                    } else {
+                        out.print(json.toJson(products.get(0)));
+                    }
+                } else {
+                    out.print(json.toJson(products));
+                }
             }
         }
     }
@@ -51,7 +61,7 @@ public class ApiProductsServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("userCredentials");
         if (!user.getRole().equals("funcionario")) {
             request.setAttribute("accessDenied", true);
-            request.setAttribute("roleRequired", roleRequired);
+            request.setAttribute("roleRequired", "funcionario");
             request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
             response.setStatus(403);
             return;
