@@ -51,7 +51,7 @@ public class ApiProductsServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("userCredentials");
         if (!user.getRole().equals("funcionario")) {
             request.setAttribute("accessDenied", true);
-            request.setAttribute("roleRequired", roleRequired);
+            request.setAttribute("roleRequired", "funcionario");
             request.getRequestDispatcher("/WEB-INF/jsp/signin.jsp").forward(request, response);
             response.setStatus(403);
             return;
