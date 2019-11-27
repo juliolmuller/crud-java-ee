@@ -5,7 +5,7 @@
 
 A estrutura prinpipal das classes modelo da aplicação são a seguinte:
 
-![Diagrama de Classes](./Trabalho/docs/class_diagram.jpg)
+![Diagrama de Classes](./docs/class_diagram.jpg)
 
 ## Beans
 
@@ -17,7 +17,7 @@ Tidas essas classes também possuem seus respectivos DAOs. Nem todos possuem tod
 
 No banco de daods os modelos ficarâo alocados da seguinte forma:
 
-![Diagrama Relacional](./Trabalho/docs/realational_diagram.jpg)
+![Diagrama Relacional](./docs/realational_diagram.jpg)
 
 ## Acesso à aplicação
 
@@ -29,13 +29,13 @@ Conforme requisitos, a aplicação possui 3 perfis de acesso diferentes:
 
 Como esses três perfis são armazenados no banco de dados na tabela `users` (coluna `role`), o tipo de acesso é personalizado a partir do login. o método `UserDAO.authenticate()` recebe 2 parâmetros String (email de login e senha) e retorna uma instância de uma subclasse de `User`  (ou Cliente, ou Funcionario, ou Gerente) e essa instância é salva no escopo da sessão. 
 
-![Autenticação de Usuário](./Trabalho/docs/authentication.png)
+![Autenticação de Usuário](./docs/authentication.png)
 
 A requisição com o formulário de login é enviado via POST para a rota `/entrar?action=signin`, que é processada pela servlet `PublicServlet `. Uma vez o login seja realizado com sucesso, é salva a instância do perfil dp usuário em sessão e a partir daí, todas as rotas restritas são validadas a partir dos filtros, no pacote `br.com.beibe.filter`. Caso não haja permissão suficiente para acessar aquela rota, a aplicação exibe a tela de login, especificando o perfil necessário para acessar aquela rota.
 
 Assim, todas as requisições são interceptadas pelos filters, confirma-se a permissão de acesso, seguindo para a servlet, que processa a requisição, instanciando objetos, interagindo com as classes façade e preparando a resposta, seja encaminhando a requisição para uma JSP, seja montando e respondendo com dados em formato JSON (servlets com prefixo *API*).
 
-![Fluxo de Processamento da Requisição](./Trabalho/docs/request_flow.png)
+![Fluxo de Processamento da Requisição](./docs/request_flow.png)
 
 **Nem todas as requisições retornam uma página JSP. Algumas requisições retornam formato JSON, mas essas requisições são para uso em requisições AJAX (requisições via JavaScript que não requerem o recarregamento da página).**
 
