@@ -124,10 +124,10 @@ public class ReportsServlet extends HttpServlet {
                     ops.write(bytes);
                 }
             } catch (ClassNotFoundException ex) {
-                request.setAttribute("mensagem", "Driver BD não encontrado : " + e.getMessage());
+                request.setAttribute("mensagem", "Driver BD não encontrado : " + ex.getMessage());
                 request.getRequestDispatcher("erro.jsp").forward(request, response);
             } catch (JRException ex) {
-                request.setAttribute("mensagem", "Erro no Jasper : " + e.getMessage());
+                request.setAttribute("mensagem", "Erro no Jasper : " + ex.getMessage());
                 request.getRequestDispatcher("erro.jsp").forward(request, response);
             } finally {
                 if (con != null) {
