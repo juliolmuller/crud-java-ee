@@ -61,7 +61,8 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String uri = request.getRequestURI().substring(request.getContextPath().length());
+        String baseUri = request.getContextPath() + "/cliente";
+        String uri = request.getRequestURI().substring(baseUri.length());
         switch (uri) {
             case "/atendimentos/novo":
                 processNewTicket(request, response);
@@ -144,7 +145,6 @@ public class ClienteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        response.sendError(403);
         Set<TicketMessage> messages = new TreeSet<>();
         messages.add(extractMessageData(request));
         long typeId = Long.parseLong(request.getParameter("type"));
@@ -170,7 +170,11 @@ public class ClienteServlet extends HttpServlet {
         message.setMessage(request.getParameter("message"));
         message.setSendDate(LocalDateTime.now());
         message.setSender((User) request.getSession().getAttribute("userCredentials"));
-        message.setTicket(Long.parseLong(request.getParameter("id")));
+        try {
+            message.setTicket(Long.parseLong(request.getParameter("id")));
+        } catch (NumberFormatException ex) {
+            message.setTicket(null);
+        }
         return message;
     }
 }
