@@ -678,10 +678,10 @@ $('#ticket-new-form').submit(e => {
     type: $('[name="type"]').val(),
     message: $('[name="message"]').val()
   };
+  console.log(data)
   $.ajax({
     method: 'POST',
     url, data,
-    contentType: 'application/json',
     success() {
       let baseUrl = window.location.href.split('/');
       baseUrl.pop();

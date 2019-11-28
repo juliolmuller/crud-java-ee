@@ -138,9 +138,10 @@ public abstract class TicketDAO extends DAO {
             ResultSet rs = stmt.executeQuery();
             rs.next();
             long id = rs.getLong("id");
+            System.out.print(id);
             ticket.setId(id);
             ticket.getMessages().forEach(msg -> {
-                msg.setId(id);
+                msg.setTicket(id);
                 try {
                     TicketMessageDAO.insert(msg, conn);
                 } catch (SQLException ex) {
