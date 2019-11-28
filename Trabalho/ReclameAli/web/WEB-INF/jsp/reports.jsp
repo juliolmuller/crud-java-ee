@@ -44,7 +44,7 @@
           <div class="row">
             <div class="col-12 col-md-10">
               <div class="form-check form-check-inline">
-                <input type="radio" id="ticket-report-all" class="form-check-input" name="tStatus" value="todos" />
+                <input type="radio" id="ticket-report-all" class="form-check-input" name="tStatus" value="todos" checked/>
                 <label for="ticket-report-all" class="form-check-label my-1 mr-3" style="font-weight:unset;">Todos</label>
                 <input type="radio" id="ticket-report-open" class="form-check-input" name="tStatus" value="abertos" />
                 <label for="ticket-report-open" class="form-check-label my-1 mr-3" style="font-weight:unset;">Abertos</label>
@@ -72,9 +72,9 @@
           <div class="row">
             <div class="col-12 col-md-10 form-inline">
               <label for="tickets-report-from" class="my-1 mr-2" style="font-weight:unset;">de</label>
-              <input type="date" id="tickets-report-from" class="form-control mb-2 mr-sm-2" name="dataIni" />
+              <input type="date" id="tickets-report-from" class="form-control mb-2 mr-sm-2" name="dataIni" required />
               <label for="tickets-report-to" class="my-1 mr-2" style="font-weight:unset;">até</label>
-              <input type="date" id="tickets-report-to" class="form-control mb-2 mr-sm-2" name="dataFim" />
+              <input type="date" id="tickets-report-to" class="form-control mb-2 mr-sm-2" name="dataFim" required />
             </div>
             <div class="col-12 col-md-2">
               <button type="submit" class="btn btn-outline-primary w-100">
