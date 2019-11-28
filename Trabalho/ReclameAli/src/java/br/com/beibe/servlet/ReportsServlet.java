@@ -24,15 +24,18 @@ import br.com.beibe.utils.Converter;
 @WebServlet(name = "Reports", urlPatterns = {"/relatorio"})
 public class ReportsServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
+    protected void processRequest(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException, ParseException {
+
         Connection con = null;
         String action = (String) request.getParameter("action");
         if (action.equals("empl")) {
             try {
                 Class.forName("org.postgresql.Driver");
                 con = ConnectionFactory.getConnection();
-                String jasper = request.getContextPath() + "/employees.jasper";
+                String jasper = request.getContextPath() + "/reports/employees.jasper";
                 String host = "http://" + request.getServerName() + ":" + request.getServerPort();
                 URL jasperURL = new URL(host + jasper);
                 Map<String, Object> params = new HashMap<>();
@@ -52,8 +55,7 @@ public class ReportsServlet extends HttpServlet {
                 if (con != null) {
                     try {
                         con.close();
-                    } catch (SQLException e) {
-                    }
+                    } catch (SQLException ex) {}
                 }
             }
 
@@ -61,7 +63,7 @@ public class ReportsServlet extends HttpServlet {
             try {
                 Class.forName("org.postgresql.Driver");
                 con = ConnectionFactory.getConnection();
-                String jasper = request.getContextPath() + "/topreclamacao.jasper";
+                String jasper = request.getContextPath() + "/reports/topreclamacao.jasper";
                 String host = "http://" + request.getServerName() + ":" + request.getServerPort();
                 URL jasperURL = new URL(host + jasper);
                 Map<String, Object> params = new HashMap<>();
@@ -81,22 +83,21 @@ public class ReportsServlet extends HttpServlet {
                 if (con != null) {
                     try {
                         con.close();
-                    } catch (SQLException e) {
-                    }
+                    } catch (SQLException ex) {}
                 }
             }
 
         } else if (action.equals("recl")) {
-            String tStatus = (String)request.getParameter("tStatus");
+            String tStatus = (String) request.getParameter("tStatus");
             int sA, sB;
             try {
                 Class.forName("org.postgresql.Driver");
                 con = ConnectionFactory.getConnection();
-                String jasper = request.getContextPath() + "/reclamacao.jasper";
+                String jasper = request.getContextPath() + "/reports/reclamacao.jasper";
                 String host = "http://" + request.getServerName() + ":" + request.getServerPort();
                 URL jasperURL = new URL(host + jasper);
                 Map<String, Object> params = new HashMap<>();
-                switch(tStatus) {
+                switch (tStatus) {
                     case ("todos"):
                         sA = 1;
                         sB = 2;
@@ -122,24 +123,23 @@ public class ReportsServlet extends HttpServlet {
                     OutputStream ops = response.getOutputStream();
                     ops.write(bytes);
                 }
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ex) {
                 request.setAttribute("mensagem", "Driver BD não encontrado : " + e.getMessage());
                 request.getRequestDispatcher("erro.jsp").forward(request, response);
-            } catch (JRException e) {
+            } catch (JRException ex) {
                 request.setAttribute("mensagem", "Erro no Jasper : " + e.getMessage());
                 request.getRequestDispatcher("erro.jsp").forward(request, response);
             } finally {
                 if (con != null) {
                     try {
                         con.close();
-                    } catch (SQLException e) {
-                    }
+                    } catch (SQLException ex) {}
                 }
             }
-            
+
         } else {
-            String strDataI = (String)request.getParameter("dataIni");
-            String strDataF = (String)request.getParameter("dataFim");
+            String strDataI = (String) request.getParameter("dataIni");
+            String strDataF = (String) request.getParameter("dataFim");
             Date dataI;
             Date dataF;
             dataI = Converter.toDate(strDataI);
@@ -147,7 +147,7 @@ public class ReportsServlet extends HttpServlet {
             try {
                 Class.forName("org.postgresql.Driver");
                 con = ConnectionFactory.getConnection();
-                String jasper = request.getContextPath() + "/solicitacoes.jasper";
+                String jasper = request.getContextPath() + "/reports/solicitacoes.jasper";
                 String host = "http://" + request.getServerName() + ":" + request.getServerPort();
                 URL jasperURL = new URL(host + jasper);
                 Map<String, Object> params = new HashMap<>();
@@ -169,13 +169,10 @@ public class ReportsServlet extends HttpServlet {
                 if (con != null) {
                     try {
                         con.close();
-                    } catch (SQLException e) {
-                    }
+                    } catch (SQLException ex) {}
                 }
             }
-            
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -224,5 +221,4 @@ public class ReportsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
