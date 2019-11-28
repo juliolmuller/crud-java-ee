@@ -91,7 +91,7 @@ public class ApiUsersServlet extends HttpServlet {
                         user.setId(id);
                         extractData(request, user);
                         errors = user.validate();
-                        errors.removeIf(error -> error.getField().equals("cpf") || error.getField().equals("password1"));
+                        errors.removeIf(error -> error.getField().equals("cpf") || error.getField().equals("email") || error.getField().equals("password1"));
                         if (errors.isEmpty()) {
                             UserFacade.save(user);
                             out.print(json.toJson(user));
