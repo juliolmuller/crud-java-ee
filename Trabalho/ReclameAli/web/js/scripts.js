@@ -700,7 +700,26 @@ $('#ticket-new-form').submit(e => {
   });
 });
 
-function closeTicket() {}
+function closeTicket(url) {
+  console.log(url)
+  $.ajax({
+    method: 'POST',
+    url,
+    success() {
+      window.location.href = window.location.href;
+    },
+    error(error) {
+      let { status, responseJSON } = error;
+      if (status == 422) {
+        if (!(responseJSON instanceof Array))
+          responseJSON = [responseJSON];
+        responseJSON.forEach(err => toastr.error(err.message));
+      } else {
+        console.error(error);
+      }
+    }
+  });
+}
 
 function generateReport2(e) {
   const ini = new Date($('[name="dataIni"]').val());

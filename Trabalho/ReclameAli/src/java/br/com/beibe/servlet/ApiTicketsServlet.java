@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import br.com.beibe.beans.Ticket;
 import br.com.beibe.beans.TicketMessage;
+import br.com.beibe.beans.TicketStatus;
 import br.com.beibe.beans.User;
 import br.com.beibe.beans.ValError;
 import br.com.beibe.facade.ProductFacade;
@@ -40,6 +41,11 @@ public class ApiTicketsServlet extends HttpServlet {
         }
         try (PrintWriter out = response.getWriter()) {
             Gson json = new Gson();
+            if (ticket == null) {
+                response.setStatus(422);
+                json.toJson(new ValError("error", "Ticket associado não encontrado"));
+                return;
+            }
             List<ValError> errors;
             switch (action) {
                 case "message":
@@ -53,17 +59,11 @@ public class ApiTicketsServlet extends HttpServlet {
                         out.print(json.toJson(errors));
                     }
                     return;
-                case "new":
                 case "update":
-                    ticket = extractTicketData(request);
-                    errors = ticket.validate();
-                    if (errors.isEmpty()) {
-                        TicketFacade.save(ticket);
-                        out.print(json.toJson(ticket));
-                    } else {
-                        response.setStatus(422);
-                        out.print(json.toJson(errors));
-                    }
+                    ticket.setStatus(TicketStatus.CLOSED);
+                    ticket.setClosingDate(LocalDateTime.now());
+                    TicketFacade.save(ticket);
+                    out.print(json.toJson(ticket));
                     return;
             }
         }

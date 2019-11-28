@@ -41,7 +41,7 @@
                 </a>
               </c:when>
               <c:otherwise>
-                <button type="button" class="btn btn-outline-primary mt-1" onclick="closeTicket()">
+                <button type="button" class="btn btn-outline-primary mt-1" onclick="closeTicket('${pageContext.request.contextPath}/api/tickets?action=update&id=${ticket.id}')">
                   <i class="fas fa-check"></i>
                   Encerrar Atendimento
                 </button>
