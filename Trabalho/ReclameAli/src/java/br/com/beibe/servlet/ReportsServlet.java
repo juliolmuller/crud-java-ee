@@ -1,12 +1,9 @@
 package br.com.beibe.servlet;
 
-import br.com.beibe.service.ConnectionFactory;
-import br.com.beibe.utils.Converter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -21,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import java.util.Date;
+import br.com.beibe.service.ConnectionFactory;
+import br.com.beibe.utils.Converter;
 
-@WebServlet(name = "Relatorio", urlPatterns = {"/relatorio"})
-public class Relatorio extends HttpServlet {
+@WebServlet(name = "Reports", urlPatterns = {"/relatorio"})
+public class ReportsServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
@@ -194,7 +193,7 @@ public class Relatorio extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReportsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -212,7 +211,7 @@ public class Relatorio extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReportsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

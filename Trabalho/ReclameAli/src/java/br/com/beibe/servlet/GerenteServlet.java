@@ -153,6 +153,6 @@ public class GerenteServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/relatorios.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/reports.jsp").forward(request, response);
     }
 }
