@@ -148,7 +148,7 @@ $('#form-signup').submit(e => {
 
 // Adicionar evento para checkbox
 $('input[type="checkbox"]').on('change', function() {
-  $(this).prop('checked', !$(this).prop('checked'));
+  //$(this).prop('checked', !$(this).prop('checked'));
 });
 
 // Contador de caracteres
@@ -415,6 +415,8 @@ function deleteUser(id, e) {
 function createUser() {
   $('#password-creation').show();
   $(`${USER_FORM}-title`).text('Cadastrar Colaborador');
+  $(`${USER_FORM} [name="cpf"]`).prop('readonly', false);
+  $(`${USER_FORM} [name="email"]`).prop('readonly', false);
   $(USER_MODAL).modal('show');
   cleanForm(USER_FORM);
   $('#user-first_name').focus();
@@ -425,6 +427,7 @@ function editUser(id) {
   cleanForm(USER_FORM);
   $('#password-creation').hide();
   $(`${USER_FORM} [name="cpf"]`).prop('readonly', true);
+  $(`${USER_FORM} [name="email"]`).prop('readonly', true);
   $(`${USER_FORM}-title`).text(`Editar Colaborador (usuário #${id})`);
   $(USER_MODAL).modal('show');
   $.ajax({
@@ -698,3 +701,12 @@ $('#ticket-new-form').submit(e => {
 });
 
 function closeTicket() {}
+
+function generateReport2(e) {
+  const ini = new Date($('[name="dataIni"]').val());
+  const fim = new Date($('[name="dataFim"]').val());
+  if (ini > fim) {
+    e.preventDefault();
+    toastr.error('Data inicial tem que ser anterior da data final');
+  }
+}

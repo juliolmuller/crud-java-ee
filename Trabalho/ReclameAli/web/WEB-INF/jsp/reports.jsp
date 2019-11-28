@@ -68,7 +68,7 @@
     <div class="row mt-4">
       <div class="col-12">
         <label for="h4" id="tickets-report-2">Atendimentos em determinado período:</label>
-        <form action="${pageContext.request.contextPath}/relatorio?action=tickts" method="POST" id="tickets-report-2">
+        <form action="${pageContext.request.contextPath}/relatorio?action=tickts" method="POST" id="tickets-report-2" onsubmit="generateReport2(event)">
           <div class="row">
             <div class="col-12 col-md-10 form-inline">
               <label for="tickets-report-from" class="my-1 mr-2" style="font-weight:unset;">de</label>
