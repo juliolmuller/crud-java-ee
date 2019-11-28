@@ -158,7 +158,7 @@ public abstract class TicketDAO extends DAO {
     }
 
     public static void update(Ticket ticket) throws SQLException {
-        try (Connection conn = ConnectionFactory.getConnection()) {
+        try (Connection conn = ConnectionFactory.getConnection(false)) {
             String[] mutable = { Fields.STATUS.toString(), Fields.TYPE.toString(), Fields.CLOSING.toString() };
             PreparedStatement stmt = conn.prepareStatement(buildUpdateQuery(TABLE, mutable, Fields.ID.toString()));
             stmt.setLong(1, ticket.getStatus().getId());
