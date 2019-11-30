@@ -1,5 +1,24 @@
 
-# Sistema ReclameAli
+# ReclameAli - Customer Service System
+
+- **Develepoled by:**
+  - [Julio L. Muller](https://juliolmuller.github.io/)
+  - [Cassiano Kruchelski V.](https://github.com/kruchelski)
+  - [André K. Antunes](https://github.com/andrekantunes)
+  - [Wesley Caetano C.](https://github.com/vvesleyc)
+  - [Aurélio S. Matsunaga](https://github.com/aureliomatsunaga)
+- **Released on:** Nov 28, 2019
+- **Last Updated on:** Nov 28, 2019
+- **Latest version:** 1.0.0
+- **License:** MIT
+
+## Overview
+
+This application was developed using pure Java EE specifications, in other words, with **no framework**, but with pure servlets and JSP usage, although many libraries were allowed to be used as well, like JSTL, Gson (for converting objects into JSON) and Jasper (for reports generation).
+
+This project was developed as a college assignment for the subject _Web Development II_, following the specifications detailed in [this document (in portuguese)](./docs/Assignment%20Statement%20-%20Project%20Specifications.pdf).
+
+![ReclameAli initial page](./docs/app-overview.jpg)
 
 ## Diagrama de Classes
 
@@ -9,7 +28,7 @@ A estrutura prinpipal das classes modelo da aplicação são a seguinte:
 
 ## Beans
 
-Todas as casses de objetos acima descritos possuem um respectivo bean que replica todos os atributos. Os beans que exigem validação, pois há novas entradas provenientes da interação com a aplicação (como usuários, atendimentos, produtos...) implmentam o método `validate()`, que retorna uma lista de `ValError`, que é um bean com atributos `field` e `message` usado para transmitir erros e onde há problemas nos formulários. 
+Todas as casses de objetos acima descritos possuem um respectivo bean que replica todos os atributos. Os beans que exigem validação, pois há novas entradas provenientes da interação com a aplicação (como usuários, atendimentos, produtos...) implmentam o método `validate()`, que retorna uma lista de `ValError`, que é um bean com atributos `field` e `message` usado para transmitir erros e onde há problemas nos formulários.
 
 Tidas essas classes também possuem seus respectivos DAOs. Nem todos possuem todas as operações de inserção, atualização ou exclusão, já que nem todos os objetos serão modificados a partir da aplicação, mas todos tem, ao menos, métodos para consulta (SELECT) que já trazem outros objetos aninhados que façam parte de seus atributos. Por exemplo: ao fazer chamar o método `TicketDAO.listAll()`, o próprio DAo já é responsável por encontrar os objetos que fazer parte de seus atributos, como `TicketStatus`,  `TicketType` e `TicketMessage`.
 
@@ -27,7 +46,7 @@ Conforme requisitos, a aplicação possui 3 perfis de acesso diferentes:
 - Funcionário
 - Gerente
 
-Como esses três perfis são armazenados no banco de dados na tabela `users` (coluna `role`), o tipo de acesso é personalizado a partir do login. o método `UserDAO.authenticate()` recebe 2 parâmetros String (email de login e senha) e retorna uma instância de uma subclasse de `User`  (ou Cliente, ou Funcionario, ou Gerente) e essa instância é salva no escopo da sessão. 
+Como esses três perfis são armazenados no banco de dados na tabela `users` (coluna `role`), o tipo de acesso é personalizado a partir do login. o método `UserDAO.authenticate()` recebe 2 parâmetros String (email de login e senha) e retorna uma instância de uma subclasse de `User`  (ou Cliente, ou Funcionario, ou Gerente) e essa instância é salva no escopo da sessão.
 
 ![Autenticação de Usuário](./docs/authentication.png)
 
@@ -56,12 +75,12 @@ Todas as páginas JSP incluem tags customizadas, entre elas a base comum para to
 
 Fora essas tags, a biblioteca JSTL foi amplamente utilizada em todas as páginas, assim como a notação de espressão EL (`${...}`).
 
-As páginas JSP estão todas armazenadas em `/WEB-INF/jsp/` , sendoacessíveis apenas por chamadas internas da aplicação. 
+As páginas JSP estão todas armazenadas em `/WEB-INF/jsp/` , sendoacessíveis apenas por chamadas internas da aplicação.
 
 ## DAO
 
 Toda comunicação com o banco de dados é feita a partir dos DAOs, que fazem uso do serviço da classe `ConnectionFactiry`.
 
-As classes DAO são todas abstratas, sendo utilizadas com chamadas unicamente de métodos estáticos. Para cada bean armazenado no banco de dados há uma classe DAO equivalente que herda da classe DAO. 
+As classes DAO são todas abstratas, sendo utilizadas com chamadas unicamente de métodos estáticos. Para cada bean armazenado no banco de dados há uma classe DAO equivalente que herda da classe DAO.
 
 Para cada classe DAO há um *enumeration* que fica lsita o nome das colunas no banco de dados para a tabela respectiva àquele bean. A classe mãe DAO contem alguns métodos que abstraem o SQL esperado para as chamadas chaves como INSERT, SELECT, UPDATE ou DELETE.
