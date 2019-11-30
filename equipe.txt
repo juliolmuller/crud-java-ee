@@ -1,7 +1,0 @@
-GRR         Nome Completo             Email
-================================================================
-GRR20185479 André Klingenfus Antunes  andrekantunes10@gmail.com
-GRR20184615 Aurélio Shizuo Matsunaga  aureliomatsunaga@gmail.com
-GRR20184619 Cassiano Kruchelski Vidal cassianokvidal@gmail.com
-GRR20184596 Julio do Lago Muller      juliodolago@gmail.com
-GRR20184613 Wesley Caetano da Costa   wesleyccosta2013@gmail.com
