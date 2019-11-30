@@ -132,7 +132,7 @@ INSERT INTO products(id, name, category_id, weight, utc_code, ean_code, descript
   (43, 'Anus Hair Untangler Dreascape Dub Step Edition',         3, 503, '789898535446', '4693743090045', 'Omnis rerum soluta hic, dolore quidem adipisci aliquid eos molestiae recusandae aperiam accusamus. Eum, necessitatibus unde aut nemo, exercitationem molestias illum saepe voluptates quam tempora delectus consequuntur numquam amet tempore.'),
   (44, 'Fede Menos Man',         1, 220, '789771805097', '5761773996942', 'Officia dignissimos adipisci placeat est nihil, obcaecati in veritatis officiis sint mollitia, et minus corrupti molestias rerum animi numquam nemo ipsum, ab debitis culpa eius dolores quam magni fugit. Tempora.'),
   (45, 'Intense Super Fresh!',   2, 219, '789537334144', '3470190616876', 'Officiis temporibus eos nesciunt repudiandae quam autem! Ea excepturi quis velit deserunt, odit nisi corrupti commodi similique omnis, perferendis non facilis accusantium, recusandae tempore labore consectetur distinctio accusamus doloremque fuga?');
-ALTER SEQUENCE categories_id_seq RESTART WITH 46;
+ALTER SEQUENCE products_id_seq RESTART WITH 46;
 
 INSERT INTO ticket_types(id, name) VALUES
   (1,  'Dúvida'),

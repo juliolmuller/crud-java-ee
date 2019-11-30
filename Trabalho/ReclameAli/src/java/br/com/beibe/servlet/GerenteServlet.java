@@ -86,7 +86,7 @@ public class GerenteServlet extends HttpServlet {
             "atendimento(s) em aberto",
             "/atendimentos"
         ));
-        final long DAYS = 10;
+        final long DAYS = 7;
         ticketsCount = TicketFacade.listOpenFrom(DAYS).size();
         ticketsCountStr = ticketsCount.toString();
         feed.add(new FeedItem(

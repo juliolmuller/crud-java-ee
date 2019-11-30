@@ -89,7 +89,7 @@ $('#find-zip_code').click(() => {
   }
 });
 
-// Função para extração dos dados do formulpario
+// Função para extração dos dados do formulario
 function extractDataForm(formSelector) {
   const data = {};
   $(`${formSelector} [name]`).each((i, el) => data[el.name] = el.value);
