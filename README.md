@@ -1,74 +1,67 @@
 
-# Desenvolvimento Web II
+# Sistema ReclameAli
 
-Lista de exercícios e trabalhos de senvolvidos para a disciplina de Desenvolvimento Web II, toda em cima deJava EE.
+## Diagrama de Classes
 
-Equipe:
+A estrutura prinpipal das classes modelo da aplicação são a seguinte:
 
-- [André Antunes](https://github.com/andrekantunes)
-- ~~ [Aurélio Matsunaga](https://github.com/aureliomatsunaga)~~ *DROPPED*
-- [Cassiano VIdal](https://github.com/kruchelski)
-- [Júlio Müller](https://github.com/juliolmuller)
-- [Wesley Caetano](https://github.com/vvesleyc)
+![Diagrama de Classes](./docs/class_diagram.jpg)
 
-## [Exercício 01](./Exercicio01/Exercício%2001%20-%20Servlets_JSP%20Básico.pdf)
+## Beans
 
-Construir uma página simples utilizando Servlets e outra usando JSP.
+Todas as casses de objetos acima descritos possuem um respectivo bean que replica todos os atributos. Os beans que exigem validação, pois há novas entradas provenientes da interação com a aplicação (como usuários, atendimentos, produtos...) implmentam o método `validate()`, que retorna uma lista de `ValError`, que é um bean com atributos `field` e `message` usado para transmitir erros e onde há problemas nos formulários. 
 
-## [Exercício 02](./Exercicio02/Exercício%2002%20-%20Servlets%20%2B%20Formulário.pdf)
+Tidas essas classes também possuem seus respectivos DAOs. Nem todos possuem todas as operações de inserção, atualização ou exclusão, já que nem todos os objetos serão modificados a partir da aplicação, mas todos tem, ao menos, métodos para consulta (SELECT) que já trazem outros objetos aninhados que façam parte de seus atributos. Por exemplo: ao fazer chamar o método `TicketDAO.listAll()`, o próprio DAo já é responsável por encontrar os objetos que fazer parte de seus atributos, como `TicketStatus`,  `TicketType` e `TicketMessage`.
 
-Usando Servlets, construir um sisteminha simples de login e cadastro de usuários.
+## Diagrama Relacional (BD)
 
-## [Exercício 03](./Exercicio03/Exercício%2003%20-%20Servlets%20+%20Login%20+%20Redirecionamentos.pdf)
+No banco de daods os modelos ficarâo alocados da seguinte forma:
 
-Adicione conexão a banco de dados ao projeto e redirecionamentos a fim de prevenir que o usuário acesse páginas restritas apenas a usuários logados.
+![Diagrama Relacional](./docs/realational_diagram.jpg)
 
-## [Exercício 04](./Exercicio04/Exercício%2004%20-%20Servlets%20+%20Login%20+%20Redirecionamentos%20+%20Java%20Beans.pdf)
+## Acesso à aplicação
 
-Incremente a aplicação do exercício 03 utilizando-se de Java Beans e DAO.
+Conforme requisitos, a aplicação possui 3 perfis de acesso diferentes:
 
-**NOTA:** para executar a aplicação, é necessário configurar o banco de dados previamente. O SGBD PostgreSQL 11 foi escolhido como servidor de banco de dados para o desenvolvimento, portanto, crie um banco de dados e configure o esquema a partir do arquivo `db-setup.sql` (em [`src/java/br/ufpr/tads/web2/dao/`](./Exercicio04/src/java/br/ufpr/tads/web2/dao/db-setup.sql)). Se utilizar outro SGBD, talvez seja necessário adaptar o SQL que seja compatível (como, por exemplo, o uso de `SERIAL` para incrementação automática de ID dos registros) **IMPORTANTE:** para configurar o acesso ao banco de dados no seu ambiente de desenvolvimento, crie uma cópia do arquivo `db.properties.example` (em [`src/java/br/ufpr/tads/web2/dao/`](./Exercicio04/src/java/br/ufpr/tads/web2/dao/db.properties.example)), renomeando-o para `db.properties`.
+- Ciente
+- Funcionário
+- Gerente
 
-## [Exercício 05](./Exercicio05/Exercício%2005%20-%20CRUD.pdf)
+Como esses três perfis são armazenados no banco de dados na tabela `users` (coluna `role`), o tipo de acesso é personalizado a partir do login. o método `UserDAO.authenticate()` recebe 2 parâmetros String (email de login e senha) e retorna uma instância de uma subclasse de `User`  (ou Cliente, ou Funcionario, ou Gerente) e essa instância é salva no escopo da sessão. 
 
-Incremente a aplicação do exercício 04 elaborando um CRUD completo com a **tabela de clientes**.
+![Autenticação de Usuário](./docs/authentication.png)
 
-**NOTA:** as orientações para se configurar o banco de dados são as mesmas do **Exercício 04**. Contudo, além da `tb_usuario`, será necessária a criação da tabela `tb_cliente`. [Acesse o script SQL aqui](./Exercicio05/src/java/br/ufpr/tads/web2/dao/db-setup.sql).
+A requisição com o formulário de login é enviado via POST para a rota `/entrar?action=signin`, que é processada pela servlet `PublicServlet `. Uma vez o login seja realizado com sucesso, é salva a instância do perfil dp usuário em sessão e a partir daí, todas as rotas restritas são validadas a partir dos filtros, no pacote `br.com.beibe.filter`. Caso não haja permissão suficiente para acessar aquela rota, a aplicação exibe a tela de login, especificando o perfil necessário para acessar aquela rota.
 
-## [Exercício 06](./Exercicio06/Exercício%2006%20-%20MVC.pdf)
+Assim, todas as requisições são interceptadas pelos filters, confirma-se a permissão de acesso, seguindo para a servlet, que processa a requisição, instanciando objetos, interagindo com as classes façade e preparando a resposta, seja encaminhando a requisição para uma JSP, seja montando e respondendo com dados em formato JSON (servlets com prefixo *API*).
 
-Incremente a aplicação do exercício 05 implementando alguns design patters, conforme o enunciado.
+![Fluxo de Processamento da Requisição](./docs/request_flow.png)
 
-- Arquivo de configuração do banco de dados: [`src/java/br/ufpr/tads/web2/dao/db.properties.example`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db.properties.example) (fazer uma cópia e renomeá-la como `db.properties`)
-- Scripts de criação de tabelas e inserção de dados: [`src/java/br/ufpr/tads/web2/dao/db-setup.sql`](./Exercicio06/src/java/br/ufpr/tads/web2/dao/db-setup.sql)
+**Nem todas as requisições retornam uma página JSP. Algumas requisições retornam formato JSON, mas essas requisições são para uso em requisições AJAX (requisições via JavaScript que não requerem o recarregamento da página).**
 
-## [Exercício 07](./Exercicio07/Exercício%2007%20-%20JSTL_EL.pdf)
+## Conversão e Validação de Dados
 
-- Implementar bibliotecas dJavaScript de máscaras e date-picker;
-- Implementar validações de entrada de dados;
-- Criar e desmembrar entidades **Cidade** e **Estado**;
-- Implementar requisição de cidades via AJAX a partir do estado selecionado;
-- Configuração do banco de dados:
-  - Arquivo de configuração do banco de dados: [`src/java/br/ufpr/tads/web2/dao/db.properties.example`](./Exercicio07/src/java/br/ufpr/tads/web2/dao/db.properties.example (fazer uma cópia e renomeá-la como `db.properties`)
-  - Scripts de criação de tabelas e inserção de dados: [`src/java/br/ufpr/tads/web2/dao/db-setup.sql`](./Exercicio07/src/java/br/ufpr/tads/web2/dao/db-setup.sql)
+Os dados de formulário são recebidos pelas servlets e a servlet instancia os respectivos objetos e seta os devidos atributos. Se alguma conversão é necessária para setar o atributo na instância do objeto (tipo uma data) a conversão é feita na própria servlet, antes de chamar o método setter to atributo. No mais, os próprios métodos setter dos beans já fazem alguns tipos de conversões:
 
-**Rotas da aplicação:**
+Por exemplo:
+- dados numéricos que são armazenados como String, como CEP e CPF tem todos os caracteres, com excessão dos digitos, removidos na chamada do setter;
+- atributos que são objetos, como o endereço do usuário, são instanciados e construídos e somente depois setados na instância de usuário;
+- atributos numériocos são parseados.
 
-| URL                    | Método   | Restrita           | JSP/Servlet         | Ação                                                                                 |
-| ---------------------- | -------- | ------------------ | ------------------- | ------------------------------------------------------------------------------------ |
-| `/` ou `/index.jsp`    | *GET*    | :x:                | `/index.jsp`        | Exibe formulário de acesso ao sistema.                                               |
-| `/login`               | *POST*   | :x:                | `LoginServlet`      | Valida os parâmetros **login** e **senha** e guarda dados na sessão do usuário.      |
-| `/logout`              | *GET*    | :heavy_check_mark: | `LogoutServlet`     | Invalida a sessão existente.                                                         |
-| `/portal.jsp`          | *GET*    | :heavy_check_mark: | `/portal.jsp`       | Exibe a página inicial do sistema, com menu para formulários de usuários e clientes. |
-| `/usuarios`            | *GET*    | :heavy_check_mark: | `ApiUsuarioServlet` | Exibe a SPA para gerenciamento de usuários.                                          |
-| `/api/usuarios`        | *GET*    | :heavy_check_mark: | `ApiUsuarioServlet` | Retorna todos os registros de usuários no formato JSON.                              |
-| `/api/usuarios`        | *POST*   | :heavy_check_mark: | `ApiUsuarioServlet` | Salva um novo registro de usuário.                                                   |
-| `/api/usuarios`        | *PUT*    | :heavy_check_mark: | `ApiUsuarioServlet` | Atualiza um registro de usuário existente.                                           |
-| `/api/usuarios`        | *DELETE* | :heavy_check_mark: | `ApiUsuarioServlet` | Exclui um registro de usuário.                                                       |
-| `/clientes`            | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe uma lista de todos os clientes cadastrados.                                    |
-| `/clientes/novo`       | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe o formulário para criação de novo cliente.                                     |
-| `/clientes/novo`       | *POST*   | :heavy_check_mark: | `ClienteServlet`    | Lê os parâmetros recebidos e insere um novo registro de cliente.                     |
-| `/clientes/visualizar` | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe os dados de um cliente em modo leitura.                                        |
-| `/clientes/atualizar`  | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Exibe o formulário para edição de cliente existente.                                 |
-| `/clientes/atualizar`  | *POST*   | :heavy_check_mark: | `ClienteServlet`    | Lê os parâmetros recebidos e atualiza o registro existente.                          |
-| `/clientes/excluir`    | *GET*    | :heavy_check_mark: | `ClienteServlet`    | Executa a exclusão de um registro de cliente a partir de um parâmetro **ID**..       |
+Uma vez setados os atributos do objeto, a servlet ivoca o método `validate()` e avalia se há erros ou não e prepara a resposta para o usuário.
+
+## JSPs e Tags Customizadas
+
+Todas as páginas JSP incluem tags customizadas, entre elas a base comum para todas as páginas HTML, que inclui os links para as bibliotecas externas de CSS e JavaScript, referenciadas como `baseLayout`. Outras tags customizadas são as de cabeçalho (`baseHeader`) e rodapé (`vaseFooter`), além de algumas tags para impressção formatada de dados, como datas e CPF.
+
+Fora essas tags, a biblioteca JSTL foi amplamente utilizada em todas as páginas, assim como a notação de espressão EL (`${...}`).
+
+As páginas JSP estão todas armazenadas em `/WEB-INF/jsp/` , sendoacessíveis apenas por chamadas internas da aplicação. 
+
+## DAO
+
+Toda comunicação com o banco de dados é feita a partir dos DAOs, que fazem uso do serviço da classe `ConnectionFactiry`.
+
+As classes DAO são todas abstratas, sendo utilizadas com chamadas unicamente de métodos estáticos. Para cada bean armazenado no banco de dados há uma classe DAO equivalente que herda da classe DAO. 
+
+Para cada classe DAO há um *enumeration* que fica lsita o nome das colunas no banco de dados para a tabela respectiva àquele bean. A classe mãe DAO contem alguns métodos que abstraem o SQL esperado para as chamadas chaves como INSERT, SELECT, UPDATE ou DELETE.
