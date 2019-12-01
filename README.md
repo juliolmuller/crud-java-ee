@@ -20,67 +20,139 @@ This project was developed as a college assignment for the subject _Web Developm
 
 ![ReclameAli initial page](./docs/app-overview.jpg)
 
-## Diagrama de Classes
+## Archtecture and Features
 
-A estrutura prinpipal das classes modelo da aplicação são a seguinte:
+The application was structured trying to follow the MVC pattern. Servlets and façades work like _controllers_, JSPs like the _view_ layer and the remaining classes hold the business logics, like DAOs, beans and other services.
 
-![Diagrama de Classes](./docs/class_diagram.jpg)
+The main business classes are designed like this:
 
-## Beans
+![Class Diagram](./docs/class_diagram.jpg)
 
-Todas as casses de objetos acima descritos possuem um respectivo bean que replica todos os atributos. Os beans que exigem validação, pois há novas entradas provenientes da interação com a aplicação (como usuários, atendimentos, produtos...) implmentam o método `validate()`, que retorna uma lista de `ValError`, que é um bean com atributos `field` e `message` usado para transmitir erros e onde há problemas nos formulários.
+Following the assignment statement, the application should have 3 different access roles:
 
-Tidas essas classes também possuem seus respectivos DAOs. Nem todos possuem todas as operações de inserção, atualização ou exclusão, já que nem todos os objetos serão modificados a partir da aplicação, mas todos tem, ao menos, métodos para consulta (SELECT) que já trazem outros objetos aninhados que façam parte de seus atributos. Por exemplo: ao fazer chamar o método `TicketDAO.listAll()`, o próprio DAo já é responsável por encontrar os objetos que fazer parte de seus atributos, como `TicketStatus`,  `TicketType` e `TicketMessage`.
+- _cliente_ (customer);
+- _funcionario_ (attendant); and
+- _gerente_ (manager).
 
-## Diagrama Relacional (BD)
+...easch one of these profiles should have their own features and permissions. For these reason, this is a key property to access and navigate thoughout the system. So we stablished the attribute **role** as a key factor to know which user is navigating and which resources it is allowed to access. This info is stored in the database along with the user record.
 
-No banco de daods os modelos ficarâo alocados da seguinte forma:
+![Relational Diagram](./docs/realational_diagram.jpg)
 
-![Diagrama Relacional](./docs/realational_diagram.jpg)
+Although the **role** attribute is persisted in the database, this is not an information used by the application directly, like other attributes do. Instead, it is used to instantiate the appropriate subclass of _User_. So everytime a record of user is selected from database, it instantiate its respective class. The same applies to the user navigating though the system.
 
-## Acesso à aplicação
-
-Conforme requisitos, a aplicação possui 3 perfis de acesso diferentes:
-
-- Ciente
-- Funcionário
-- Gerente
-
-Como esses três perfis são armazenados no banco de dados na tabela `users` (coluna `role`), o tipo de acesso é personalizado a partir do login. o método `UserDAO.authenticate()` recebe 2 parâmetros String (email de login e senha) e retorna uma instância de uma subclasse de `User`  (ou Cliente, ou Funcionario, ou Gerente) e essa instância é salva no escopo da sessão.
+Then, the router controls the permission to access the resources by evaluating the instance of _User_ stored in sesstion scope.
 
 ![Autenticação de Usuário](./docs/authentication.png)
 
-A requisição com o formulário de login é enviado via POST para a rota `/entrar?action=signin`, que é processada pela servlet `PublicServlet `. Uma vez o login seja realizado com sucesso, é salva a instância do perfil dp usuário em sessão e a partir daí, todas as rotas restritas são validadas a partir dos filtros, no pacote `br.com.beibe.filter`. Caso não haja permissão suficiente para acessar aquela rota, a aplicação exibe a tela de login, especificando o perfil necessário para acessar aquela rota.
+Also, as displayed in the image above, the customer is the only user capable of registering himself to the platform. Attendants and managers must be included by others managers - easy to understand why, but it is part of the project specifications.
 
-Assim, todas as requisições são interceptadas pelos filters, confirma-se a permissão de acesso, seguindo para a servlet, que processa a requisição, instanciando objetos, interagindo com as classes façade e preparando a resposta, seja encaminhando a requisição para uma JSP, seja montando e respondendo com dados em formato JSON (servlets com prefixo *API*).
+Once a user is logged in, all the requests flow though _filters_, so no user access forbidden areas/resources.
 
 ![Fluxo de Processamento da Requisição](./docs/request_flow.png)
 
-**Nem todas as requisições retornam uma página JSP. Algumas requisições retornam formato JSON, mas essas requisições são para uso em requisições AJAX (requisições via JavaScript que não requerem o recarregamento da página).**
+### Routes
 
-## Conversão e Validação de Dados
+As a Java EE application feature, the server maps the routes requested by the client and assigned the appropriate resource to that request. Thus, these are the URLs available in the application:
 
-Os dados de formulário são recebidos pelas servlets e a servlet instancia os respectivos objetos e seta os devidos atributos. Se alguma conversão é necessária para setar o atributo na instância do objeto (tipo uma data) a conversão é feita na própria servlet, antes de chamar o método setter to atributo. No mais, os próprios métodos setter dos beans já fazem alguns tipos de conversões:
+#### Public Routes:
 
-Por exemplo:
-- dados numéricos que são armazenados como String, como CEP e CPF tem todos os caracteres, com excessão dos digitos, removidos na chamada do setter;
-- atributos que são objetos, como o endereço do usuário, são instanciados e construídos e somente depois setados na instância de usuário;
-- atributos numériocos são parseados.
+| URL                 | Method |  Parameters   | Action                                                           |
+| ------------------- | :----: | :-----------: | ---------------------------------------------------------------- |
+| `/` or `/index.jsp` |  GET   |       -       | Redirects to `/entrar`.                                          |
+| `/entrar`           |  GET   |       -       | Displays access screen.                                          |
+| `/entrar`           |  POST  | action=signin | Processes user credentials submitted though signin form.         |
+| `/entrar`           |  POST  | action=signup | Processes customer data submitted though self-registration form. |
+| `/sair`             |  GET   |       -       | Destroys existing sessions and redirects to `/entrar`.           |
 
-Uma vez setados os atributos do objeto, a servlet ivoca o método `validate()` e avalia se há erros ou não e prepara a resposta para o usuário.
+#### Customer Routes:
 
-## JSPs e Tags Customizadas
+As rule, all the resources available to customers (_cliente_ role) are accessable thought URL `/cliente/*`, except for the APIs consumed by the application in background.
 
-Todas as páginas JSP incluem tags customizadas, entre elas a base comum para todas as páginas HTML, que inclui os links para as bibliotecas externas de CSS e JavaScript, referenciadas como `baseLayout`. Outras tags customizadas são as de cabeçalho (`baseHeader`) e rodapé (`vaseFooter`), além de algumas tags para impressção formatada de dados, como datas e CPF.
+| URL                                | Method |   Parameters   | Action                                                 |
+| ---------------------------------- | :----: | :------------: | ------------------------------------------------------ |
+| `/` or `/index.jsp`                |  GET   |       -        | If customer is authenticated, redirects to `/cliente`. |
+| `/cliente`                         |  GET   |       -        | Displays customer's homepage.                          |
+| `/cliente/atendimentos`            |  GET   |       -        | Displays all customer's tickets.                       |
+| `/cliente/atendimentos/novo`       |  GET   |       -        | Displays the form to submit new tickets.               |
+| `/cliente/atendimentos/novo`       |  POST  |       -        | Processes the data from new tickets form.              |
+| `/cliente/atendimentos/acompanhar` |  GET   |      id=#      | Displays the details for the ticket '#'.               |
+| `/api/tickets`                     |  POST  | action=message | Processes new messages added to the ticket.            |
 
-Fora essas tags, a biblioteca JSTL foi amplamente utilizada em todas as páginas, assim como a notação de espressão EL (`${...}`).
+#### Attendant Routes:
 
-As páginas JSP estão todas armazenadas em `/WEB-INF/jsp/` , sendoacessíveis apenas por chamadas internas da aplicação.
+The same way, the routes tend to be prefixed with `/funcionario`:
 
-## DAO
+| URL                                    | Method |   Parameters   | Action                                                      |
+| -------------------------------------- | :----: | :------------: | ----------------------------------------------------------- |
+| `/` or `/index.jsp`                    |  GET   |       -        | If attendant is authenticated, redirects to `/funcionario`. |
+| `/funcionario`                         |  GET   |       -        | Displays attendant's homepage and dashboard.                |
+| `/funcionario/atendimentos`            |  GET   |       -        | Displays the list of all tickets.                           |
+| `/funcionario/atendimentos/acompanhar` |  GET   |      id=#      | Displays the details for the ticket '#'.                    |
+| `/funcionario/atendimentos/acompanhar` |  POST  |      id=#      | Requests the ticket '#' to be switched to 'closed'.         |
+| `/api/tickets`                         |  POST  | action=message | Processes new messages added to the ticket.                 |
+| `/funcionario/categorias`              |  GET   |       -        | Displays the list of existing categories.                   |
+| `/api/categories`                      |  GET   |       -        | Returns the list of all categories as JSON.                 |
+| `/api/categories`                      |  GET   |      id=#      | Returns the category with ID '#' as JSON.                   |
+| `/api/categories`                      |  POST  |   action=new   | Processes the data sent through new category form.          |
+| `/api/categories`                      |  POST  | action=update  | Processes the data to update the selected category.         |
+| `/api/categories`                      |  POST  | action=delete  | Deletes the selected category.                              |
+| `/funcionario/produtos`                |  GET   |       -        | Displays the list of existing products.                     |
+| `/api/products`                        |  GET   |       -        | Returns the list of all products as JSON.                   |
+| `/api/products`                        |  GET   |      id=#      | Returns the product with ID '#' as JSON.                    |
+| `/api/products`                        |  POST  |   action=new   | Processes the data sent through new product form.           |
+| `/api/products`                        |  POST  | action=update  | Processes the data to update the selected product.          |
+| `/api/products`                        |  POST  | action=delete  | Deletes the selected product.                               |
 
-Toda comunicação com o banco de dados é feita a partir dos DAOs, que fazem uso do serviço da classe `ConnectionFactiry`.
+#### Manager Routes:
 
-As classes DAO são todas abstratas, sendo utilizadas com chamadas unicamente de métodos estáticos. Para cada bean armazenado no banco de dados há uma classe DAO equivalente que herda da classe DAO.
+Managers also should navigate under the prefix `/gerente`:
 
-Para cada classe DAO há um *enumeration* que fica lsita o nome das colunas no banco de dados para a tabela respectiva àquele bean. A classe mãe DAO contem alguns métodos que abstraem o SQL esperado para as chamadas chaves como INSERT, SELECT, UPDATE ou DELETE.
+| URL                                | Method |   Parameters    | Action                                                |
+| ---------------------------------- | :----: | :-------------: | ----------------------------------------------------- |
+| `/` or `/index.jsp`                |  GET   |        -        | If manager is authenticated, redirects to `/gerente`. |
+| `/gerente`                         |  GET   |        -        | Displays manager's homepage and dashboard.            |
+| `/gerente/atendimentos`            |  GET   |        -        | Displays the list of all tickets.                     |
+| `/gerente/atendimentos/acompanhar` |  GET   |      id=#       | Displays the details for the ticket '#'.              |
+| `/gerente/atendimentos/acompanhar` |  POST  |      id=#       | Requests the ticket '#' to be switched to 'closed'.   |
+| `/api/tickets`                     |  POST  | action=message  | Processes new messages added to the ticket.           |
+| `/gerente/colaboradores`           |  GET   |        -        | Displays the list of managers and attendants.         |
+| `/api/users`                       |  GET   |        -        | Returns the list of all users as JSON.                |
+| `/api/users`                       |  GET   |      id=#       | Returns the user with ID '#' as JSON.                 |
+| `/api/users`                       |  POST  |   action=new    | Processes the data sent through new user form.        |
+| `/api/users`                       |  POST  |  action=update  | Processes the data to update the selected user.       |
+| `/api/users`                       |  POST  | action=password | Updates the selected user's password.                 |
+| `/api/users`                       |  POST  |  action=delete  | Deletes the selected user.                            |
+
+### Data Validation
+
+All model classes (which have equivalent tables within database and have insersions and updates) have the implementation of method `validate()`, which can be called by the controller **before** saving changes into database. This method is responsible - as you may imagine - for validating all the attributes set to that object. It will always return an instance of _ArrayList&lt;ValError&gt;_, which is a list of errors messages that may be wrapped as a bean and sent to a JSP or as JSON. An empty ArrayList means no validation errors.
+
+## Technologies
+
+Here are the main technologies used to build this project:
+
+### Back-End
+
+- Programing Language: [Java 8](https://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html)
+- Server (Java EE implementation): [GlassFish 4](https://javaee.github.io/glassfish)
+- Tags library: [JSTL 1.2](https://www.oracle.com/technetwork/java/index.html)
+- JSON library: [Google Gson 2.8](https://github.com/google/gson)
+- Reports Compiler: [Jasper Reports 6.10](https://community.jaspersoft.com/project/jasperreports-library)
+- Relational Database: [PostgreSQL 11](https://www.postgresql.org/)
+
+### Front-End
+
+- JavaScript libraries:
+  - [jQuery 3.4](https://jquery.com/)
+  - [DatePicker plugin](https://fengyuanchen.github.io/datepicker/)
+  - [Mask plugin](https://igorescobar.github.io/jQuery-Mask-Plugin/)
+  - [Toastr 2.1](https://github.com/CodeSeven/toastr/)
+- Styles: [Bootstrap 4](https://getbootstrap.com/)
+
+### Dev Tools
+
+- Integrated Development Enviroment: [NetBeans 8.2](https://netbeans.org/)
+- Text Editor: [Visual Studio Code](https://code.visualstudio.com/)
+- Versioning Tool: [Git](https://git-scm.com/)
+- Remote Repository: [GitHub](https://github.com/)
+- Console Emulator: [Cmder](https://cmder.net/)
