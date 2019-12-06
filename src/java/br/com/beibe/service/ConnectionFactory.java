@@ -9,10 +9,14 @@ import java.sql.SQLException;
 
 public abstract class ConnectionFactory {
 
-    private static final String PROPS_FILE = "/db.properties";
+    private static final String PROPS_FILE;
     private static final Properties PROPS = new Properties();
 
     static {
+        if (System.getenv("HEROKU") == null)
+            PROPS_FILE = "/db.properties";
+        else
+            PROPS_FILE = "/db-heroku.properties";
         try (InputStream is = ConnectionFactory.class.getResourceAsStream(PROPS_FILE)) {
             PROPS.load(is);
         } catch (IOException ex) {
