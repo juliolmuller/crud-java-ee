@@ -26,7 +26,7 @@ public class PublicServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        if (request.getRequestURI().split("/")[2].equals("sair")) {
+        if (request.getRequestURI().split("/")[1].equals("sair")) {
             request.getSession().invalidate();
             response.sendRedirect(request.getContextPath() + "/entrar");
         } else {
