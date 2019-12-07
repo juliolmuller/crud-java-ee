@@ -81,6 +81,13 @@
         </button>
       </div>
     </form>
+
+    <%-- Rodapé da página --%>
+    <footer class="text-center mt-3">
+      <small style="color:#777">
+        BEIBE &copy; 2019 - Todos os Direitos Reservados
+      </small>
+    </footer>
   </main>
 
   <%-- Formulário de auto-cadastro --%>

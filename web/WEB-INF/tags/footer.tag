@@ -32,8 +32,8 @@
       </div>
     </div>
     <div class="py-4 text-center">
-      <small>
-        Todos os Direitos Reservados &copy; 2019
+      <small style="color:#777">
+        BEIBE &copy; 2019 - Todos os Direitos Reservados
       </small>
     </div>
   </div>
