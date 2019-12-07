@@ -8,8 +8,8 @@
   - [Wesley Caetano C.](https://github.com/vvesleyc)
   - [Aurélio S. Matsunaga](https://github.com/aureliomatsunaga)
 - **Released on:** Nov 28, 2019
-- **Last Updated on:** Nov 28, 2019
-- **Latest version:** 1.0.0
+- **Last Updated on:** Dec 6, 2019
+- **Latest version:** 1.0.2
 - **License:** MIT
 
 ## Overview
@@ -17,6 +17,8 @@
 This application was developed using pure Java EE specifications, in other words, with **no framework**, but with pure servlets and JSP usage, although many libraries were allowed to be used as well, like JSTL, Gson (for converting objects into JSON) and Jasper (for reports generation).
 
 This project was developed as a college assignment for the subject _Web Development II_, following the specifications detailed in [this document (in portuguese)](./docs/Assignment%20Statement%20-%20Project%20Specifications.pdf).
+
+[Check out the application running](https://reclamejava.herokuapp.com/)
 
 ![ReclameAli initial page](./docs/app-overview.jpg)
 
