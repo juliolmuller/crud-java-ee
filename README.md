@@ -8,8 +8,8 @@
   - [Wesley Caetano C.](https://github.com/vvesleyc)
   - [Aurélio S. Matsunaga](https://github.com/aureliomatsunaga)
 - **Released on:** Nov 28, 2019
-- **Last Updated on:** Dec 6, 2019
-- **Latest version:** 1.0.2
+- **Last Updated on:** Dec 7, 2019
+- **Latest version:** 1.0.4
 - **License:** MIT
 
 ## Overview
