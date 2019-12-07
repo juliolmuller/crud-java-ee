@@ -68,7 +68,10 @@
         </div>
         <div class="text-center">
           <p class="mt-3 mb-0">
-            Esqueceu a senha? <a href="mailto:${emailSupport}">Contate o suporte</a>
+            Não sabe a senha?
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#access-modal">
+              Dê uma espiada
+            </button>
           </p>
         </div>
       </div>
@@ -89,6 +92,24 @@
       </small>
     </footer>
   </main>
+
+  <div id="access-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title font-weight-bold">Escolha um perfil de acesso:</h6>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <button class="btn btn-outline-secondary btn-block" onclick="getRole('cliente')">Cliente</button>
+          <button class="btn btn-outline-secondary btn-block" onclick="getRole('func')">Funcionário</button>
+          <button class="btn btn-outline-secondary btn-block" onclick="getRole('gerente')">Gerente</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <%-- Formulário de auto-cadastro --%>
   <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">

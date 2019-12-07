@@ -107,6 +107,13 @@ function cleanForm(formSelector) {
   });
 }
 
+// Função para colocar as credenciasi de acesso no formulário
+function getRole(role) {
+  $('#signin-login').val(`${role}@email.com`);
+  $('#signin-password').val('abcd1234');
+  $('#access-modal').modal('hide');
+}
+
 // VErificar se formulário de signin está preenchido
 $('#form-signin').submit(e => {
   const login = $(`#form-signin [name="login"]`).val();
