@@ -14,9 +14,9 @@ public abstract class ConnectionFactory {
 
     static {
         if (System.getenv("HEROKU") == null)
-            PROPS_FILE = "/db.properties";
+            PROPS_FILE = "/../db.properties";
         else
-            PROPS_FILE = "/db-heroku.properties";
+            PROPS_FILE = "/../db-heroku.properties";
         try (InputStream is = ConnectionFactory.class.getResourceAsStream(PROPS_FILE)) {
             PROPS.load(is);
         } catch (IOException ex) {

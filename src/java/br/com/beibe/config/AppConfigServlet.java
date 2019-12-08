@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 @WebServlet(name = "AppConfig", loadOnStartup = 1)
 public class AppConfigServlet extends HttpServlet {
 
-    private static final String PROPS_FILE = "/app.properties";
+    private static final String PROPS_FILE = "/../app.properties";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
