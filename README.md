@@ -9,7 +9,7 @@
   - [Aurélio S. Matsunaga](https://github.com/aureliomatsunaga)
 - **Released on:** Nov 28, 2019
 - **Last Updated on:** Dec 7, 2019
-- **Latest version:** 1.0.6
+- **Latest version:** 1.0.7
 - **License:** MIT
 
 ## Overview
@@ -158,3 +158,9 @@ Here are the main technologies used to build this project:
 - Versioning Tool: [Git](https://git-scm.com/)
 - Remote Repository: [GitHub](https://github.com/)
 - Console Emulator: [Cmder](https://cmder.net/)
+
+## Enviroment Configuration
+
+The project has been developed entirely with NetBeans (version 8.2) and server GlassFish (version 4.1.1), so it is highly recommended to use this setup, since no other IDE or server has been used. However, the Heroku platform, where the demo is deploied, is using Tomcat as server.
+
+To setup the database connection, you can use rename the file `db.properties.example` on folder `web/WEB-INF/` to `db.properties` and add your credentials and local configuration. Since it is a more private data and local configuration, Git should not track that file (see `.gitignore` on the same folder).
