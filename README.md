@@ -9,7 +9,7 @@
   - [Aurélio S. Matsunaga](https://github.com/aureliomatsunaga)
 - **Released on:** Nov 28, 2019
 - **Last Updated on:** Dec 7, 2019
-- **Latest version:** 1.0.4
+- **Latest version:** 1.0.6
 - **License:** MIT
 
 ## Overview
